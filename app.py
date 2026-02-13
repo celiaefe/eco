@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
@@ -18,7 +19,8 @@ def recuerdos():
         recuerdos_guardados.append({
             "titulo": titulo,
             "cancion": cancion,
-            "nota": nota
+            "nota": nota,
+            "fecha": datetime.now().strftime("%d/%m/%Y %H:%M")
         })
 
         return redirect(url_for("recuerdos"))
