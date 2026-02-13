@@ -12,7 +12,8 @@
 
 <form method="POST">
   <input type="text" name="titulo" placeholder="Título del momento" required>
-  <input type="text" name="cancion" placeholder="Canción asociada">
+  <input type="text" name="cancion" placeholder="Título de la canción">
+  <input type="text" name="artista" placeholder="Artista">
   <textarea name="nota" placeholder="¿Qué significa para ti?"></textarea>
   <button type="submit">Guardar recuerdo</button>
 </form>
@@ -21,13 +22,25 @@
 
 <div class="timeline">
 {% for r in recuerdos %}
-  <div class="timeline-item">
+  <div class="timeline-item {% if loop.first %}nuevo{% endif %}">
     <div class="timeline-dot"></div>
     <div class="timeline-content">
-      <strong>{{ r.titulo }}</strong><br>
-      <small>{{ r.fecha }}</small><br>
-      🎵 {{ r.cancion }}<br>
-      <p>{{ r.nota }}</p>
+      <div class="recuerdo-header">
+        <strong class="recuerdo-titulo">{{ r.titulo }}</strong>
+        <small class="recuerdo-fecha">{{ r.fecha }}</small>
+      </div>
+
+      <div class="recuerdo-cancion">
+        <div class="cancion-icono">♪</div>
+        <div class="cancion-info">
+          <div class="cancion-titulo">{{ r.cancion }}</div>
+          {% if r.artista %}
+            <div class="cancion-artista">{{ r.artista }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <p class="recuerdo-nota">{{ r.nota }}</p><p>{{ r.nota }}</p>
     </div>
   </div>
 {% endfor %}

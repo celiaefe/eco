@@ -123,3 +123,85 @@ html, body {
 .timeline-content {
   margin-left: 20px;
 }
+
+@keyframes aparecerSuave {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.timeline-item.nuevo {
+  animation: aparecerSuave 0.6s ease-out;
+}
+
+@keyframes latidoPunto {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(58, 58, 58, 0.4);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 8px 4px rgba(58, 58, 58, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(58, 58, 58, 0);
+  }
+}
+
+.timeline-item.nuevo .timeline-dot {
+  animation: latidoPunto 1s ease-out;
+}
+
+.recuerdo-header {
+  margin-bottom: 0.8rem;
+}
+
+.recuerdo-titulo {
+  display: block;
+  font-size: 1rem;
+}
+
+.recuerdo-fecha {
+  font-size: 0.75rem;
+  color: rgba(0,0,0,0.5);
+}
+
+.recuerdo-cancion {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255,255,255,0.6);
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+
+.cancion-icono {
+  font-size: 1.5rem;
+  color: #3a3a3a;
+}
+
+.cancion-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.cancion-titulo {
+  font-weight: 600;
+}
+
+.cancion-artista {
+  font-size: 0.85rem;
+  color: rgba(0,0,0,0.6);
+}
+
+.recuerdo-nota {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
