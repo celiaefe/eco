@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Eco - Recuerdos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="recuerdos-page">
+
+<h1>Nuevo recuerdo</h1>
+
+<form method="POST">
+  <input type="text" name="titulo" placeholder="Título del momento" required>
+  <input type="text" name="cancion" placeholder="Canción asociada">
+  <textarea name="nota" placeholder="¿Qué significa para ti?"></textarea>
+  <button type="submit">Guardar recuerdo</button>
+</form>
+
+<h2>Tus recuerdos</h2>
+
+{% for r in recuerdos %}
+  <div class="recuerdo">
+    <strong>{{ r.titulo }}</strong><br>
+    🎵 {{ r.cancion }}<br>
+    <p>{{ r.nota }}</p>
+  </div>
+{% endfor %}
+
+</body>
+</html>

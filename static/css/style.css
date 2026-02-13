@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.home {
+  height: 100vh;
+  width: 100%;
+  background-image: url("../images/home_eco.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: #f2e6c9;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+}
+
+.logo {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.tagline {
+  margin-bottom: 2rem;
+}
+.recuerdos-page {
+  background-color: #f2e6c9;
+  min-height: 100vh;
+  padding: 3rem 1.5rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.recuerdos-page h1 {
+  margin-bottom: 1.5rem;
+}
+
+.recuerdos-page h2 {
+  margin-top: 2.5rem;
+}
+
+.recuerdos-page form {
+  display: flex;
+  flex-direction: column;
+}
+
+.recuerdos-page input,
+.recuerdos-page textarea {
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  background: rgba(255,255,255,0.6);
+  font-size: 0.95rem;
+}
+
+.recuerdos-page textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.recuerdos-page button {
+  width: fit-content;
+  padding: 0.6rem 1.2rem;
+  background: #3a3a3a;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.recuerdo {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0,0,0,0.15);
+}
