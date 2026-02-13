@@ -60,12 +60,6 @@ html, body {
   flex-direction: column;
 }
 
-.acciones-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-
 .recuerdos-page input,
 .recuerdos-page textarea {
   padding: 0.7rem;
