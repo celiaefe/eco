@@ -175,11 +175,11 @@ html, body {
 .recuerdo-cancion {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  background: rgba(255,255,255,0.6);
-  padding: 0.8rem;
-  border-radius: 8px;
-  margin-bottom: 0.8rem;
+  gap: 1rem;
+  background: rgba(255,255,255,0.7);
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
 }
 
 .cancion-icono {
@@ -194,14 +194,65 @@ html, body {
 
 .cancion-titulo {
   font-weight: 600;
+  font-size: 1rem;
 }
 
 .cancion-artista {
   font-size: 0.85rem;
   color: rgba(0,0,0,0.6);
+  margin-top: 2px;
 }
 
 .recuerdo-nota {
   font-size: 0.9rem;
   line-height: 1.4;
+}
+
+.cancion-portada {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.spotify-resultados {
+  margin-top: 2rem;
+}
+
+.spotify-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem;
+  margin-bottom: 0.5rem;
+  background: rgba(255,255,255,0.7);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.spotify-item:hover {
+  background: rgba(255,255,255,0.9);
+}
+
+.spotify-portada {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.spotify-titulo {
+  font-weight: 600;
+}
+
+.spotify-artista {
+  font-size: 0.85rem;
+  color: rgba(0,0,0,0.6);
+}
+
+.spotify-vacio {
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.65);
 }

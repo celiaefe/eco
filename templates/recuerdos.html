@@ -14,9 +14,29 @@
   <input type="text" name="titulo" placeholder="Título del momento" required>
   <input type="text" name="cancion" placeholder="Título de la canción">
   <input type="text" name="artista" placeholder="Artista">
+  <input type="text" name="portada" placeholder="URL portada (opcional)">
   <textarea name="nota" placeholder="¿Qué significa para ti?"></textarea>
+  <button type="submit" name="buscar" value="1">Buscar en Spotify</button>
   <button type="submit">Guardar recuerdo</button>
 </form>
+
+<div class="spotify-resultados">
+  <h3>Elige una canción</h3>
+
+  {% if resultados %}
+    {% for r in resultados %}
+      <div class="spotify-item">
+        <img src="{{ r.portada }}" class="spotify-portada">
+        <div class="spotify-info">
+          <div class="spotify-titulo">{{ r.titulo }}</div>
+          <div class="spotify-artista">{{ r.artista }}</div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="spotify-vacio">Todavía no hay resultados de Spotify.</p>
+  {% endif %}
+</div>
 
 <h2>Tus recuerdos</h2>
 
@@ -32,6 +52,9 @@
 
       <div class="recuerdo-cancion">
         <div class="cancion-icono">♪</div>
+        {% if r.portada %}
+          <img src="{{ r.portada }}" alt="Portada de {{ r.cancion }}" class="cancion-portada">
+        {% endif %}
         <div class="cancion-info">
           <div class="cancion-titulo">{{ r.cancion }}</div>
           {% if r.artista %}
