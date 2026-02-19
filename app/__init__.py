@@ -36,3 +36,7 @@ def create_app():
     app.register_blueprint(main_bp)
 
     return app
+
+
+# WSGI callable for production servers (e.g. gunicorn app:app)
+app = create_app()
