@@ -17,8 +17,13 @@ def create_app():
     app = Flask(__name__, template_folder="../templates", static_folder="../static")
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-change-me")
 
-    # Local: sqlite. Prod: DATABASE_URL (Render)
-    db_url = os.getenv("DATABASE_URL", "sqlite:///eco.db")
+    # Local: sqlite. Render/prod: DATABASE_URL obligatorio.
+    db_url = os.getenv("DATABASE_URL")
+    running_on_render = bool(os.getenv("RENDER") or os.getenv("RENDER_EXTERNAL_URL"))
+    if not db_url:
+        if running_on_render:
+            raise RuntimeError("DATABASE_URL no configurada en Render.")
+        db_url = "sqlite:///eco.db"
     # Render a veces da postgres://, SQLAlchemy prefiere postgresql://
     if db_url.startswith("postgres://"):
         db_url = db_url.replace("postgres://", "postgresql://", 1)

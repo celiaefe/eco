@@ -9,3 +9,7 @@ instance/
 backups/
 dist/
 static/uploads/
+eco_backup_*.sql
+data/*.sqlite3
+data/usuarios.json
+data/backup/

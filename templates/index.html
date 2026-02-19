@@ -34,10 +34,24 @@
         <a href="{{ url_for('main.recuerdos', crear=1) }}" class="home-fab deck-fab" aria-label="Crear nuevo recuerdo">＋</a>
       </div>
       <p class="tocadiscos-texto">Archivo visual de recuerdos</p>
-      {% if current_user.is_authenticated %}
-        <p class="tocadiscos-texto"><a href="{{ url_for('main.capsulas_panel') }}">Ir a cápsulas</a></p>
-      {% endif %}
     </section>
+
+    {% if current_user.is_authenticated %}
+      <section class="inicio-accesos" aria-label="Accesos principales">
+        <a class="inicio-card" href="{{ url_for('main.biblioteca') }}">
+          <span class="inicio-card-titulo">Biblioteca</span>
+          <span class="inicio-card-texto">Ver todos tus recuerdos.</span>
+        </a>
+        <a class="inicio-card" href="{{ url_for('main.recuerdos', crear=1) }}">
+          <span class="inicio-card-titulo">Crear recuerdo</span>
+          <span class="inicio-card-texto">Guardar un momento con música.</span>
+        </a>
+        <a class="inicio-card" href="{{ url_for('main.capsulas_panel') }}">
+          <span class="inicio-card-titulo">Cápsulas</span>
+          <span class="inicio-card-texto">Programar y abrir cápsulas.</span>
+        </a>
+      </section>
+    {% endif %}
   </main>
   <button id="ritualAudioToggle" class="home-audio-toggle" type="button" aria-pressed="true">Sonido: ON</button>
   <script src="{{ url_for('static', filename='js/inicio.js') }}"></script>
