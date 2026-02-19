@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: eco
+    env: python
+    plan: free
+    region: frankfurt
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m flask --app app.py db upgrade && gunicorn app:app
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.10
+      - key: DATABASE_URL
+        fromDatabase:
+          name: eco-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: SPOTIFY_CLIENT_ID
+        sync: false
+      - key: SPOTIFY_CLIENT_SECRET
+        sync: false
+
+databases:
+  - name: eco-db
+    plan: free
+    region: frankfurt
