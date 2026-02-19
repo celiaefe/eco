@@ -72,7 +72,7 @@ def upgrade():
     op.create_index(op.f("ix_memory_user_id"), "memory", ["user_id"], unique=False)
 
     bind = op.get_bind()
-    users = bind.execute(sa.text("SELECT id FROM user ORDER BY created_at ASC, id ASC")).fetchall()
+    users = bind.execute(sa.text('SELECT id FROM "user" ORDER BY created_at ASC, id ASC')).fetchall()
     if not users:
         return
 
