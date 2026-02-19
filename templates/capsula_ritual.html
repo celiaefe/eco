@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Eco · Ritual</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    .ritual-wrap { max-width: 760px; margin: 0 auto; padding: 24px 16px 40px; color: #f7f7f2; }
+    .ritual-card { border: 1px solid rgba(255,255,255,.16); border-radius: 14px; background: rgba(20,20,20,.72); padding: 18px; }
+    .ritual-kicker { opacity: .8; font-size: .92rem; margin-bottom: 8px; }
+    .ritual-title { margin: 0 0 6px; }
+    .ritual-meta { opacity: .85; font-size: .95rem; }
+    .ritual-actions { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .ritual-btn, .ritual-link { border-radius: 10px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.22); background: transparent; color: #fff; text-decoration: none; cursor: pointer; }
+    .ritual-btn.primary { background: #f0e4c8; border-color: #f0e4c8; color: #1d1d1d; font-weight: 700; }
+    .ritual-status { min-height: 1.2em; margin-top: 12px; }
+    .ritual-seal { margin-top: 18px; border: 1px dashed rgba(255,255,255,.3); border-radius: 12px; padding: 20px; text-align: center; letter-spacing: .08em; text-transform: uppercase; }
+    .ritual-content { margin-top: 16px; padding: 14px; border-radius: 10px; background: rgba(255,255,255,.06); white-space: pre-wrap; }
+  </style>
+</head>
+<body class="noche">
+  <main class="ritual-wrap">
+    <div class="ritual-card">
+      <div class="ritual-kicker">Cápsula personal</div>
+      <h1 class="ritual-title">{{ capsule.title }}</h1>
+      {% if capsule.artist %}
+        <div class="ritual-meta">Artista: {{ capsule.artist }}</div>
+      {% endif %}
+      <div class="ritual-meta">Fecha sagrada: {{ capsule.open_date.strftime("%d/%m/%Y %H:%M UTC") }}</div>
+
+      <div class="ritual-actions">
+        <a class="ritual-link" href="{{ url_for('main.capsulas_panel') }}">Volver al panel</a>
+        {% if capsule.opened_at %}
+          <span class="ritual-meta">Abierta el {{ capsule.opened_at.strftime("%d/%m/%Y %H:%M UTC") }}</span>
+        {% elif unlockable %}
+          <button id="startRitualBtn" class="ritual-btn primary" type="button">Iniciar ritual de apertura</button>
+        {% endif %}
+      </div>
+
+      {% if not unlockable and not capsule.opened_at %}
+        <div class="ritual-seal">
+          Sellada hasta su fecha
+          <div id="countdown" class="ritual-status"></div>
+        </div>
+      {% endif %}
+
+      <div id="ritualStatus" class="ritual-status"></div>
+      <div id="ritualContent" class="ritual-content" {% if not capsule.opened_at %}hidden{% endif %}>
+{{ capsule.message or "Sin mensaje guardado." }}
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const openDate = new Date("{{ capsule.open_date.isoformat() }}Z");
+    const openedAt = {{ "true" if capsule.opened_at else "false" }};
+    const canUnlockNow = {{ "true" if unlockable else "false" }};
+    const capsuleId = {{ capsule.id }};
+    const countdownEl = document.getElementById("countdown");
+    const statusEl = document.getElementById("ritualStatus");
+    const contentEl = document.getElementById("ritualContent");
+    const startBtn = document.getElementById("startRitualBtn");
+
+    function setStatus(text, isError = false) {
+      if (!statusEl) return;
+      statusEl.textContent = text || "";
+      statusEl.style.color = isError ? "#ffb9b9" : "#ccf3ce";
+    }
+
+    function tickCountdown() {
+      if (!countdownEl || openedAt || canUnlockNow) return;
+      const now = new Date();
+      const diff = openDate - now;
+      if (diff <= 0) {
+        countdownEl.textContent = "Ya puedes volver al panel y abrirla.";
+        return;
+      }
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      countdownEl.textContent = `Quedan ${h}h ${m}m ${s}s`;
+    }
+
+    async function runRitual() {
+      if (!startBtn) return;
+      startBtn.disabled = true;
+      setStatus("Preparando ritual...");
+      await new Promise(r => setTimeout(r, 700));
+      setStatus("Respira hondo...");
+      await new Promise(r => setTimeout(r, 900));
+      setStatus("Abriendo sello...");
+      await new Promise(r => setTimeout(r, 900));
+
+      const resp = await fetch(`/capsulas/${capsuleId}/abrir`, { method: "POST" });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        setStatus(data.error || "No se pudo abrir.", true);
+        startBtn.disabled = false;
+        return;
+      }
+      setStatus("Cápsula abierta.");
+      contentEl.hidden = false;
+    }
+
+    if (startBtn) startBtn.addEventListener("click", runRitual);
+    tickCountdown();
+    setInterval(tickCountdown, 1000);
+  </script>
+</body>
+</html>

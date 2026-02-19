@@ -2,19 +2,44 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Eco</title>
+  <title>Eco · Inicio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="inicio-page">
+  <main class="inicio-hub">
+    <section class="inicio-hero">
+      <div class="inicio-auth">
+        {% if current_user.is_authenticated %}
+          <span class="inicio-user">Hola, {{ current_user.email }}</span>
+          <form method="post" action="{{ url_for('auth.logout') }}" class="inicio-auth-form">
+            <button type="submit" class="inicio-auth-link inicio-auth-btn">Salir</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}" class="inicio-auth-link">Entrar</a>
+          <a href="{{ url_for('auth.register') }}" class="inicio-auth-link">Registrarse</a>
+        {% endif %}
+      </div>
+      <p class="inicio-kicker">Eco</p>
+      <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
+    </section>
 
-  <main class="home">
-    <div class="overlay">
-      <h1 class="logo">Eco</h1>
-      <p class="tagline">Una canción puede guardar un recuerdo</p>
-      <a href="/recuerdos" class="enter">Toca para entrar</a>
-    </div>
+    <section class="tocadiscos-placeholder" aria-label="Zona reservada para tocadiscos 3D">
+      <div class="deck deck-real">
+        <img src="{{ url_for('static', filename='portada_eco.jpg') }}" alt="Tocadiscos 3D de Eco" class="deck-image" draggable="false">
+        <a href="{{ url_for('main.biblioteca') }}" class="deck-center-btn" aria-label="Entrar a biblioteca">Biblioteca</a>
+        <a href="{{ url_for('main.recuerdos', crear=1) }}" class="home-fab deck-fab" aria-label="Crear nuevo recuerdo">＋</a>
+      </div>
+      <p class="tocadiscos-texto">Archivo visual de recuerdos</p>
+      {% if current_user.is_authenticated %}
+        <p class="tocadiscos-texto"><a href="{{ url_for('main.capsulas_panel') }}">Ir a cápsulas</a></p>
+      {% endif %}
+    </section>
   </main>
-
+  <button id="ritualAudioToggle" class="home-audio-toggle" type="button" aria-pressed="true">Sonido: ON</button>
+  <script src="{{ url_for('static', filename='js/inicio.js') }}"></script>
 </body>
 </html>

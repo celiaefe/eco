@@ -4,70 +4,81 @@
   <meta charset="UTF-8">
   <title>Eco - Recuerdos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v='20260214-4') }}">
 </head>
 <body class="recuerdos-page">
-
-<h1>Nuevo recuerdo</h1>
-
-<form method="POST">
-  <input type="text" name="titulo" placeholder="Título del momento" required>
-  <input type="text" name="cancion" placeholder="Título de la canción">
-  <input type="text" name="artista" placeholder="Artista">
-  <input type="text" name="portada" placeholder="URL portada (opcional)">
-  <textarea name="nota" placeholder="¿Qué significa para ti?"></textarea>
-  <button type="submit" name="buscar" value="1">Buscar en Spotify</button>
-  <button type="submit">Guardar recuerdo</button>
-</form>
-
-<div class="spotify-resultados">
-  <h3>Elige una canción</h3>
-
-  {% if resultados %}
-    {% for r in resultados %}
-      <div class="spotify-item">
-        <img src="{{ r.portada }}" class="spotify-portada">
-        <div class="spotify-info">
-          <div class="spotify-titulo">{{ r.titulo }}</div>
-          <div class="spotify-artista">{{ r.artista }}</div>
-        </div>
-      </div>
-    {% endfor %}
-  {% else %}
-    <p class="spotify-vacio">Todavía no hay resultados de Spotify.</p>
+<div id="zona-recuerdos" class="zona-recuerdos">
+  <h1>Ecos</h1>
+  {% if error %}
+    <p class="mensaje-error" role="alert">{{ error }}</p>
   {% endif %}
-</div>
 
-<h2>Tus recuerdos</h2>
-
-<div class="timeline">
-{% for r in recuerdos %}
-  <div class="timeline-item {% if loop.first %}nuevo{% endif %}">
-    <div class="timeline-dot"></div>
-    <div class="timeline-content">
-      <div class="recuerdo-header">
-        <strong class="recuerdo-titulo">{{ r.titulo }}</strong>
-        <small class="recuerdo-fecha">{{ r.fecha }}</small>
-      </div>
-
-      <div class="recuerdo-cancion">
-        <div class="cancion-icono">♪</div>
-        {% if r.portada %}
-          <img src="{{ r.portada }}" alt="Portada de {{ r.cancion }}" class="cancion-portada">
-        {% endif %}
-        <div class="cancion-info">
-          <div class="cancion-titulo">{{ r.cancion }}</div>
-          {% if r.artista %}
-            <div class="cancion-artista">{{ r.artista }}</div>
-          {% endif %}
+  <div class="timeline">
+  {% for r in recuerdos %}
+    <div class="timeline-item recuerdo recuerdo-card {% if loop.first %}nuevo{% endif %}">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <div class="recuerdo-header">
+          <strong class="recuerdo-titulo">{{ r.titulo }}</strong>
+          <small class="recuerdo-fecha">{{ r.fecha }}</small>
         </div>
+
+        <div class="recuerdo-cancion tarjeta-cancion">
+          <div class="cancion-icono">♪</div>
+          {% if r.portada %}
+            <img src="{{ r.portada }}" alt="Portada de {{ r.cancion }}" class="cancion-portada" loading="lazy" decoding="async">
+          {% endif %}
+          <div class="cancion-info">
+            <div class="cancion-titulo-row">
+              <div class="cancion-titulo">{{ r.cancion }}</div>
+              {% if r.preview_url %}
+                <audio class="recuerdo-preview" controls preload="none" src="{{ r.preview_url }}"></audio>
+              {% endif %}
+            </div>
+            {% if r.artista %}
+              <div class="cancion-artista">{{ r.artista }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if r.nota %}
+          <p class="frase-recuerdo">{{ r.nota }}</p>
+        {% endif %}
+        {% if r.foto_personal %}
+          <div class="imagen-recuerdo">
+            <img src="{{ url_for('static', filename=r.foto_personal) }}" alt="Foto personal del recuerdo" class="recuerdo-foto" loading="lazy" decoding="async">
+          </div>
+        {% endif %}
       </div>
-
-      <p class="recuerdo-nota">{{ r.nota }}</p><p>{{ r.nota }}</p>
     </div>
+  {% endfor %}
   </div>
-{% endfor %}
 </div>
+<button id="nuevo-recuerdo-btn" class="nuevo-recuerdo-btn" type="button" aria-label="Añadir nuevo recuerdo" aria-expanded="false">+</button>
 
+<aside id="nuevo-recuerdo-panel" class="nuevo-recuerdo-panel" aria-hidden="true">
+  <h2>Nuevo recuerdo</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="desde_crear" value="{{ '1' if request.args.get('crear') == '1' else '0' }}">
+    <input type="text" id="cancion" name="cancion" placeholder="Canción asociada">
+    <div id="cancion-seleccionada" class="cancion-seleccionada" hidden></div>
+    <input type="hidden" name="titulo_cancion">
+    <input type="hidden" name="artista">
+    <input type="hidden" name="spotify_url">
+    <input type="hidden" name="portada">
+    <input type="hidden" name="preview_url">
+    <textarea name="nota" placeholder="Tu frase personal para este recuerdo"></textarea>
+    <input type="file" name="foto_personal" accept="image/*">
+    <div id="spotify-resultados"></div>
+    <button type="submit">Guardar recuerdo</button>
+  </form>
+</aside>
+<div id="nuevo-recuerdo-backdrop" class="nuevo-recuerdo-backdrop" aria-hidden="true"></div>
+<div id="panel-backdrop" class="panel-backdrop" aria-hidden="true"></div>
+
+<script src="{{ url_for('static', filename='js/recuerdos.js', v='20260214-4') }}"></script>
 </body>
 </html>

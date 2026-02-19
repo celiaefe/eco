@@ -1,0 +1,80 @@
+[
+  {
+    "titulo": "Si te vas...",
+    "cancion": "Si te vas...",
+    "artista": "Extremoduro",
+    "spotify_url": "https://open.spotify.com/track/2x59pa3xDf8hHZ4N3f5fGQ",
+    "portada": "https://i.scdn.co/image/ab67616d0000b2734db5099df3d763840e1634a9",
+    "preview_url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c0/a1/03/c0a10315-a2d0-cbf1-4421-1a7938126258/mzaf_1308851134603903636.plus.aac.p.m4a",
+    "nota": "probando 1",
+    "foto_personal": "uploads/b40b900c77e643dfaac333e27de943ee.jpg",
+    "fecha": "14/02/2026 22:35",
+    "id": "d838b26389304e2380d905b99b67325b",
+    "favorito": false
+  },
+  {
+    "titulo": "La Orilla",
+    "cancion": "La Orilla",
+    "artista": "Viva Suecia",
+    "spotify_url": "https://open.spotify.com/track/3dFqQse30uPsmAWjw67dql",
+    "portada": "https://i.scdn.co/image/ab67616d0000b27300c0908fa14c79d24fa41bfd",
+    "preview_url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/29/e7/51/29e751bd-b12e-d469-e3c3-d0fe5c7c5fa4/mzaf_7153168279681200569.plus.aac.p.m4a",
+    "nota": "prueba 2 ",
+    "foto_personal": "uploads/320b0e809d05408c8df8012933c5a0ad.jpg",
+    "fecha": "14/02/2026 22:57",
+    "id": "3d224b08093a4a7bb28984d55b6e00d2",
+    "favorito": true
+  },
+  {
+    "titulo": "Gigante",
+    "cancion": "Gigante",
+    "artista": "Leiva",
+    "spotify_url": "https://open.spotify.com/track/34vh6JPA1veSYpM0hkNCSE",
+    "portada": "https://i.scdn.co/image/ab67616d0000b27393c849b33139a209cad4be04",
+    "preview_url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/85/db/eb/85dbeb7d-438f-b433-9f71-32b68be4bb4f/mzaf_2426561250428985327.plus.aac.p.m4a",
+    "nota": "prueba 3 ",
+    "foto_personal": "uploads/f61dd488a6a34bd390c3a1a506685b4f.jpeg",
+    "fecha": "14/02/2026 23:06",
+    "id": "16319fcc408f4af4b5c264acaf3a55d9",
+    "favorito": false
+  },
+  {
+    "titulo": "Montaña Rusa",
+    "cancion": "Montaña Rusa",
+    "artista": "Amaral",
+    "spotify_url": "https://open.spotify.com/track/3MlzkMsm00KBH3dQyLenKy",
+    "portada": "https://i.scdn.co/image/ab67616d0000b2734d93d48dd78c516623263d30",
+    "preview_url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/7a/23/c5/7a23c5f1-b92f-ba41-5ddf-e8ab9cda606e/mzaf_6379154926872578022.plus.aac.p.m4a",
+    "nota": "prueba 4",
+    "foto_personal": "uploads/66daab58de8a4509b1dff8df6ea0d5bb.jpg",
+    "fecha": "14/02/2026 23:11",
+    "id": "554ceabf21c84cac83312fda60a6c7d8",
+    "favorito": false
+  },
+  {
+    "id": "9515e1ecb6244d3e87816f251810c238",
+    "titulo": "Superpoderes",
+    "cancion": "Superpoderes",
+    "artista": "Leiva",
+    "spotify_url": "https://open.spotify.com/track/3by1RwAsoZ6nNoMOCy11LM",
+    "portada": "https://i.scdn.co/image/ab67616d0000b273601ef19aa74603eee6ac19c1",
+    "preview_url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d7/f0/ee/d7f0eeda-cab2-f8bb-1eea-02b2f493a8ff/mzaf_15840127200058508159.plus.aac.p.m4a",
+    "nota": "La prueba",
+    "foto_personal": "uploads/bd648d3f82c44a84a59dedb670c8bbc7.png",
+    "fecha": "15/02/2026 23:24",
+    "favorito": false
+  },
+  {
+    "id": "c5bcdc1dbd2a47c89597f61ed4ab399a",
+    "titulo": "Dolor Y Gloria",
+    "cancion": "Dolor Y Gloria",
+    "artista": "Viva Suecia",
+    "spotify_url": "https://open.spotify.com/track/0SRpVh89j01SBV4RaoH6FQ",
+    "portada": "https://i.scdn.co/image/ab67616d0000b27385f6ff05d311fe3a3ee787c1",
+    "preview_url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/8f/30/d3/8f30d337-ef28-8a95-c73a-041123cb17f9/mzaf_7657791375546819608.plus.aac.p.m4a",
+    "nota": "miau",
+    "foto_personal": "uploads/326fed21d9fb44e48f691dcabeba173c.png",
+    "fecha": "15/02/2026 23:29",
+    "favorito": true
+  }
+]

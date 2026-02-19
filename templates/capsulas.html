@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Eco · Cápsulas</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    .caps-page { max-width: 980px; margin: 0 auto; padding: 24px 16px 40px; color: #f7f7f2; }
+    .caps-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 20px; }
+    .caps-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+    .caps-card { background: rgba(20,20,20,.72); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 16px; }
+    .caps-card h2 { margin: 0 0 10px; font-size: 1rem; }
+    .caps-form { display: grid; gap: 10px; }
+    .caps-form input, .caps-form textarea, .caps-form button { border-radius: 10px; border: 1px solid rgba(255,255,255,.2); padding: 10px 12px; background: rgba(255,255,255,.05); color: #fff; }
+    .caps-form button { cursor: pointer; background: #f0e4c8; color: #1d1d1d; border-color: #f0e4c8; font-weight: 600; }
+    .caps-list { display: grid; gap: 10px; }
+    .caps-item { border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 10px; background: rgba(255,255,255,.04); }
+    .caps-meta { font-size: .88rem; opacity: .9; margin-top: 6px; }
+    .caps-open-btn { margin-top: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,.25); background: transparent; color: #fff; padding: 6px 10px; cursor: pointer; }
+    .caps-open-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .caps-status { margin: 0 0 10px; font-size: .92rem; min-height: 1.2em; }
+    .caps-links a { color: #f0e4c8; text-decoration: none; }
+    @media (min-width: 880px) { .caps-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body class="noche">
+  <main class="caps-page">
+    <div class="caps-head">
+      <h1>Cápsulas personales</h1>
+      <div class="caps-links">
+        <a href="{{ url_for('main.biblioteca') }}">Biblioteca</a>
+      </div>
+    </div>
+
+    <p class="caps-status" id="capsStatus"></p>
+    <section class="caps-grid">
+      <article class="caps-card">
+        <h2>Crear cápsula</h2>
+        <form id="capsForm" class="caps-form">
+          <input id="capsTitle" type="text" placeholder="Título" required>
+          <input id="capsArtist" type="text" placeholder="Artista (opcional)">
+          <input id="capsOpenDate" type="datetime-local" required>
+          <textarea id="capsMessage" rows="4" placeholder="Mensaje (opcional)"></textarea>
+          <button type="submit">Guardar cápsula</button>
+        </form>
+      </article>
+
+      <article class="caps-card">
+        <h2>Cerradas</h2>
+        <div id="capsCerradas" class="caps-list"></div>
+      </article>
+
+      <article class="caps-card">
+        <h2>Abiertas</h2>
+        <div id="capsAbiertas" class="caps-list"></div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("capsForm");
+    const statusEl = document.getElementById("capsStatus");
+    const cerradasEl = document.getElementById("capsCerradas");
+    const abiertasEl = document.getElementById("capsAbiertas");
+
+    function setStatus(msg, isError = false) {
+      statusEl.textContent = msg || "";
+      statusEl.style.color = isError ? "#ffb9b9" : "#ccf3ce";
+    }
+
+    function fmtDate(isoStr) {
+      const d = new Date(isoStr);
+      return Number.isNaN(d.getTime()) ? isoStr : d.toLocaleString();
+    }
+
+    function renderList(root, items, isClosed) {
+      root.innerHTML = "";
+      if (!items.length) {
+        root.innerHTML = "<p>Sin cápsulas.</p>";
+        return;
+      }
+
+      for (const c of items) {
+        const item = document.createElement("div");
+        item.className = "caps-item";
+        item.innerHTML = `
+          <strong>${c.title}</strong>
+          ${c.artist ? `<div>${c.artist}</div>` : ""}
+          ${c.message ? `<div>${c.message}</div>` : ""}
+          <div class="caps-meta">Se abre: ${fmtDate(c.open_date)}</div>
+          <div class="caps-meta">Creada: ${fmtDate(c.created_at)}</div>
+          ${c.opened_at ? `<div class="caps-meta">Abierta: ${fmtDate(c.opened_at)}</div>` : ""}
+        `;
+
+        if (isClosed) {
+          const btn = document.createElement("button");
+          btn.className = "caps-open-btn";
+          btn.textContent = "Abrir";
+          btn.disabled = !c.is_unlockable_now;
+          btn.addEventListener("click", async () => {
+            const resp = await fetch(`/capsulas/${c.id}/abrir`, { method: "POST" });
+            const data = await resp.json();
+            if (!resp.ok || !data.ok) {
+              setStatus(data.error || "No se pudo abrir.", true);
+              return;
+            }
+            setStatus("Cápsula abierta.");
+            await cargarCapsulas();
+          });
+          item.appendChild(btn);
+        }
+        const ritual = document.createElement("a");
+        ritual.className = "caps-open-btn";
+        ritual.style.display = "inline-block";
+        ritual.style.marginLeft = "8px";
+        ritual.href = `/capsulas/${c.id}/ritual`;
+        ritual.textContent = "Ritual";
+        item.appendChild(ritual);
+
+        root.appendChild(item);
+      }
+    }
+
+    async function cargarCapsulas() {
+      const resp = await fetch("/capsulas");
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        setStatus(data.error || "No se pudieron cargar las cápsulas.", true);
+        return;
+      }
+      renderList(cerradasEl, data.cerradas || [], true);
+      renderList(abiertasEl, data.abiertas || [], false);
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      setStatus("");
+      const payload = {
+        title: document.getElementById("capsTitle").value.trim(),
+        artist: document.getElementById("capsArtist").value.trim(),
+        message: document.getElementById("capsMessage").value.trim(),
+        open_date: document.getElementById("capsOpenDate").value
+      };
+      const resp = await fetch("/capsulas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        setStatus(data.error || "No se pudo crear la cápsula.", true);
+        return;
+      }
+      setStatus("Cápsula creada.");
+      form.reset();
+      await cargarCapsulas();
+    });
+
+    cargarCapsulas();
+  </script>
+</body>
+</html>

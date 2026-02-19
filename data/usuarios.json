@@ -1,0 +1,9 @@
+[
+  {
+    "id": "039b59a072dd40b7a70fc5bba5f74937",
+    "nombre": "Celia",
+    "email": "celiafm17@gmail.com",
+    "password_hash": "pbkdf2:sha256:1000000$ogoa9mDsgkrWi4Ww$4ce8251e9acd06e29593ab4b40f7ad1293bbe9927098d45dec171077b23a6795",
+    "created_at": "16/02/2026 16:47"
+  }
+]

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <title>Eco · Biblioteca</title>
+</head>
+<body class="noche">
+  {% macro render_vinilo(r) -%}
+    {% set cover = (url_for('static', filename=r.foto_personal) if r.foto_personal else (r.portada or '')) %}
+    <button class="vinilo-lomo" type="button"
+            data-id="{{ r.id }}"
+            data-titulo="{{ r.titulo }}"
+            data-cancion="{{ r.titulo_cancion or r.cancion }}"
+            data-artista="{{ r.artista }}"
+            data-fecha="{{ r.fecha or '' }}"
+            data-year="{{ r.fecha[6:10] if r.fecha and (r.fecha|length) >= 10 else 'Sin año' }}"
+            data-cover="{{ cover }}"
+            data-foto="{{ 1 if r.foto_personal else 0 }}"
+            data-nota="{{ r.nota|e }}"
+            data-preview="{{ r.preview_url or '' }}"
+            data-favorito="{{ 1 if r.favorito else 0 }}">
+      <span class="vinilo-fav {% if r.favorito %}es-favorito{% endif %}"
+            data-fav-toggle
+            role="button"
+            tabindex="0"
+            aria-pressed="{{ 'true' if r.favorito else 'false' }}"
+            aria-label="Marcar favorito">★</span>
+      <span class="lomo-columna">
+        <span class="lomo-texto-vertical">
+          <span class="lomo-momento">{{ r.nota or r.titulo }}</span>
+        </span>
+        <span class="lomo-marca"></span>
+      </span>
+    </button>
+  {%- endmacro %}
+
+  {% macro render_estanteria(items, shelf_id='') -%}
+    <div class="estanteria" {% if shelf_id %}id="{{ shelf_id }}"{% endif %}>
+      {% for r in items %}
+        {{ render_vinilo(r) }}
+        {% if loop.index % 10 == 0 %}
+          <div class="estanteria-separador balda" aria-hidden="true"></div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {%- endmacro %}
+
+  <header class="bib-header">
+    <div class="bib-title">Biblioteca</div>
+    <div class="bib-sub">Tus recuerdos, como vinilos guardados.</div>
+    <div class="bib-userbar">
+      <span>{{ current_user.email }}</span>
+      <form method="post" action="{{ url_for('auth.logout') }}" class="bib-userbar-form">
+        <button type="submit" class="bib-userbar-link bib-userbar-btn">Salir</button>
+      </form>
+    </div>
+    <div class="bib-mood" id="bibMood"></div>
+    <details class="bib-filtros-tab" open>
+      <summary>Filtros</summary>
+      <div class="bib-controls">
+        <div class="bib-controls-grid">
+          <input
+            id="bibliotecaSearch"
+            class="bib-search bib-search-control"
+            type="search"
+            placeholder="Buscar en la biblioteca..."
+            aria-label="Buscar recuerdos por momento, canción o artista">
+          <label class="bib-check">
+            <input type="checkbox" id="filtroFavoritos">
+            <span>Favoritos</span>
+          </label>
+          <label class="bib-check">
+            <input type="checkbox" id="filtroFoto">
+            <span>Con foto</span>
+          </label>
+          <select id="filtroAnio" class="bib-select" aria-label="Filtrar por año">
+            <option value="">Todos los años</option>
+            {% for a in anos %}
+              <option value="{{ a }}">{{ a }}</option>
+            {% endfor %}
+          </select>
+          <select id="bibliotecaOrden" class="bib-select" aria-label="Ordenar biblioteca">
+            <option value="date_desc">Más recientes</option>
+            <option value="date_asc">Más antiguos</option>
+            <option value="title_asc">Título A-Z</option>
+          </select>
+          <select id="vistaBiblioteca" class="bib-select" aria-label="Tipo de vista">
+            <option value="spines">Vista lomos</option>
+            <option value="cards">Vista tarjetas</option>
+          </select>
+          <button id="bibliotecaLimpiar" class="bib-reset" type="button">Limpiar</button>
+        </div>
+      </div>
+    </details>
+  </header>
+
+  <main class="biblioteca biblioteca-secciones">
+    <p class="bib-empty" id="bibEmpty" hidden>No hay coincidencias para esa búsqueda.</p>
+    <section class="seccion-balda">
+      <h2 class="seccion-titulo">Todos los recuerdos</h2>
+      {{ render_estanteria(recuerdos, 'todosShelf') }}
+    </section>
+  </main>
+
+  <div class="detalle" id="detalle" aria-hidden="true">
+    <div class="detalle-card">
+      <button class="detalle-cerrar" id="detalleCerrar" type="button">×</button>
+      <button class="detalle-lapiz" id="toggleEditorBtn" type="button" aria-controls="detalleEditor" aria-expanded="false" aria-label="Editar recuerdo">✎</button>
+      <div class="detalle-cover" id="detalleCover"></div>
+      <div class="detalle-fecha" id="detalleFecha"></div>
+      <div class="detalle-diario">
+        <div class="detalle-diario-label">Texto de diario</div>
+        <div class="detalle-nota" id="detalleNota"></div>
+      </div>
+      <div class="detalle-musica">
+        <div class="detalle-ficha-label">Ficha musical</div>
+        <div class="detalle-cancion" id="detalleCancion"></div>
+        <audio id="detalleAudio" controls></audio>
+      </div>
+      <div class="detalle-editor" id="detalleEditor" hidden>
+        <div class="detalle-ficha-label">Editar recuerdo</div>
+        <div class="detalle-preview-wrap">
+          <div class="detalle-preview-cover" id="detallePreviewCover"></div>
+          <div class="detalle-preview-meta">
+            <label class="detalle-label" for="editarFoto">Cambiar foto personal</label>
+            <input id="editarFoto" class="detalle-input-file" type="file" accept="image/*">
+          </div>
+        </div>
+        <label class="detalle-label" for="editarTitulo">Título</label>
+        <input id="editarTitulo" class="detalle-input" type="text">
+        <label class="detalle-label" for="editarCancion">Canción</label>
+        <input id="editarCancion" class="detalle-input" type="text">
+        <label class="detalle-label" for="editarArtista">Artista</label>
+        <input id="editarArtista" class="detalle-input" type="text">
+        <label class="detalle-label" for="editarNota">Nota</label>
+        <textarea id="editarNota" class="detalle-textarea" rows="4"></textarea>
+        <div class="detalle-actions">
+          <button id="guardarCambiosBtn" class="detalle-btn" type="button">Guardar cambios</button>
+          <button id="borrarRecuerdoBtn" class="detalle-btn detalle-btn-peligro" type="button">Borrar recuerdo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toastMsg" hidden></div>
+
+  <script src="{{ url_for('static', filename='js/biblioteca.js') }}"></script>
+</body>
+</html>
