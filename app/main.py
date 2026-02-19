@@ -68,16 +68,54 @@ def buscar_preview_itunes(titulo: str, artista: str) -> str | None:
         return None
 
 
+def buscar_canciones_itunes(query: str) -> list[dict]:
+    if not query:
+        return []
+    try:
+        response = requests.get(
+            "https://itunes.apple.com/search",
+            params={"term": query, "entity": "song", "limit": 5},
+            timeout=8,
+        )
+        data = response.json()
+    except Exception:
+        return []
+
+    resultados = []
+    for item in data.get("results", []):
+        titulo = item.get("trackName")
+        if not titulo:
+            continue
+        artista = item.get("artistName") or ""
+        resultados.append(
+            {
+                "titulo": titulo,
+                "artista": artista,
+                "portada": item.get("artworkUrl100"),
+                "spotify_url": None,
+                "preview_url": item.get("previewUrl"),
+            }
+        )
+    return resultados
+
+
 def buscar_canciones(query: str) -> list[dict]:
     token = get_spotify_token()
-    if not token or not query:
+    if not query:
         return []
+    if not token:
+        return buscar_canciones_itunes(query)
 
     headers = {"Authorization": f"Bearer {token}"}
     params = {"q": query, "type": "track", "limit": 5}
-    response = requests.get("https://api.spotify.com/v1/search", headers=headers, params=params, timeout=8)
-    data = response.json()
+    try:
+        response = requests.get("https://api.spotify.com/v1/search", headers=headers, params=params, timeout=8)
+        data = response.json()
+    except Exception:
+        return buscar_canciones_itunes(query)
     tracks = data.get("tracks", {}).get("items", [])
+    if not tracks:
+        return buscar_canciones_itunes(query)
 
     resultados = []
     for t in tracks:

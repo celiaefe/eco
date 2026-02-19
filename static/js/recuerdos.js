@@ -204,6 +204,10 @@ inputCancion.addEventListener("input", function () {
             .then((res) => res.json())
             .then((data) => {
                 resultadosDiv.innerHTML = "";
+                if (!Array.isArray(data.resultados) || data.resultados.length === 0) {
+                    resultadosDiv.innerHTML = '<div class="spotify-vacio">Sin resultados para esa búsqueda.</div>';
+                    return;
+                }
 
                 data.resultados.forEach((item) => {
                     const track = {
