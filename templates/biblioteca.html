@@ -62,41 +62,27 @@
     <div class="bib-mood" id="bibMood"></div>
     <details class="bib-filtros-tab" open>
       <summary>Filtros</summary>
-      <div class="bib-controls">
-        <div class="bib-controls-grid">
-          <input
-            id="bibliotecaSearch"
-            class="bib-search bib-search-control"
-            type="search"
-            placeholder="Buscar en la biblioteca..."
-            aria-label="Buscar recuerdos por momento, canción o artista">
-          <label class="bib-check">
-            <input type="checkbox" id="filtroFavoritos">
-            <span>Favoritos</span>
-          </label>
-          <label class="bib-check">
-            <input type="checkbox" id="filtroFoto">
-            <span>Con foto</span>
-          </label>
-          <select id="filtroAnio" class="bib-select" aria-label="Filtrar por año">
-            <option value="">Todos los años</option>
-            {% for a in anos %}
-              <option value="{{ a }}">{{ a }}</option>
-            {% endfor %}
-          </select>
-          <select id="bibliotecaOrden" class="bib-select" aria-label="Ordenar biblioteca">
-            <option value="date_desc">Más recientes</option>
-            <option value="date_asc">Más antiguos</option>
-            <option value="title_asc">Título A-Z</option>
-          </select>
-          <select id="vistaBiblioteca" class="bib-select" aria-label="Tipo de vista">
-            <option value="spines">Vista lomos</option>
-            <option value="cards">Vista tarjetas</option>
-          </select>
-          <button id="bibliotecaLimpiar" class="bib-reset" type="button">Limpiar</button>
+        <div class="bib-controls">
+          <div class="bib-controls-grid">
+            <input
+              id="bibliotecaSearch"
+              class="bib-search bib-search-control"
+              type="search"
+              placeholder="Buscar en la biblioteca..."
+              aria-label="Buscar recuerdos por momento, canción o artista">
+            <select id="filtroAnio" class="bib-select" aria-label="Filtrar por año">
+              <option value="">Todos los años</option>
+              {% for a in anos %}
+                <option value="{{ a }}">{{ a }}</option>
+              {% endfor %}
+            </select>
+            <select id="vistaBiblioteca" class="bib-select" aria-label="Tipo de vista de lomos">
+              <option value="spines_dynamic">Lomos dinámicos</option>
+              <option value="spines_compact">Lomos compactos</option>
+            </select>
+          </div>
         </div>
-      </div>
-    </details>
+      </details>
   </header>
 
   <main class="biblioteca biblioteca-secciones">

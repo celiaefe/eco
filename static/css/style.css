@@ -1456,7 +1456,7 @@ body::after{
 
 .bib-controls-grid{
   display: grid;
-  grid-template-columns: minmax(240px, 1.4fr) repeat(5, minmax(110px, auto));
+  grid-template-columns: minmax(240px, 1.5fr) repeat(2, minmax(150px, auto));
   align-items: center;
   gap: 8px;
 }
@@ -1733,6 +1733,29 @@ body::after{
 .vinilo-lomo:nth-child(7n){
   --alto-lomo: 346px;
   --inclinacion: 0.5deg;
+}
+
+.biblioteca-secciones.vista-lomos-compacta .estanteria{
+  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  gap: 8px;
+}
+
+.biblioteca-secciones.vista-lomos-compacta .vinilo-lomo{
+  --alto-lomo: 278px;
+  --inclinacion: 0deg;
+  border-radius: 12px;
+}
+
+.biblioteca-secciones.vista-lomos-compacta .vinilo-lomo:nth-child(2n){
+  --alto-lomo: 270px;
+}
+
+.biblioteca-secciones.vista-lomos-compacta .vinilo-lomo:nth-child(3n){
+  --alto-lomo: 286px;
+}
+
+.biblioteca-secciones.vista-lomos-compacta .vinilo-lomo:nth-child(5n){
+  --alto-lomo: 274px;
 }
 
 .biblioteca-secciones.vista-tarjetas .estanteria{

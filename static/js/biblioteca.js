@@ -8,12 +8,8 @@ const audioEl = document.getElementById("detalleAudio");
 const toastEl = document.getElementById("toastMsg");
 
 const searchInput = document.getElementById("bibliotecaSearch");
-const filtroFavoritos = document.getElementById("filtroFavoritos");
-const filtroFoto = document.getElementById("filtroFoto");
 const filtroAnio = document.getElementById("filtroAnio");
-const ordenSelect = document.getElementById("bibliotecaOrden");
 const vistaSelect = document.getElementById("vistaBiblioteca");
-const limpiarBtn = document.getElementById("bibliotecaLimpiar");
 const moodEl = document.getElementById("bibMood");
 const bibliotecaMain = document.querySelector(".biblioteca-secciones");
 
@@ -57,16 +53,6 @@ function normalizar(texto) {
     .trim();
 }
 
-function parseFechaRecuerdo(fechaStr) {
-  if (!fechaStr) return 0;
-  const match = String(fechaStr).match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?/);
-  if (!match) return 0;
-  const [, dd, mm, yyyy, hh = "00", min = "00"] = match;
-  const fecha = new Date(Number(yyyy), Number(mm) - 1, Number(dd), Number(hh), Number(min));
-  const ts = fecha.getTime();
-  return Number.isNaN(ts) ? 0 : ts;
-}
-
 function aplicarCoverEnVinilo(vinilo) {
   const cover = vinilo?.dataset.cover || "";
   vinilo?.style.setProperty("--cover-url", cover ? `url('${cover}')` : "none");
@@ -84,25 +70,6 @@ function reconstruirSeparadores(estanteria) {
       item.insertAdjacentElement("afterend", sep);
     }
   });
-}
-
-function obtenerComparador() {
-  const orden = ordenSelect?.value || "date_desc";
-  if (orden === "date_asc") return (a, b) => parseFechaRecuerdo(a.dataset.fecha) - parseFechaRecuerdo(b.dataset.fecha);
-  if (orden === "title_asc") return (a, b) => normalizar(a.dataset.titulo).localeCompare(normalizar(b.dataset.titulo), "es");
-  return (a, b) => parseFechaRecuerdo(b.dataset.fecha) - parseFechaRecuerdo(a.dataset.fecha);
-}
-
-function ordenarEstanteria(estanteria) {
-  if (!estanteria) return;
-  const vinilos = Array.from(estanteria.querySelectorAll(".vinilo-lomo"));
-  vinilos.sort(obtenerComparador());
-  vinilos.forEach((v) => estanteria.appendChild(v));
-  reconstruirSeparadores(estanteria);
-}
-
-function ordenarTodasLasEstanterias() {
-  document.querySelectorAll(".estanteria").forEach((estanteria) => ordenarEstanteria(estanteria));
 }
 
 function actualizarFavoritoEnVista(recuerdoId, favorito) {
@@ -131,7 +98,7 @@ function insertarEnFavoritos(recuerdoId, origen) {
   }
 
   favoritosShelf.prepend(nuevo);
-  ordenarEstanteria(favoritosShelf);
+  reconstruirSeparadores(favoritosShelf);
   if (favoritosSection) favoritosSection.hidden = false;
 }
 
@@ -146,19 +113,15 @@ function quitarDeFavoritos(recuerdoId) {
 
 function aplicarFiltroYBusqueda() {
   const query = normalizar(searchInput?.value || "");
-  const soloFav = !!filtroFavoritos?.checked;
-  const soloFoto = !!filtroFoto?.checked;
   const anio = filtroAnio?.value || "";
 
   let totalVisibles = 0;
   document.querySelectorAll(".vinilo-lomo").forEach((btn) => {
     const indiceBusqueda = normalizar([btn.dataset.nota, btn.dataset.titulo, btn.dataset.cancion, btn.dataset.artista].join(" "));
     const cumpleBusqueda = !query || indiceBusqueda.includes(query);
-    const cumpleFav = !soloFav || btn.dataset.favorito === "1";
-    const cumpleFoto = !soloFoto || btn.dataset.foto === "1";
     const cumpleAnio = !anio || btn.dataset.year === anio;
 
-    const visible = cumpleBusqueda && cumpleFav && cumpleFoto && cumpleAnio;
+    const visible = cumpleBusqueda && cumpleAnio;
     btn.style.display = visible ? "" : "none";
     if (visible) totalVisibles += 1;
   });
@@ -168,7 +131,7 @@ function aplicarFiltroYBusqueda() {
     const visiblesEnSeccion = Array.from(seccion.querySelectorAll(".vinilo-lomo")).filter((v) => v.style.display !== "none").length;
     seccion.style.display = visiblesEnSeccion > 0 ? "" : "none";
     seccion.querySelectorAll(".estanteria-separador").forEach((sep) => {
-      sep.style.display = query ? "none" : "";
+      sep.style.display = query || anio ? "none" : "";
     });
   });
 
@@ -176,13 +139,12 @@ function aplicarFiltroYBusqueda() {
 }
 
 function refrescarVistaBiblioteca() {
-  ordenarTodasLasEstanterias();
   aplicarFiltroYBusqueda();
 }
 
 function setVista(tipo) {
   if (!bibliotecaMain) return;
-  bibliotecaMain.classList.toggle("vista-tarjetas", tipo === "cards");
+  bibliotecaMain.classList.toggle("vista-lomos-compacta", tipo === "spines_compact");
   try {
     localStorage.setItem("eco_biblioteca_vista", tipo);
   } catch (_) {}
@@ -410,20 +372,9 @@ modal?.addEventListener("click", (e) => {
 });
 
 searchInput?.addEventListener("input", aplicarFiltroYBusqueda);
-filtroFavoritos?.addEventListener("change", aplicarFiltroYBusqueda);
-filtroFoto?.addEventListener("change", aplicarFiltroYBusqueda);
 filtroAnio?.addEventListener("change", aplicarFiltroYBusqueda);
-ordenSelect?.addEventListener("change", refrescarVistaBiblioteca);
-vistaSelect?.addEventListener("change", () => setVista(vistaSelect.value));
-
-limpiarBtn?.addEventListener("click", () => {
-  if (searchInput) searchInput.value = "";
-  if (filtroFavoritos) filtroFavoritos.checked = false;
-  if (filtroFoto) filtroFoto.checked = false;
-  if (filtroAnio) filtroAnio.value = "";
-  if (ordenSelect) ordenSelect.value = "date_desc";
-  if (vistaSelect) vistaSelect.value = "spines";
-  setVista("spines");
+vistaSelect?.addEventListener("change", () => {
+  setVista(vistaSelect.value);
   refrescarVistaBiblioteca();
 });
 
@@ -449,11 +400,12 @@ function refrescarMood() {
 try {
   const vistaGuardada = localStorage.getItem("eco_biblioteca_vista");
   if (vistaGuardada && vistaSelect) {
-    vistaSelect.value = vistaGuardada;
+    const esValida = ["spines_dynamic", "spines_compact"].includes(vistaGuardada);
+    vistaSelect.value = esValida ? vistaGuardada : "spines_dynamic";
   }
 } catch (_) {}
 
-setVista(vistaSelect?.value || "spines");
+setVista(vistaSelect?.value || "spines_dynamic");
 document.querySelectorAll(".vinilo-lomo").forEach(aplicarCoverEnVinilo);
 refrescarMood();
 window.setInterval(refrescarMood, 12000);
