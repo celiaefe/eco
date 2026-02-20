@@ -144,7 +144,7 @@ function refrescarVistaBiblioteca() {
 
 function setVista(tipo) {
   if (!bibliotecaMain) return;
-  bibliotecaMain.classList.toggle("vista-lomos-compacta", tipo === "spines_compact");
+  bibliotecaMain.classList.toggle("vista-tarjetas", tipo === "cards");
   try {
     localStorage.setItem("eco_biblioteca_vista", tipo);
   } catch (_) {}
@@ -400,7 +400,7 @@ function refrescarMood() {
 try {
   const vistaGuardada = localStorage.getItem("eco_biblioteca_vista");
   if (vistaGuardada && vistaSelect) {
-    const esValida = ["spines_dynamic", "spines_compact"].includes(vistaGuardada);
+    const esValida = ["spines_dynamic", "cards"].includes(vistaGuardada);
     vistaSelect.value = esValida ? vistaGuardada : "spines_dynamic";
   }
 } catch (_) {}
