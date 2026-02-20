@@ -13,6 +13,37 @@
   .card{width:100%;border:0;background:transparent;backdrop-filter:none;box-shadow:none;border-radius:0}
   .topbar,.footer{display:none}
   .inner{padding:0}
+
+  /* Movil: menos aire arriba y home mas compacta */
+  @media (max-width: 520px){
+    body{overflow-x:hidden}
+
+    .inicio-hub{
+      padding-top: 10px !important;
+    }
+
+    .inicio-hero{
+      margin-top: 0 !important;
+      padding-top: 6px !important;
+    }
+
+    .inicio-subtitulo{
+      margin-top: 10px !important;
+      font-size: 24px !important;
+      line-height: 1.15 !important;
+    }
+
+    .inicio-kicker{
+      margin-bottom: 8px !important;
+      opacity: .75;
+    }
+
+    .tocadiscos-placeholder{
+      margin-top: 14px !important;
+      width: 100% !important;
+      border-radius: 22px !important;
+    }
+  }
 {% endblock %}
 
 {% block content %}
