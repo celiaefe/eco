@@ -21,6 +21,7 @@ const params = new URLSearchParams(window.location.search);
 const isCrearMode = params.get("crear") === "1";
 
 let timeout = null;
+const HOME_URL = "/";
 
 function abrirPanelNuevoRecuerdo() {
     if (!nuevoRecuerdoPanel) return;
@@ -50,9 +51,9 @@ function cerrarPanelNuevoRecuerdo() {
     }
 
     // Si entramos en modo crear por URL (?crear=1), al cerrar fuera
-    // volvemos a biblioteca para no mostrar la vista antigua de "Ecos".
+    // volvemos a inicio.
     if (document.body.classList.contains("modo-crear") && !document.body.classList.contains("modo-crear-guardando")) {
-        window.location.href = "/biblioteca";
+        window.location.href = HOME_URL;
     }
 }
 
@@ -136,8 +137,15 @@ if (entradaNocturna && zonaRecuerdos && !isCrearMode) {
 if (isCrearMode) {
     document.body.classList.add("modo-crear");
     document.body.classList.remove("js-scroll-intro");
+    window.history.pushState({ ecoCrearPanel: true }, "", window.location.href);
     abrirPanelNuevoRecuerdo();
 }
+
+window.addEventListener("popstate", () => {
+    if (document.body.classList.contains("modo-crear") && !document.body.classList.contains("modo-crear-guardando")) {
+        window.location.href = HOME_URL;
+    }
+});
 
 if (isCrearMode && formNuevoRecuerdo) {
     formNuevoRecuerdo.addEventListener("submit", (e) => {
