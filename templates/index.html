@@ -1,15 +1,21 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Eco · Inicio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
+{% block title %}Eco · Inicio{% endblock %}
+{% block body_class %}inicio-page{% endblock %}
+{% block navhint %}Inicio{% endblock %}
+{% block extra_head %}
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body class="inicio-page">
+{% endblock %}
+{% block extra_css %}
+  .wrap{display:block;min-height:100vh;padding:0}
+  .card{width:100%;border:0;background:transparent;backdrop-filter:none;box-shadow:none;border-radius:0}
+  .topbar,.footer{display:none}
+  .inner{padding:0}
+{% endblock %}
+
+{% block content %}
   <main class="inicio-hub">
     <section class="inicio-hero">
       <div class="inicio-auth">
@@ -53,6 +59,8 @@
     {% endif %}
   </main>
   <button id="ritualAudioToggle" class="home-audio-toggle" type="button" aria-pressed="true">Sonido: ON</button>
+{% endblock %}
+
+{% block extra_js %}
   <script src="{{ url_for('static', filename='js/inicio.js') }}"></script>
-</body>
-</html>
+{% endblock %}

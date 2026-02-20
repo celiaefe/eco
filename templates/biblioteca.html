@@ -1,15 +1,21 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+{% extends "base.html" %}
+{% block title %}Eco · Biblioteca{% endblock %}
+{% block body_class %}noche{% endblock %}
+{% block navhint %}Biblioteca{% endblock %}
+{% block extra_head %}
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <title>Eco · Biblioteca</title>
-</head>
-<body class="noche">
+{% endblock %}
+{% block extra_css %}
+  .wrap{display:block;min-height:100vh;padding:0}
+  .card{width:100%;border:0;background:transparent;backdrop-filter:none;box-shadow:none;border-radius:0}
+  .topbar,.footer{display:none}
+  .inner{padding:0}
+{% endblock %}
+
+{% block content %}
   {% macro render_vinilo(r) -%}
     {% set cover = (url_for('static', filename=r.foto_personal) if r.foto_personal else (r.portada or '')) %}
     <button class="vinilo-lomo" type="button"
@@ -144,7 +150,8 @@
     </div>
   </div>
   <div class="toast" id="toastMsg" hidden></div>
+{% endblock %}
 
+{% block extra_js %}
   <script src="{{ url_for('static', filename='js/biblioteca.js') }}"></script>
-</body>
-</html>
+{% endblock %}
