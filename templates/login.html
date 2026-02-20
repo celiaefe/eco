@@ -1,38 +1,29 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Eco · Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body class="auth-page">
-  <main class="auth-wrap">
-    <section class="auth-card">
-      <h1>Entrar</h1>
-      <p class="auth-sub">Accede a tu cuenta.</p>
+{% extends "base.html" %}
+{% block title %}Eco · Login{% endblock %}
+{% block navhint %}Entrar{% endblock %}
 
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          {% for m in messages %}
-            <p class="auth-error">{{ m }}</p>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
+{% block content %}
+<h1>Entrar</h1>
+<p class="auth-sub">Accede a tu cuenta.</p>
 
-      <form method="post" action="{{ url_for('auth.login_post') }}" class="auth-form">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" required>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for m in messages %}
+      <p class="auth-error">{{ m }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
-        <label for="password">Contraseña</label>
-        <input id="password" name="password" type="password" required>
+<form method="post" action="{{ url_for('auth.login_post') }}" class="auth-form">
+  <label for="email">Email</label>
+  <input id="email" name="email" type="email" required>
 
-        <button type="submit">Entrar</button>
-      </form>
+  <label for="password">Contraseña</label>
+  <input id="password" name="password" type="password" required>
 
-      <p class="auth-switch"><a href="{{ url_for('auth.forgot_password') }}">Olvidé mi contraseña</a></p>
-      <p class="auth-switch">¿No tienes cuenta? <a href="{{ url_for('auth.register') }}">Regístrate</a></p>
-    </section>
-  </main>
-</body>
-</html>
+  <button type="submit">Entrar</button>
+</form>
+
+<p class="auth-switch"><a href="{{ url_for('auth.forgot_password') }}">Olvidé mi contraseña</a></p>
+<p class="auth-switch">¿No tienes cuenta? <a href="{{ url_for('auth.register') }}">Regístrate</a></p>
+{% endblock %}

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Eco{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg0:#070A12;
+      --bg1:#0B0F1A;
+      --ink:#F4F1EA;
+      --muted: rgba(244,241,234,.72);
+      --soft: rgba(244,241,234,.14);
+      --soft2: rgba(244,241,234,.10);
+      --accent:#9B2C2C;
+      --glow: rgba(145,120,255,.22);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 600px at 30% 20%, rgba(145,120,255,.12), transparent 60%),
+        radial-gradient(700px 500px at 75% 35%, rgba(0,220,255,.08), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      min-height:100vh;
+    }
+
+    a{color:inherit; text-decoration:none}
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px 16px;
+    }
+    .card{
+      width:min(520px, 100%);
+      border:1px solid var(--soft2);
+      background: rgba(11,15,26,.55);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .inner{ padding:22px 18px; }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 18px;
+      border-bottom:1px solid var(--soft2);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      letter-spacing:.2px;
+      font-weight:600;
+    }
+    .brand .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #bda7ff, #35d6ff);
+      box-shadow: 0 0 0 6px rgba(145,120,255,.10);
+    }
+    .navhint{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius: 14px;
+      border:1px solid var(--soft);
+      background: rgba(244,241,234,.06);
+      transition: transform .08s ease, background .18s ease, border-color .18s ease;
+      user-select:none;
+    }
+    .btn:active{ transform: scale(.98); }
+    .btn:hover{ background: rgba(244,241,234,.09); border-color: rgba(244,241,234,.18); }
+
+    .btn-accent{
+      border-color: rgba(155,44,44,.45);
+      background: rgba(155,44,44,.14);
+    }
+    .btn-accent:hover{ background: rgba(155,44,44,.18); }
+
+    .footer{
+      padding:14px 18px;
+      border-top:1px solid var(--soft2);
+      color: rgba(244,241,234,.55);
+      font-size: 12px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .auth-form{display:grid;gap:10px}
+    .auth-form label{font-size:.88rem;color:var(--muted)}
+    .auth-form input{border-radius:10px;border:1px solid var(--soft);background:rgba(244,241,234,.06);color:var(--ink);padding:10px 12px}
+    .auth-form button{border:1px solid var(--soft);background:rgba(244,241,234,.09);color:var(--ink);padding:10px 12px;border-radius:10px;cursor:pointer}
+    .auth-form button:hover{background:rgba(244,241,234,.13)}
+    .auth-error{margin:0 0 10px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,120,120,.35);background:rgba(120,24,24,.35)}
+    .auth-sub{color:var(--muted);margin:0 0 14px}
+    .auth-switch{margin:10px 0 0;color:var(--muted);font-size:.9rem}
+
+    {% block extra_css %}{% endblock %}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div class="brand">
+          <span class="dot"></span>
+          <span>Eco</span>
+        </div>
+        <div class="navhint">{% block navhint %}Lo que suena en mi cabeza{% endblock %}</div>
+      </div>
+
+      <div class="inner">
+        {% block content %}{% endblock %}
+      </div>
+
+      <div class="footer">
+        <span>Guarda lo que no quieres olvidar.</span>
+        <span>Y lo que aún no estás lista para volver a escuchar.</span>
+      </div>
+    </div>
+  </div>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
