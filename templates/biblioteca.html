@@ -35,6 +35,17 @@
           <span class="lomo-momento">{{ r.nota or r.titulo }}</span>
         </span>
         <span class="lomo-marca"></span>
+        <span class="card-meta">
+          {% if cover %}
+            <img src="{{ cover }}" alt="Foto del recuerdo" class="card-cover-mini" loading="lazy" decoding="async">
+          {% else %}
+            <span class="card-cover-empty" aria-hidden="true"></span>
+          {% endif %}
+          <span class="card-meta-texts">
+            <span class="card-momento">{{ r.nota or r.titulo }}</span>
+            <span class="card-cancion">{{ r.titulo_cancion or r.cancion }}</span>
+          </span>
+        </span>
       </span>
     </button>
   {%- endmacro %}

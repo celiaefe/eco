@@ -1876,15 +1876,25 @@ body::after{
 }
 
 .biblioteca-secciones.vista-tarjetas .lomo-columna{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
   padding: 12px;
   background: linear-gradient(180deg, rgba(6, 10, 24, 0.16), rgba(6, 10, 24, 0.8));
 }
 
 .biblioteca-secciones.vista-tarjetas .lomo-texto-vertical{
-  writing-mode: horizontal-tb;
-  transform: none;
-  justify-content: flex-end;
-  align-items: flex-start;
+  display: none;
+}
+
+.biblioteca-secciones.vista-tarjetas .lomo-marca{
+  display: none;
+}
+
+.biblioteca-secciones.vista-tarjetas .card-meta{
+  display: grid;
+  gap: 10px;
 }
 
 .biblioteca-secciones.vista-tarjetas .lomo-momento{
@@ -1933,6 +1943,45 @@ body::after{
   border-radius: 999px;
   background: rgba(185,184,255,0.22);
   border: 1px solid rgba(185,184,255,0.22);
+}
+
+.card-meta{
+  display: none;
+}
+
+.card-cover-mini{
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.22);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.3);
+}
+
+.card-cover-empty{
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  border: 1px dashed rgba(255,255,255,0.28);
+  background: rgba(8, 14, 34, 0.35);
+}
+
+.card-meta-texts{
+  display: grid;
+  gap: 4px;
+}
+
+.card-momento{
+  font-size: 0.96rem;
+  font-weight: 600;
+  line-height: 1.28;
+  color: #f4f6ff;
+}
+
+.card-cancion{
+  font-size: 0.78rem;
+  color: rgba(222, 229, 255, 0.78);
 }
 
 /* modal detalle */
