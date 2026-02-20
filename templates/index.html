@@ -41,6 +41,10 @@
           <span class="inicio-card-titulo">Biblioteca</span>
           <span class="inicio-card-texto">Ver todos tus recuerdos.</span>
         </a>
+        <a class="inicio-card" href="{{ url_for('main.recuerdos', crear=1) }}">
+          <span class="inicio-card-titulo">Nuevo recuerdo</span>
+          <span class="inicio-card-texto">Guardar un momento en un toque.</span>
+        </a>
         <a class="inicio-card" href="{{ url_for('main.capsulas_panel') }}">
           <span class="inicio-card-titulo">Cápsulas</span>
           <span class="inicio-card-texto">Programar y abrir cápsulas.</span>

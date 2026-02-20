@@ -32,6 +32,11 @@
     <div class="caps-head">
       <h1>Cápsulas personales</h1>
       <div class="caps-links">
+        {% if is_admin %}
+          <button id="premiumToggleBtn" class="caps-open-btn" type="button">
+            {{ "Premium ON" if is_premium else "Activar premium" }}
+          </button>
+        {% endif %}
         <a href="{{ url_for('main.biblioteca') }}">Biblioteca</a>
       </div>
     </div>
@@ -66,6 +71,7 @@
     const statusEl = document.getElementById("capsStatus");
     const cerradasEl = document.getElementById("capsCerradas");
     const abiertasEl = document.getElementById("capsAbiertas");
+    const premiumToggleBtn = document.getElementById("premiumToggleBtn");
 
     function setStatus(msg, isError = false) {
       statusEl.textContent = msg || "";
@@ -152,12 +158,35 @@
       });
       const data = await resp.json();
       if (!resp.ok || !data.ok) {
+        const isFreeLimit = resp.status === 403 && /free/i.test(String(data.error || ""));
+        if (isFreeLimit) {
+          setStatus("Tu primera cápsula ya está guardada. Premium te deja crear tantas como necesites.", true);
+          return;
+        }
         setStatus(data.error || "No se pudo crear la cápsula.", true);
         return;
       }
       setStatus("Cápsula creada.");
       form.reset();
       await cargarCapsulas();
+    });
+
+    premiumToggleBtn?.addEventListener("click", async () => {
+      premiumToggleBtn.disabled = true;
+      try {
+        const resp = await fetch("/admin/premium-toggle", { method: "POST" });
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) {
+          setStatus(data.error || "No se pudo cambiar premium.", true);
+          return;
+        }
+        premiumToggleBtn.textContent = data.is_premium ? "Premium ON" : "Activar premium";
+        setStatus(data.is_premium ? "Modo premium activado para esta cuenta." : "Modo premium desactivado para esta cuenta.");
+      } catch (_) {
+        setStatus("No se pudo cambiar premium.", true);
+      } finally {
+        premiumToggleBtn.disabled = false;
+      }
     });
 
     cargarCapsulas();

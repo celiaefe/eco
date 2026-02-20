@@ -32,6 +32,14 @@ def anio_desde_fecha(fecha_str: str) -> str:
         return fecha_str[6:10] if len(fecha_str) >= 10 else "Sin año"
 
 
+def is_admin_user(user) -> bool:
+    configured = (os.getenv("ECO_ADMIN_EMAILS") or "").strip()
+    if configured:
+        allowed = {e.strip().lower() for e in configured.split(",") if e.strip()}
+        return (user.email or "").strip().lower() in allowed
+    return (user.email or "").strip().lower() == "celiaefe@gmail.com"
+
+
 def get_spotify_token() -> str | None:
     client_id = os.getenv("SPOTIFY_CLIENT_ID")
     client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
@@ -375,7 +383,17 @@ def listar_capsulas():
 @main_bp.route("/capsulas/panel")
 @login_required
 def capsulas_panel():
-    return render_template("capsulas.html")
+    return render_template("capsulas.html", is_admin=is_admin_user(current_user), is_premium=bool(current_user.is_premium))
+
+
+@main_bp.route("/admin/premium-toggle", methods=["POST"])
+@login_required
+def admin_premium_toggle():
+    if not is_admin_user(current_user):
+        return jsonify({"ok": False, "error": "forbidden"}), 403
+    current_user.is_premium = not bool(current_user.is_premium)
+    db.session.commit()
+    return jsonify({"ok": True, "is_premium": bool(current_user.is_premium)})
 
 
 @main_bp.route("/capsulas/<int:capsule_id>/ritual")
