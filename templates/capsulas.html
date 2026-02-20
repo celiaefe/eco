@@ -186,15 +186,22 @@
       for (const c of items) {
         const item = document.createElement("div");
         item.className = "caps-item";
-        item.innerHTML = `
-          <strong>${c.title}</strong>
-          ${c.artist ? `<div>${c.artist}</div>` : ""}
-          ${c.message ? `<div>${c.message}</div>` : ""}
-          ${c.cover_url ? `<img src="${c.cover_url}" alt="Foto cápsula" class="caps-cover">` : ""}
-          <div class="caps-meta">Se abre: ${fmtDate(c.open_date)}</div>
-          <div class="caps-meta">Creada: ${fmtDate(c.created_at)}</div>
-          ${c.opened_at ? `<div class="caps-meta">Abierta: ${fmtDate(c.opened_at)}</div>` : ""}
-        `;
+        if (isClosed) {
+          item.innerHTML = `
+            <strong>${c.title}</strong>
+            <div class="caps-meta">Se abre: ${fmtDate(c.open_date)}</div>
+          `;
+        } else {
+          item.innerHTML = `
+            <strong>${c.title}</strong>
+            ${c.artist ? `<div>${c.artist}</div>` : ""}
+            ${c.message ? `<div>${c.message}</div>` : ""}
+            ${c.cover_url ? `<img src="${c.cover_url}" alt="Foto cápsula" class="caps-cover">` : ""}
+            <div class="caps-meta">Se abre: ${fmtDate(c.open_date)}</div>
+            <div class="caps-meta">Creada: ${fmtDate(c.created_at)}</div>
+            ${c.opened_at ? `<div class="caps-meta">Abierta: ${fmtDate(c.opened_at)}</div>` : ""}
+          `;
+        }
 
         if (isClosed) {
           const btn = document.createElement("button");
