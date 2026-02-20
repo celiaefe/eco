@@ -14,81 +14,173 @@
   .topbar,.footer{display:none}
   .inner{padding:0}
 
-  /* Movil: menos aire arriba y home mas compacta */
+  /* =========================
+     HOME (index) - Mobile first polish
+     ========================= */
+  .inicio-hub{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 16px;
+  }
+
+  /* Hero: menos aire y texto mas compacto */
+  .inicio-hero{
+    text-align: center;
+    padding-top: 6px;
+  }
+
+  .inicio-kicker{
+    margin: 6px 0 6px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    opacity: .65;
+    font-size: 12px;
+  }
+
+  .inicio-subtitulo{
+    margin: 0 auto;
+    max-width: 26ch;
+    font-size: 26px;
+    line-height: 1.15;
+    font-weight: 400;
+    opacity: .92;
+  }
+
+  /* Auth: tap-friendly + sticky sutil */
+  .inicio-auth{
+    position: sticky;
+    top: 10px;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 10px;
+  }
+
+  .inicio-auth-link,
+  .inicio-auth-btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(244,241,234,.18);
+    background: rgba(244,241,234,.06);
+    color: rgba(244,241,234,.92);
+    font-size: 15px;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .inicio-auth-link:active,
+  .inicio-auth-btn:active{
+    transform: scale(.98);
+  }
+
+  /* Ajuste del saludo usuario para no romper el layout */
+  .inicio-user{
+    align-self: center;
+    font-size: 13px;
+    color: rgba(244,241,234,.75);
+    padding: 8px 10px;
+  }
+
+  /* Zona tocadiscos: sube el bloque y ocupa mas pantalla util */
+  .tocadiscos-placeholder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+
+  /* Tarjeta del tocadiscos (deck) */
+  .deck.deck-real{
+    width: min(520px, 100%);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(244,241,234,.12);
+    background: rgba(11,15,26,.35);
+    box-shadow: 0 18px 50px rgba(0,0,0,.35);
+    position: relative;
+  }
+
+  /* Imagen: que se vea protagonista en movil */
+  .deck-image{
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    transform: scale(1.03);
+    user-select: none;
+  }
+
+  /* Boton central "Biblioteca" */
+  .deck-center-btn{
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 170px;
+    height: 56px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(244,241,234,.92);
+    border: 1px solid rgba(244,241,234,.20);
+    background: rgba(0,0,0,.22);
+    backdrop-filter: blur(8px);
+  }
+
+  /* FAB: accesible + safe area + sombra */
+  .home-fab.deck-fab{
+    position: absolute;
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    line-height: 1;
+    text-decoration: none;
+    border: none;
+    background: #f2d34f;
+    color: #111;
+    box-shadow: 0 16px 38px rgba(0,0,0,.40);
+  }
+
+  /* =========================
+     Movil: recorta el aire muerto general
+     ========================= */
   @media (max-width: 520px){
-    body{overflow-x:hidden}
-
-    .inicio-page.inicio-guest .inicio-auth{
-      position: sticky;
-      top: 10px;
-      z-index: 50;
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      padding: 8px 12px;
-      margin-bottom: 14px;
-    }
-
-    .inicio-page.inicio-guest .inicio-auth a,
-    .inicio-page.inicio-guest .inicio-auth button{
-      min-height: 44px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-size: 15px;
-    }
-
     .inicio-hub{
-      padding-top: 10px !important;
-    }
-
-    .inicio-hero{
-      margin-top: 0 !important;
-      padding-top: 6px !important;
+      padding-top: 10px;
+      gap: 12px;
     }
 
     .inicio-subtitulo{
-      margin-top: 10px !important;
-      font-size: 24px !important;
-      line-height: 1.15 !important;
+      font-size: 24px;
+      max-width: 24ch;
     }
 
-    .inicio-kicker{
-      margin-bottom: 8px !important;
-      opacity: .75;
-    }
-
+    /* Empuja la tarjeta hacia arriba para que se vea antes */
     .tocadiscos-placeholder{
-      margin-top: 14px !important;
-      width: 100% !important;
-      border-radius: 22px !important;
+      margin-top: -6px;
     }
+  }
 
-    .deck{
-      width: 100% !important;
-      aspect-ratio: 4 / 3;
-      overflow: hidden;
-    }
-
-    .deck img,
-    .deck-image{
-      object-fit: cover;
-      transform: scale(1.04);
-    }
-
-    .home-fab.deck-fab{
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      box-shadow: 0 14px 34px rgba(0,0,0,.35);
-      right: 16px;
-      bottom: calc(16px + env(safe-area-inset-bottom));
-    }
-
-    .home-audio-toggle{
-      left: 12px;
-      bottom: calc(18px + env(safe-area-inset-bottom));
-      padding: 10px 12px;
-      border-radius: 999px;
+  @media (min-width: 900px){
+    .inicio-subtitulo{
+      font-size: 30px;
+      max-width: 32ch;
     }
   }
 {% endblock %}
