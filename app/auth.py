@@ -50,6 +50,40 @@ def login_post():
     return redirect(url_for("main.index"))
 
 
+@auth_bp.get("/forgot-password")
+def forgot_password():
+    return render_template("forgot_password.html")
+
+
+@auth_bp.post("/forgot-password")
+def forgot_password_post():
+    email = request.form.get("email", "").strip().lower()
+    password = request.form.get("password", "")
+    password2 = request.form.get("password2", "")
+
+    if not email or not password or not password2:
+        flash("Completa todos los campos.")
+        return redirect(url_for("auth.forgot_password"))
+
+    if len(password) < 6:
+        flash("La contraseña debe tener al menos 6 caracteres.")
+        return redirect(url_for("auth.forgot_password"))
+
+    if password != password2:
+        flash("Las contraseñas no coinciden.")
+        return redirect(url_for("auth.forgot_password"))
+
+    u = User.query.filter_by(email=email).first()
+    if not u:
+        flash("No encontramos una cuenta con ese email.")
+        return redirect(url_for("auth.forgot_password"))
+
+    u.set_password(password)
+    db.session.commit()
+    flash("Contraseña actualizada. Ya puedes entrar.")
+    return redirect(url_for("auth.login"))
+
+
 @auth_bp.post("/logout")
 @login_required
 def logout():
