@@ -902,6 +902,117 @@ body.js-scroll-intro .zona-recuerdos.visible {
   flex-direction: column;
 }
 
+.nuevo-recuerdo-head{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.nuevo-recuerdo-handle{
+  grid-column: 1 / -1;
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  margin: 0 auto 6px;
+  background: rgba(235, 239, 255, 0.45);
+}
+
+.nuevo-recuerdo-head h2{
+  margin: 0;
+}
+
+.nuevo-recuerdo-close{
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.26);
+  background: rgba(255,255,255,0.08);
+  color: #eff3ff;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.nuevo-recuerdo-sub{
+  margin: 8px 0 14px;
+  font-size: 0.88rem;
+  color: rgba(232, 237, 255, 0.8);
+}
+
+.nuevo-recuerdo-form{
+  gap: 10px;
+}
+
+.nuevo-recuerdo-label{
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+  color: rgba(229, 235, 255, 0.88);
+}
+
+.nuevo-recuerdo-panel .nuevo-recuerdo-form input[type="text"],
+.nuevo-recuerdo-panel .nuevo-recuerdo-form textarea,
+.nuevo-recuerdo-panel .nuevo-recuerdo-form input[type="file"]{
+  margin-bottom: 0;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(5, 10, 28, 0.66);
+  padding: 11px 12px;
+}
+
+.nuevo-recuerdo-panel .nuevo-recuerdo-form textarea{
+  min-height: 112px;
+}
+
+.nuevo-recuerdo-panel .nuevo-recuerdo-form input[type="file"]::file-selector-button{
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 11px;
+  margin-right: 10px;
+  background: rgba(185,184,255,0.24);
+  color: #f2f5ff;
+  cursor: pointer;
+}
+
+#spotify-resultados{
+  margin-top: 4px;
+  max-height: 34vh;
+  overflow: auto;
+  padding-right: 3px;
+}
+
+.nuevo-recuerdo-actions{
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 10px;
+  margin-top: 4px;
+  padding-top: 10px;
+  background: linear-gradient(180deg, rgba(11,16,38,0), rgba(11,16,38,0.95) 24%);
+}
+
+.nuevo-recuerdo-btn-secundario,
+.nuevo-recuerdo-btn-primario{
+  width: 100%;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.nuevo-recuerdo-btn-secundario{
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.08);
+  color: #edf1ff;
+}
+
+.nuevo-recuerdo-btn-primario{
+  border: none;
+  background: #b9b8ff;
+  color: #0f1330;
+}
+
 @keyframes latidoPlus {
   0% {
     box-shadow: 0 0 0 0 rgba(139, 211, 221, 0.55), 0 10px 24px rgba(0, 0, 0, 0.22);
@@ -1185,12 +1296,23 @@ body.panel-abierto {
     transform: translateY(0);
   }
 
-  .nuevo-recuerdo-panel h2 {
+  .nuevo-recuerdo-head {
     position: sticky;
     top: 0;
     background: rgba(11, 16, 38, 0.92);
-    padding-bottom: 0.6rem;
-    margin-bottom: 0.85rem;
+    padding-bottom: 0.55rem;
+    margin-bottom: 0.7rem;
+    z-index: 2;
+  }
+
+  .nuevo-recuerdo-sub{
+    margin-top: 0;
+    font-size: 0.84rem;
+  }
+
+  .nuevo-recuerdo-actions{
+    grid-template-columns: 1fr;
+    padding-bottom: 2px;
   }
 
   .spotify-item {

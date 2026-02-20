@@ -60,20 +60,31 @@
 <button id="nuevo-recuerdo-btn" class="nuevo-recuerdo-btn" type="button" aria-label="Añadir nuevo recuerdo" aria-expanded="false">+</button>
 
 <aside id="nuevo-recuerdo-panel" class="nuevo-recuerdo-panel" aria-hidden="true">
-  <h2>Nuevo recuerdo</h2>
-  <form method="POST" enctype="multipart/form-data">
+  <div class="nuevo-recuerdo-head">
+    <span class="nuevo-recuerdo-handle" aria-hidden="true"></span>
+    <h2>Nuevo recuerdo</h2>
+    <button id="cerrar-nuevo-recuerdo-btn" class="nuevo-recuerdo-close" type="button" aria-label="Cerrar panel">×</button>
+  </div>
+  <p class="nuevo-recuerdo-sub">Guarda un momento con su canción, tu frase y una foto.</p>
+  <form method="POST" enctype="multipart/form-data" class="nuevo-recuerdo-form">
     <input type="hidden" name="desde_crear" value="{{ '1' if request.args.get('crear') == '1' else '0' }}">
-    <input type="text" id="cancion" name="cancion" placeholder="Canción asociada">
+    <label class="nuevo-recuerdo-label" for="cancion">Canción asociada</label>
+    <input type="text" id="cancion" name="cancion" placeholder="Busca canción o artista" autocomplete="off">
     <div id="cancion-seleccionada" class="cancion-seleccionada" hidden></div>
     <input type="hidden" name="titulo_cancion">
     <input type="hidden" name="artista">
     <input type="hidden" name="spotify_url">
     <input type="hidden" name="portada">
     <input type="hidden" name="preview_url">
-    <textarea name="nota" placeholder="Tu frase personal para este recuerdo"></textarea>
-    <input type="file" name="foto_personal" accept="image/*">
+    <label class="nuevo-recuerdo-label" for="nota">Tu frase</label>
+    <textarea id="nota" name="nota" placeholder="Tu frase personal para este recuerdo"></textarea>
+    <label class="nuevo-recuerdo-label" for="foto_personal">Foto del momento (opcional)</label>
+    <input id="foto_personal" type="file" name="foto_personal" accept="image/*">
     <div id="spotify-resultados"></div>
-    <button type="submit">Guardar recuerdo</button>
+    <div class="nuevo-recuerdo-actions">
+      <button id="cancelar-nuevo-recuerdo-btn" type="button" class="nuevo-recuerdo-btn-secundario">Cancelar</button>
+      <button type="submit" class="nuevo-recuerdo-btn-primario">Guardar recuerdo</button>
+    </div>
   </form>
 </aside>
 <div id="nuevo-recuerdo-backdrop" class="nuevo-recuerdo-backdrop" aria-hidden="true"></div>

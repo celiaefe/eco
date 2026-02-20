@@ -11,6 +11,8 @@ const cancionSeleccionada = document.getElementById("cancion-seleccionada");
 const nuevoRecuerdoBtn = document.getElementById("nuevo-recuerdo-btn");
 const nuevoRecuerdoPanel = document.getElementById("nuevo-recuerdo-panel");
 const panelBackdrop = document.getElementById("panel-backdrop");
+const cerrarNuevoRecuerdoBtn = document.getElementById("cerrar-nuevo-recuerdo-btn");
+const cancelarNuevoRecuerdoBtn = document.getElementById("cancelar-nuevo-recuerdo-btn");
 const entrarRecuerdosBtn = document.getElementById("entrar-recuerdos-btn");
 const zonaRecuerdos = document.getElementById("zona-recuerdos");
 const entradaNocturna = document.getElementById("entrada-nocturna");
@@ -104,6 +106,9 @@ if (panelBackdrop && nuevoRecuerdoPanel) {
         cerrarPanelNuevoRecuerdo();
     });
 }
+
+cerrarNuevoRecuerdoBtn?.addEventListener("click", cerrarPanelNuevoRecuerdo);
+cancelarNuevoRecuerdoBtn?.addEventListener("click", cerrarPanelNuevoRecuerdo);
 
 if (entrarRecuerdosBtn && zonaRecuerdos) {
     entrarRecuerdosBtn.addEventListener("click", () => {
