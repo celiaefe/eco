@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Eco · Inicio{% endblock %}
-{% block body_class %}inicio-page{% endblock %}
+{% block body_class %}inicio-page{% if not current_user.is_authenticated %} inicio-guest{% endif %}{% endblock %}
 {% block navhint %}Inicio{% endblock %}
 {% block extra_head %}
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
@@ -18,7 +18,7 @@
   @media (max-width: 520px){
     body{overflow-x:hidden}
 
-    .inicio-auth{
+    .inicio-page.inicio-guest .inicio-auth{
       position: sticky;
       top: 10px;
       z-index: 50;
@@ -26,10 +26,11 @@
       gap: 10px;
       justify-content: center;
       padding: 8px 12px;
+      margin-bottom: 14px;
     }
 
-    .inicio-auth a,
-    .inicio-auth button{
+    .inicio-page.inicio-guest .inicio-auth a,
+    .inicio-page.inicio-guest .inicio-auth button{
       min-height: 44px;
       padding: 10px 14px;
       border-radius: 999px;
