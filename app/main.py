@@ -37,7 +37,7 @@ def is_admin_user(user) -> bool:
     if configured:
         allowed = {e.strip().lower() for e in configured.split(",") if e.strip()}
         return (user.email or "").strip().lower() in allowed
-    return (user.email or "").strip().lower() == "celiaefe@gmail.com"
+    return (user.email or "").strip().lower() == "celiafm17@gmail.com"
 
 
 def get_spotify_token() -> str | None:
