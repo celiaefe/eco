@@ -20,6 +20,7 @@
     .ritual-status { min-height: 1.2em; margin-top: 12px; }
     .ritual-seal { margin-top: 18px; border: 1px dashed rgba(255,255,255,.3); border-radius: 12px; padding: 20px; text-align: center; letter-spacing: .08em; text-transform: uppercase; }
     .ritual-content { margin-top: 16px; padding: 14px; border-radius: 10px; background: rgba(255,255,255,.06); white-space: pre-wrap; }
+    .ritual-cover { width: min(320px, 100%); aspect-ratio: 1/1; object-fit: cover; border-radius: 12px; margin-top: 14px; border: 1px solid rgba(255,255,255,.18); }
   </style>
 </head>
 <body class="noche">
@@ -28,27 +29,33 @@
       <div class="ritual-kicker">Cápsula personal</div>
       <h1 class="ritual-title">{{ capsule.title }}</h1>
       {% if capsule.artist %}
-        <div class="ritual-meta">Artista: {{ capsule.artist }}</div>
+        <div class="ritual-meta" id="ritualArtist">Canción: {{ capsule.artist }}</div>
       {% endif %}
       <div class="ritual-meta">Fecha sagrada: {{ capsule.open_date.strftime("%d/%m/%Y %H:%M UTC") }}</div>
 
       <div class="ritual-actions">
         <a class="ritual-link" href="{{ url_for('main.capsulas_panel') }}">Volver al panel</a>
         {% if capsule.opened_at %}
-          <span class="ritual-meta">Abierta el {{ capsule.opened_at.strftime("%d/%m/%Y %H:%M UTC") }}</span>
+          <span class="ritual-meta" id="ritualOpenedAt">Abierta el {{ capsule.opened_at.strftime("%d/%m/%Y %H:%M UTC") }}</span>
         {% elif unlockable %}
           <button id="startRitualBtn" class="ritual-btn primary" type="button">Iniciar ritual de apertura</button>
+          <span class="ritual-meta" id="ritualOpenedAt" hidden></span>
         {% endif %}
       </div>
 
       {% if not unlockable and not capsule.opened_at %}
-        <div class="ritual-seal">
+        <div class="ritual-seal" id="ritualSeal">
           Sellada hasta su fecha
           <div id="countdown" class="ritual-status"></div>
         </div>
       {% endif %}
 
       <div id="ritualStatus" class="ritual-status"></div>
+      {% if capsule.cover_url %}
+      <img id="ritualCover" class="ritual-cover" src="{{ capsule.cover_url }}" alt="Imagen de la cápsula" {% if not capsule.opened_at %}hidden{% endif %}>
+      {% else %}
+      <img id="ritualCover" class="ritual-cover" hidden>
+      {% endif %}
       <div id="ritualContent" class="ritual-content" {% if not capsule.opened_at %}hidden{% endif %}>
 {{ capsule.message or "Sin mensaje guardado." }}
       </div>
@@ -63,6 +70,10 @@
     const countdownEl = document.getElementById("countdown");
     const statusEl = document.getElementById("ritualStatus");
     const contentEl = document.getElementById("ritualContent");
+    const coverEl = document.getElementById("ritualCover");
+    const artistEl = document.getElementById("ritualArtist");
+    const openedAtEl = document.getElementById("ritualOpenedAt");
+    const sealEl = document.getElementById("ritualSeal");
     const startBtn = document.getElementById("startRitualBtn");
 
     function setStatus(text, isError = false) {
@@ -85,6 +96,11 @@
       countdownEl.textContent = `Quedan ${h}h ${m}m ${s}s`;
     }
 
+    function fmtDate(isoStr) {
+      const d = new Date(isoStr);
+      return Number.isNaN(d.getTime()) ? isoStr : d.toLocaleString();
+    }
+
     async function runRitual() {
       if (!startBtn) return;
       startBtn.disabled = true;
@@ -103,6 +119,22 @@
         return;
       }
       setStatus("Cápsula abierta.");
+      startBtn.hidden = true;
+      if (sealEl) sealEl.hidden = true;
+      if (openedAtEl) {
+        openedAtEl.hidden = false;
+        openedAtEl.textContent = `Abierta el ${fmtDate(data.capsula?.opened_at || "")}`;
+      }
+      if (artistEl && data.capsula?.artist) {
+        artistEl.textContent = `Canción: ${data.capsula.artist}`;
+      }
+      if (coverEl && data.capsula?.cover_url) {
+        coverEl.src = data.capsula.cover_url;
+        coverEl.hidden = false;
+      }
+      if (contentEl && data.capsula?.message) {
+        contentEl.textContent = data.capsula.message;
+      }
       contentEl.hidden = false;
     }
 
