@@ -17,11 +17,13 @@
     .caps-form { display: grid; gap: 10px; }
     .caps-form input, .caps-form textarea, .caps-form button { border-radius: 10px; border: 1px solid rgba(255,255,255,.2); padding: 10px 12px; background: rgba(255,255,255,.05); color: #fff; }
     .caps-form button { cursor: pointer; background: #f0e4c8; color: #1d1d1d; border-color: #f0e4c8; font-weight: 600; }
+    .caps-form label { font-size: .84rem; opacity: .86; margin-top: 2px; }
     .caps-song-results { display: grid; gap: 8px; max-height: 220px; overflow: auto; }
     .caps-song-item { display: grid; grid-template-columns: 48px 1fr; gap: 10px; align-items: center; border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 8px; background: rgba(255,255,255,.04); cursor: pointer; }
     .caps-song-item:hover { background: rgba(255,255,255,.08); }
     .caps-song-item img { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; }
     .caps-song-selected { border: 1px solid rgba(255,255,255,.2); border-radius: 10px; padding: 8px 10px; background: rgba(255,255,255,.06); font-size: .9rem; }
+    .caps-cover { width: 100%; max-width: 220px; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-top: 8px; border: 1px solid rgba(255,255,255,.18); }
     .caps-list { display: grid; gap: 10px; }
     .caps-item { border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 10px; background: rgba(255,255,255,.04); }
     .caps-meta { font-size: .88rem; opacity: .9; margin-top: 6px; }
@@ -51,15 +53,22 @@
       <article class="caps-card">
         <h2>Crear cápsula</h2>
         <form id="capsForm" class="caps-form">
-          <input id="capsSongQuery" type="text" placeholder="Buscar canción por título o artista">
+          <label for="capsSongQuery">Canción + artista</label>
+          <input id="capsSongQuery" type="text" placeholder="Busca canción por título o artista">
           <div id="capsSongSelected" class="caps-song-selected" hidden></div>
           <div id="capsSongResults" class="caps-song-results"></div>
-          <input id="capsTitle" type="text" placeholder="Título" required>
-          <input id="capsArtist" type="text" placeholder="Artista (opcional)">
+          <label for="capsTitle">Título personal</label>
+          <input id="capsTitle" type="text" placeholder="Cómo quieres llamar a esta cápsula" required>
+          <label for="capsOpenDate">Fecha y hora de apertura</label>
           <input id="capsSpotifyId" type="hidden">
-          <input id="capsCoverUrl" type="hidden">
+          <input id="capsSongTitle" type="hidden">
+          <input id="capsSongArtist" type="hidden">
+          <input id="capsSongCoverUrl" type="hidden">
           <input id="capsOpenDate" type="datetime-local" required>
-          <textarea id="capsMessage" rows="4" placeholder="Mensaje (opcional)"></textarea>
+          <label for="capsMessage">Texto de la cápsula</label>
+          <textarea id="capsMessage" rows="5" placeholder="Escribe aquí el mensaje que quieres dejar"></textarea>
+          <label for="capsPhoto">Foto de la cápsula (opcional)</label>
+          <input id="capsPhoto" type="file" accept="image/*">
           <button type="submit">Guardar cápsula</button>
         </form>
       </article>
@@ -86,9 +95,11 @@
     const capsSongSelected = document.getElementById("capsSongSelected");
     const capsSongResults = document.getElementById("capsSongResults");
     const capsTitle = document.getElementById("capsTitle");
-    const capsArtist = document.getElementById("capsArtist");
+    const capsSongTitle = document.getElementById("capsSongTitle");
+    const capsSongArtist = document.getElementById("capsSongArtist");
     const capsSpotifyId = document.getElementById("capsSpotifyId");
-    const capsCoverUrl = document.getElementById("capsCoverUrl");
+    const capsSongCoverUrl = document.getElementById("capsSongCoverUrl");
+    const capsPhoto = document.getElementById("capsPhoto");
 
     let songSearchTimeout = null;
 
@@ -108,7 +119,9 @@
         capsSongSelected.textContent = "";
       }
       if (capsSpotifyId) capsSpotifyId.value = "";
-      if (capsCoverUrl) capsCoverUrl.value = "";
+      if (capsSongTitle) capsSongTitle.value = "";
+      if (capsSongArtist) capsSongArtist.value = "";
+      if (capsSongCoverUrl) capsSongCoverUrl.value = "";
     }
 
     function extractSpotifyId(url) {
@@ -131,10 +144,10 @@
           </div>
         `;
         row.addEventListener("click", () => {
-          capsTitle.value = item.titulo || "";
-          capsArtist.value = item.artista || "";
+          capsSongTitle.value = item.titulo || "";
+          capsSongArtist.value = item.artista || "";
           capsSpotifyId.value = extractSpotifyId(item.spotify_url || "");
-          capsCoverUrl.value = item.portada || "";
+          capsSongCoverUrl.value = item.portada || "";
           capsSongQuery.value = item.titulo ? `${item.titulo}${item.artista ? ` - ${item.artista}` : ""}` : "";
           capsSongSelected.hidden = false;
           capsSongSelected.textContent = `Seleccionada: ${capsSongQuery.value}`;
@@ -177,6 +190,7 @@
           <strong>${c.title}</strong>
           ${c.artist ? `<div>${c.artist}</div>` : ""}
           ${c.message ? `<div>${c.message}</div>` : ""}
+          ${c.cover_url ? `<img src="${c.cover_url}" alt="Foto cápsula" class="caps-cover">` : ""}
           <div class="caps-meta">Se abre: ${fmtDate(c.open_date)}</div>
           <div class="caps-meta">Creada: ${fmtDate(c.created_at)}</div>
           ${c.opened_at ? `<div class="caps-meta">Abierta: ${fmtDate(c.opened_at)}</div>` : ""}
@@ -225,18 +239,21 @@
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       setStatus("");
-      const payload = {
-        title: capsTitle.value.trim(),
-        artist: capsArtist.value.trim(),
-        spotify_id: capsSpotifyId.value.trim(),
-        cover_url: capsCoverUrl.value.trim(),
-        message: document.getElementById("capsMessage").value.trim(),
-        open_date: document.getElementById("capsOpenDate").value
-      };
+      const formData = new FormData();
+      formData.set("title", capsTitle.value.trim());
+      formData.set("song_query", capsSongQuery.value.trim());
+      formData.set("song_title", capsSongTitle.value.trim());
+      formData.set("song_artist", capsSongArtist.value.trim());
+      formData.set("spotify_id", capsSpotifyId.value.trim());
+      formData.set("cover_url", capsSongCoverUrl.value.trim());
+      formData.set("message", document.getElementById("capsMessage").value.trim());
+      formData.set("open_date", document.getElementById("capsOpenDate").value);
+      if (capsPhoto?.files?.[0]) {
+        formData.set("foto_capsula", capsPhoto.files[0]);
+      }
       const resp = await fetch("/capsulas", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: formData
       });
       const data = await resp.json();
       if (!resp.ok || !data.ok) {

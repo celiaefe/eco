@@ -414,10 +414,33 @@ def crear_capsula():
     if not can_create_capsule():
         return jsonify({"ok": False, "error": "Plan Free: solo una cápsula cerrada activa."}), 403
 
-    payload = request.get_json(silent=True) or {}
-    title = (payload.get("title") or "").strip()
-    message = (payload.get("message") or "").strip()
-    open_date_raw = payload.get("open_date")
+    if request.is_json:
+        payload = request.get_json(silent=True) or {}
+        title = (payload.get("title") or "").strip()
+        message = (payload.get("message") or "").strip()
+        open_date_raw = payload.get("open_date")
+        spotify_id = (payload.get("spotify_id") or "").strip() or None
+        cover_url = (payload.get("cover_url") or "").strip() or None
+        artist = (payload.get("artist") or "").strip() or None
+    else:
+        title = (request.form.get("title") or "").strip()
+        message = (request.form.get("message") or "").strip()
+        open_date_raw = request.form.get("open_date")
+
+        song_title = (request.form.get("song_title") or "").strip()
+        song_artist = (request.form.get("song_artist") or "").strip()
+        song_query = (request.form.get("song_query") or "").strip()
+
+        artist_parts = [p for p in [song_title, song_artist] if p]
+        artist = " · ".join(artist_parts) if artist_parts else (song_query or None)
+        spotify_id = (request.form.get("spotify_id") or "").strip() or None
+        cover_url = (request.form.get("cover_url") or "").strip() or None
+
+        foto_capsula, foto_error = guardar_foto_personal(request.files.get("foto_capsula"))
+        if foto_error:
+            return jsonify({"ok": False, "error": foto_error}), 400
+        if foto_capsula:
+            cover_url = url_for("static", filename=foto_capsula)
 
     if not title:
         return jsonify({"ok": False, "error": "title es obligatorio"}), 400
@@ -432,10 +455,10 @@ def crear_capsula():
 
     capsule = Capsule(
         user_id=current_user.id,
-        spotify_id=(payload.get("spotify_id") or "").strip() or None,
+        spotify_id=spotify_id,
         title=title,
-        artist=(payload.get("artist") or "").strip() or None,
-        cover_url=(payload.get("cover_url") or "").strip() or None,
+        artist=artist,
+        cover_url=cover_url,
         message=message or None,
         open_date=open_date,
     )
