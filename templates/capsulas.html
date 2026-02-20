@@ -17,6 +17,11 @@
     .caps-form { display: grid; gap: 10px; }
     .caps-form input, .caps-form textarea, .caps-form button { border-radius: 10px; border: 1px solid rgba(255,255,255,.2); padding: 10px 12px; background: rgba(255,255,255,.05); color: #fff; }
     .caps-form button { cursor: pointer; background: #f0e4c8; color: #1d1d1d; border-color: #f0e4c8; font-weight: 600; }
+    .caps-song-results { display: grid; gap: 8px; max-height: 220px; overflow: auto; }
+    .caps-song-item { display: grid; grid-template-columns: 48px 1fr; gap: 10px; align-items: center; border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 8px; background: rgba(255,255,255,.04); cursor: pointer; }
+    .caps-song-item:hover { background: rgba(255,255,255,.08); }
+    .caps-song-item img { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; }
+    .caps-song-selected { border: 1px solid rgba(255,255,255,.2); border-radius: 10px; padding: 8px 10px; background: rgba(255,255,255,.06); font-size: .9rem; }
     .caps-list { display: grid; gap: 10px; }
     .caps-item { border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 10px; background: rgba(255,255,255,.04); }
     .caps-meta { font-size: .88rem; opacity: .9; margin-top: 6px; }
@@ -46,8 +51,13 @@
       <article class="caps-card">
         <h2>Crear cápsula</h2>
         <form id="capsForm" class="caps-form">
+          <input id="capsSongQuery" type="text" placeholder="Buscar canción por título o artista">
+          <div id="capsSongSelected" class="caps-song-selected" hidden></div>
+          <div id="capsSongResults" class="caps-song-results"></div>
           <input id="capsTitle" type="text" placeholder="Título" required>
           <input id="capsArtist" type="text" placeholder="Artista (opcional)">
+          <input id="capsSpotifyId" type="hidden">
+          <input id="capsCoverUrl" type="hidden">
           <input id="capsOpenDate" type="datetime-local" required>
           <textarea id="capsMessage" rows="4" placeholder="Mensaje (opcional)"></textarea>
           <button type="submit">Guardar cápsula</button>
@@ -72,6 +82,15 @@
     const cerradasEl = document.getElementById("capsCerradas");
     const abiertasEl = document.getElementById("capsAbiertas");
     const premiumToggleBtn = document.getElementById("premiumToggleBtn");
+    const capsSongQuery = document.getElementById("capsSongQuery");
+    const capsSongSelected = document.getElementById("capsSongSelected");
+    const capsSongResults = document.getElementById("capsSongResults");
+    const capsTitle = document.getElementById("capsTitle");
+    const capsArtist = document.getElementById("capsArtist");
+    const capsSpotifyId = document.getElementById("capsSpotifyId");
+    const capsCoverUrl = document.getElementById("capsCoverUrl");
+
+    let songSearchTimeout = null;
 
     function setStatus(msg, isError = false) {
       statusEl.textContent = msg || "";
@@ -82,6 +101,67 @@
       const d = new Date(isoStr);
       return Number.isNaN(d.getTime()) ? isoStr : d.toLocaleString();
     }
+
+    function clearSongSelection() {
+      if (capsSongSelected) {
+        capsSongSelected.hidden = true;
+        capsSongSelected.textContent = "";
+      }
+      if (capsSpotifyId) capsSpotifyId.value = "";
+      if (capsCoverUrl) capsCoverUrl.value = "";
+    }
+
+    function extractSpotifyId(url) {
+      const match = String(url || "").match(/track\/([A-Za-z0-9]+)/);
+      return match ? match[1] : "";
+    }
+
+    function renderSongResults(items) {
+      capsSongResults.innerHTML = "";
+      if (!Array.isArray(items) || !items.length) return;
+      for (const item of items) {
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = "caps-song-item";
+        row.innerHTML = `
+          ${item.portada ? `<img src="${item.portada}" alt="">` : `<div></div>`}
+          <div>
+            <strong>${item.titulo || "Sin título"}</strong>
+            <div class="caps-meta">${item.artista || "Artista desconocido"}</div>
+          </div>
+        `;
+        row.addEventListener("click", () => {
+          capsTitle.value = item.titulo || "";
+          capsArtist.value = item.artista || "";
+          capsSpotifyId.value = extractSpotifyId(item.spotify_url || "");
+          capsCoverUrl.value = item.portada || "";
+          capsSongQuery.value = item.titulo ? `${item.titulo}${item.artista ? ` - ${item.artista}` : ""}` : "";
+          capsSongSelected.hidden = false;
+          capsSongSelected.textContent = `Seleccionada: ${capsSongQuery.value}`;
+          capsSongResults.innerHTML = "";
+        });
+        capsSongResults.appendChild(row);
+      }
+    }
+
+    capsSongQuery?.addEventListener("input", () => {
+      clearTimeout(songSearchTimeout);
+      clearSongSelection();
+      const q = capsSongQuery.value.trim();
+      if (q.length < 2) {
+        capsSongResults.innerHTML = "";
+        return;
+      }
+      songSearchTimeout = setTimeout(async () => {
+        try {
+          const resp = await fetch(`/buscar_spotify?q=${encodeURIComponent(q)}`);
+          const data = await resp.json();
+          renderSongResults(data.resultados || []);
+        } catch (_) {
+          capsSongResults.innerHTML = "";
+        }
+      }, 280);
+    });
 
     function renderList(root, items, isClosed) {
       root.innerHTML = "";
@@ -146,8 +226,10 @@
       e.preventDefault();
       setStatus("");
       const payload = {
-        title: document.getElementById("capsTitle").value.trim(),
-        artist: document.getElementById("capsArtist").value.trim(),
+        title: capsTitle.value.trim(),
+        artist: capsArtist.value.trim(),
+        spotify_id: capsSpotifyId.value.trim(),
+        cover_url: capsCoverUrl.value.trim(),
         message: document.getElementById("capsMessage").value.trim(),
         open_date: document.getElementById("capsOpenDate").value
       };
@@ -168,6 +250,8 @@
       }
       setStatus("Cápsula creada.");
       form.reset();
+      clearSongSelection();
+      capsSongResults.innerHTML = "";
       await cargarCapsulas();
     });
 
