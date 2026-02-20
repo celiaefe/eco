@@ -113,6 +113,12 @@
       return Number.isNaN(d.getTime()) ? isoStr : d.toLocaleString();
     }
 
+    function localInputToUtcIso(localValue) {
+      const d = new Date(localValue);
+      if (Number.isNaN(d.getTime())) return "";
+      return d.toISOString();
+    }
+
     function clearSongSelection() {
       if (capsSongSelected) {
         capsSongSelected.hidden = true;
@@ -254,7 +260,13 @@
       formData.set("spotify_id", capsSpotifyId.value.trim());
       formData.set("cover_url", capsSongCoverUrl.value.trim());
       formData.set("message", document.getElementById("capsMessage").value.trim());
-      formData.set("open_date", document.getElementById("capsOpenDate").value);
+      const openDateLocal = document.getElementById("capsOpenDate").value;
+      const openDateUtcIso = localInputToUtcIso(openDateLocal);
+      if (!openDateUtcIso) {
+        setStatus("Fecha/hora inválida.", true);
+        return;
+      }
+      formData.set("open_date", openDateUtcIso);
       if (capsPhoto?.files?.[0]) {
         formData.set("foto_capsula", capsPhoto.files[0]);
       }
