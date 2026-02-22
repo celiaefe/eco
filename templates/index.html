@@ -211,6 +211,89 @@
     }
   }
 
+  @media (max-width: 520px){
+
+    /* 1) Quita sensación de “tarjeta web”: tocadiscos a todo el ancho */
+    .tocadiscos-placeholder{
+      padding: 0 !important;
+      margin: 10px -16px 0; /* -16 asumiendo padding lateral del main */
+    }
+
+    /* 2) El contenedor del deck sin borde, sin marco, y con forma “app” */
+    .deck.deck-real{
+      border: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+
+      /* Forma tipo “panel”: solo redondeo abajo */
+      border-radius: 0 0 26px 26px !important;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 3) Imagen: encuadre mejor para móvil (menos “vacío” arriba) */
+    .deck-image{
+      width: 100%;
+      height: 54vh;              /* ocupa pantalla sin empujar demasiado */
+      min-height: 340px;
+      object-fit: cover;
+      object-position: 60% 45%;  /* ajusta foco hacia tocadiscos */
+      display: block;
+      transform: none !important;
+    }
+
+    /* 4) Capa sutil para legibilidad (sin parecer overlay web) */
+    .deck.deck-real::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(500px 280px at 70% 35%, rgba(0,0,0,.0), rgba(0,0,0,.35) 70%),
+        linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.48));
+      pointer-events:none;
+    }
+
+    /* 5) El botón Biblioteca encima ahora mismo parece web. Lo convertimos en “toca para entrar” */
+    .deck-center-btn{
+      width: auto;
+      height: auto;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      position: absolute;
+      left: 16px;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      z-index: 2;
+
+      background: rgba(11,15,26,.55);
+      border: 1px solid rgba(244,241,234,.18);
+      backdrop-filter: blur(10px);
+    }
+
+    /* 6) FAB más “Eco”: menos amarillo chirriante y menos invasivo */
+    .home-fab.deck-fab{
+      width: 52px;
+      height: 52px;
+      font-size: 24px;
+      right: 16px;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      z-index: 3;
+
+      background: rgba(244,241,234,.92);
+      color: #0b0f1a;
+      box-shadow: 0 14px 34px rgba(0,0,0,.35);
+    }
+
+    /* 7) Reduce el texto grande: deja que la imagen mande */
+    .inicio-subtitulo{
+      font-size: 21px !important;
+      max-width: 24ch;
+      margin: 6px auto 6px !important;
+    }
+  }
+
   @media (min-width: 900px){
     .inicio-subtitulo{
       font-size: 30px;
