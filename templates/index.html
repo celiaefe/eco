@@ -173,6 +173,55 @@
     box-shadow: 0 16px 38px rgba(0,0,0,.40);
   }
 
+  /* Chips en vez de cards: look app */
+  .inicio-accesos{
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 18px 0 8px;
+  }
+
+  .inicio-chip{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(244,241,234,.14);
+    background: rgba(244,241,234,.05);
+    color: rgba(244,241,234,.92);
+    text-decoration: none;
+    backdrop-filter: blur(12px);
+    transition: transform .08s ease, background .2s ease;
+  }
+
+  .inicio-chip:active{ transform: scale(.97); }
+
+  .inicio-chip-ico{
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    background: rgba(244,241,234,.08);
+    border: 1px solid rgba(244,241,234,.12);
+  }
+
+  .inicio-chip-texto{
+    font-size: 14px;
+    letter-spacing: .02em;
+  }
+
+  /* Chip principal */
+  .inicio-chip-primary{
+    border-color: rgba(155,44,44,.35);
+    background: rgba(155,44,44,.18);
+    font-weight: 500;
+  }
+
   /* =========================
      Movil: recorta el aire muerto general
      ========================= */
@@ -208,6 +257,23 @@
       background: rgba(244,241,234,.92);
       color: #0b0f1a;
       box-shadow: 0 14px 30px rgba(0,0,0,.35);
+    }
+  }
+
+  /* Móvil */
+  @media (max-width: 520px){
+    .inicio-accesos{
+      justify-content: space-between;
+    }
+
+    .inicio-chip{
+      flex: 1 1 calc(50% - 6px);
+      justify-content: center;
+      min-height: 46px;
+    }
+
+    .inicio-chip-primary{
+      flex-basis: 100%;
     }
   }
 
@@ -325,23 +391,24 @@
       <div class="deck deck-real">
         <img src="{{ url_for('static', filename='portada_eco.jpg') }}" alt="Tocadiscos 3D de Eco" class="deck-image" draggable="false">
         <a href="{{ url_for('main.biblioteca') }}" class="deck-center-btn" aria-label="Entrar a biblioteca">Biblioteca</a>
-        <a href="{{ url_for('main.recuerdos', crear=1) }}" class="home-fab deck-fab" aria-label="Crear nuevo recuerdo">＋</a>
       </div>
     </section>
 
     {% if current_user.is_authenticated %}
       <section class="inicio-accesos" aria-label="Accesos principales">
-        <a class="inicio-card" href="{{ url_for('main.biblioteca') }}">
-          <span class="inicio-card-titulo">Biblioteca</span>
-          <span class="inicio-card-texto">Ver todos tus recuerdos.</span>
+        <a class="inicio-chip" href="{{ url_for('main.biblioteca') }}">
+          <span class="inicio-chip-ico">⟡</span>
+          <span class="inicio-chip-texto">Biblioteca</span>
         </a>
-        <a class="inicio-card" href="{{ url_for('main.recuerdos', crear=1) }}">
-          <span class="inicio-card-titulo">Nuevo recuerdo</span>
-          <span class="inicio-card-texto">Guardar un momento en un toque.</span>
+
+        <a class="inicio-chip inicio-chip-primary" href="{{ url_for('main.recuerdos', crear=1) }}">
+          <span class="inicio-chip-ico">✎</span>
+          <span class="inicio-chip-texto">Nuevo recuerdo</span>
         </a>
-        <a class="inicio-card" href="{{ url_for('main.capsulas_panel') }}">
-          <span class="inicio-card-titulo">Cápsulas</span>
-          <span class="inicio-card-texto">Programar y abrir cápsulas.</span>
+
+        <a class="inicio-chip" href="{{ url_for('main.capsulas_panel') }}">
+          <span class="inicio-chip-ico">⏳</span>
+          <span class="inicio-chip-texto">Cápsulas</span>
         </a>
       </section>
     {% endif %}
