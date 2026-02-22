@@ -30,13 +30,236 @@
   .caps-song-selected { border: 1px solid rgba(255,255,255,.2); border-radius: 10px; padding: 8px 10px; background: rgba(255,255,255,.06); font-size: .9rem; }
   .caps-cover { width: 100%; max-width: 220px; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-top: 8px; border: 1px solid rgba(255,255,255,.18); }
   .caps-list { display: grid; gap: 10px; }
-  .caps-item { border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 10px; background: rgba(255,255,255,.04); }
-  .caps-meta { font-size: .88rem; opacity: .9; margin-top: 6px; }
+  .caps-text { display: grid; gap: 6px; }
+
+  /* Tarjeta */
+  .caps-item{
+    width: 100%;
+    padding: 14px 14px;
+    border-radius: 18px;
+    border: 1px solid rgba(244,241,234,.12);
+    background: rgba(11,15,26,.35);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  /* Texto */
+  .caps-title{
+    display: block;
+    font-size: 16px;
+    line-height: 1.2;
+    color: rgba(244,241,234,.95);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .caps-meta{
+    margin-top: 6px;
+    font-size: 13px;
+    color: rgba(244,241,234,.70);
+  }
+
+  /* Acciones: 2 botones en fila en móvil */
+  .caps-actions{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .caps-btn{
+    min-height: 44px;
+    border-radius: 14px;
+    padding: 10px 12px;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid rgba(244,241,234,.16);
+    background: rgba(244,241,234,.06);
+    color: rgba(244,241,234,.92);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .caps-btn:active{ transform: scale(.98); }
+
+  .caps-btn-primary{
+    border-color: rgba(155,44,44,.45);
+    background: rgba(155,44,44,.16);
+  }
+
+  .caps-btn-ghost{
+    background: rgba(244,241,234,.04);
+  }
+
+  /* Disabled */
+  .caps-btn[disabled],
+  button.caps-btn:disabled{
+    opacity: .45;
+    cursor: not-allowed;
+  }
+
+  /* Muy pequeño: que apile en una columna */
+  @media (max-width: 360px){
+    .caps-actions{ grid-template-columns: 1fr; }
+  }
+
   .caps-open-btn { margin-top: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,.25); background: transparent; color: #fff; padding: 6px 10px; cursor: pointer; }
   .caps-open-btn:disabled { opacity: .45; cursor: not-allowed; }
   .caps-status { margin: 0 0 10px; font-size: .92rem; min-height: 1.2em; }
   .caps-links a { color: #f0e4c8; text-decoration: none; }
+  .caps-tabs{
+    display: none;
+    gap: 10px;
+    margin: 8px 0 14px;
+    padding: 6px;
+    border-radius: 999px;
+    border: 1px solid rgba(244,241,234,.14);
+    background: rgba(244,241,234,.06);
+  }
+
+  .caps-tab{
+    flex: 1;
+    min-height: 40px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: rgba(244,241,234,.78);
+    font-size: 14px;
+    letter-spacing: .02em;
+  }
+
+  .caps-tab.is-active{
+    background: rgba(11,15,26,.45);
+    border-color: rgba(244,241,234,.14);
+    color: rgba(244,241,234,.95);
+  }
+
+  /* Móvil: muestra tabs y oculta una sección según estado */
+@media (max-width: 520px){
+  .caps-tabs{ display: flex; }
+
+  .caps-card{
+    padding: 12px 12px;
+    border-radius: 18px;
+  }
+
+  .caps-section{
+    display: none;
+  }
+    .caps-section.is-active{
+      display: block;
+    }
+  }
+
   @media (min-width: 880px) { .caps-grid { grid-template-columns: 1fr 1fr; } }
+
+  /* ========== CAPSULAS MOBILE LAYOUT ========== */
+  @media (max-width: 520px){
+
+    /* Contenedor general de la página cápsulas */
+    .capsulas-page,
+    .capsulas-container,
+    main {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    /* Si tienes columnas/sidebars, colapsa a 1 columna */
+    .capsulas-grid,
+    .capsulas-columns,
+    .capsulas-layout {
+      display: block !important;
+    }
+
+    /* Secciones “Cerradas / Abiertas” */
+    .capsulas-section{
+      margin-top: 14px;
+    }
+    .capsulas-section-title{
+      font-size: 14px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      opacity: .72;
+      margin: 0 0 10px;
+    }
+
+    /* Tarjetas */
+    .capsula-item,
+    .capsula-card{
+      width: 100%;
+      border-radius: 18px;
+      padding: 14px 14px;
+      border: 1px solid rgba(244,241,234,.12);
+      background: rgba(11,15,26,.35);
+      margin: 10px 0;
+      overflow: hidden;
+    }
+
+    /* Título / artista */
+    .capsula-title{
+      font-size: 16px;
+      line-height: 1.2;
+      margin: 0 0 6px;
+    }
+    .capsula-artist{
+      font-size: 13px;
+      opacity: .72;
+      margin: 0 0 10px;
+    }
+
+    /* Countdown / estado */
+    .capsula-countdown{
+      font-size: 13px;
+      opacity: .8;
+    }
+
+    /* Botones dentro de tarjeta: que no queden pequeños */
+    .capsula-actions{
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .capsula-actions a,
+    .capsula-actions button{
+      flex: 1 1 140px;
+      min-height: 44px;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+
+    /* Si hay una imagen portada pequeña */
+    .capsula-cover,
+    .capsula-img{
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      flex: 0 0 52px;
+      object-fit: cover;
+    }
+
+    /* Si usas filas tipo “cover + texto” */
+    .capsula-row{
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .capsula-row .capsula-meta{
+      min-width: 0; /* importantísimo para que el texto no desborde */
+    }
+    .capsula-row .capsula-title,
+    .capsula-row .capsula-artist{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 {% endblock %}
 
 {% block content %}
@@ -44,7 +267,7 @@
     <div class="caps-head">
       <h1>Cápsulas personales</h1>
       <div class="caps-links">
-        {% if is_admin %}
+        {% if premium_enabled and is_admin %}
           <button id="premiumToggleBtn" class="caps-open-btn" type="button">
             {{ "Premium ON" if is_premium else "Activar premium" }}
           </button>
@@ -78,15 +301,24 @@
         </form>
       </article>
 
-      <article class="caps-card">
+      <div class="caps-tabs" role="tablist" aria-label="Secciones de cápsulas">
+        <button class="caps-tab is-active" type="button" data-tab="cerradas" role="tab" aria-selected="true">
+          Cerradas
+        </button>
+        <button class="caps-tab" type="button" data-tab="abiertas" role="tab" aria-selected="false">
+          Abiertas
+        </button>
+      </div>
+
+      <section id="tab-cerradas" class="caps-section caps-card">
         <h2>Cerradas</h2>
         <div id="capsCerradas" class="caps-list"></div>
-      </article>
+      </section>
 
-      <article class="caps-card">
+      <section id="tab-abiertas" class="caps-section caps-card">
         <h2>Abiertas</h2>
         <div id="capsAbiertas" class="caps-list"></div>
-      </article>
+      </section>
     </section>
   </main>
 {% endblock %}
@@ -210,8 +442,18 @@
         item.className = "caps-item";
         if (isClosed) {
           item.innerHTML = `
-            <strong>${c.title}</strong>
-            <div class="caps-meta">Se abre: ${fmtDate(c.open_date)}</div>
+            <div class="caps-text">
+              <strong class="caps-title">${c.title}</strong>
+              <div class="caps-meta">Se abre: ${fmtDate(c.open_date)}</div>
+            </div>
+            <div class="caps-actions">
+              <button class="caps-btn caps-btn-primary" ${!c.is_unlockable_now ? "disabled" : ""}>
+                Abrir
+              </button>
+              <a class="caps-btn caps-btn-ghost" href="/capsulas/${c.id}/ritual">
+                Ritual
+              </a>
+            </div>
           `;
         } else {
           item.innerHTML = `
@@ -226,11 +468,8 @@
         }
 
         if (isClosed) {
-          const btn = document.createElement("button");
-          btn.className = "caps-open-btn";
-          btn.textContent = "Abrir";
-          btn.disabled = !c.is_unlockable_now;
-          btn.addEventListener("click", async () => {
+          const btn = item.querySelector(".caps-btn-primary");
+          btn?.addEventListener("click", async () => {
             const resp = await fetch(`/capsulas/${c.id}/abrir`, { method: "POST" });
             const data = await resp.json();
             if (!resp.ok || !data.ok) {
@@ -240,15 +479,13 @@
             setStatus("Cápsula abierta.");
             await cargarCapsulas();
           });
-          item.appendChild(btn);
+        } else {
+          const ritual = document.createElement("a");
+          ritual.className = "caps-open-btn";
+          ritual.href = `/capsulas/${c.id}/ritual`;
+          ritual.textContent = "Ritual";
+          item.appendChild(ritual);
         }
-        const ritual = document.createElement("a");
-        ritual.className = "caps-open-btn";
-        ritual.style.display = "inline-block";
-        ritual.style.marginLeft = "8px";
-        ritual.href = `/capsulas/${c.id}/ritual`;
-        ritual.textContent = "Ritual";
-        item.appendChild(ritual);
 
         root.appendChild(item);
       }
@@ -326,5 +563,91 @@
     });
 
     cargarCapsulas();
+  </script>
+  <script>
+  (function(){
+    const items = document.querySelectorAll(".capsula-cerrada[data-open-date]");
+    if(!items.length) return;
+
+    function formatCountdown(ms){
+      const totalSec = Math.max(0, Math.floor(ms / 1000));
+      const days = Math.floor(totalSec / 86400);
+      const hours = Math.floor((totalSec % 86400) / 3600);
+      const mins = Math.floor((totalSec % 3600) / 60);
+
+      if (days >= 2) return `Se abre en ${days} días`;
+      if (days === 1) return `Mañana.`;
+      if (hours >= 2) return `Se abre en ${hours} horas`;
+      if (hours === 1) return `En una hora.`;
+      if (mins >= 2) return `En ${mins} minutos`;
+      if (mins === 1) return `En un minuto.`;
+      return `Ahora.`;
+    }
+
+    function tick(){
+      const now = Date.now();
+      items.forEach(item => {
+        const openDateStr = item.getAttribute("data-open-date");
+        const openAt = Date.parse(openDateStr);
+        if (Number.isNaN(openAt)) return;
+
+        const el = item.querySelector(".js-countdown");
+        if(!el) return;
+
+        const diff = openAt - now;
+
+        // Ya debería estar abierta (o casi)
+        if (diff <= 0){
+          el.textContent = "Ahora.";
+          el.classList.add("is-soon");
+          return;
+        }
+
+        const text = formatCountdown(diff);
+        el.textContent = text;
+
+        if (text === "Mañana." || text === "Ahora." || text === "En una hora." || text === "En un minuto.") {
+          el.classList.add("is-soon");
+        } else {
+          el.classList.remove("is-soon");
+        }
+      });
+    }
+
+  tick();
+  setInterval(tick, 60 * 1000); // actualiza cada minuto
+  })();
+  </script>
+  <script>
+  (function(){
+    const tabs = document.querySelectorAll(".caps-tab[data-tab]");
+    const secCerradas = document.getElementById("tab-cerradas");
+    const secAbiertas = document.getElementById("tab-abiertas");
+    const listCerradas = document.getElementById("capsCerradas");
+    const listAbiertas = document.getElementById("capsAbiertas");
+
+    if(!tabs.length || !secCerradas || !secAbiertas) return;
+
+    function activate(name){
+      secCerradas.classList.toggle("is-active", name === "cerradas");
+      secAbiertas.classList.toggle("is-active", name === "abiertas");
+
+      tabs.forEach(t => {
+        const on = t.dataset.tab === name;
+        t.classList.toggle("is-active", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+    }
+
+    tabs.forEach(t => t.addEventListener("click", () => activate(t.dataset.tab)));
+
+    // Default inteligente:
+    // Si hay cápsulas cerradas, abre Cerradas.
+    // Si no, abre Abiertas.
+    const hasCerradas = !!(listCerradas && listCerradas.querySelector(".caps-item"));
+    const hasAbiertas  = !!(listAbiertas && listAbiertas.querySelector(".caps-item"));
+
+    activate(hasCerradas ? "cerradas" : (hasAbiertas ? "abiertas" : "cerradas"));
+  })();
   </script>
 {% endblock %}

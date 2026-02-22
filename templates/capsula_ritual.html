@@ -18,6 +18,15 @@
     .ritual-btn, .ritual-link { border-radius: 10px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.22); background: transparent; color: #fff; text-decoration: none; cursor: pointer; }
     .ritual-btn.primary { background: #f0e4c8; border-color: #f0e4c8; color: #1d1d1d; font-weight: 700; }
     .ritual-status { min-height: 1.2em; margin-top: 12px; }
+    .capsula-countdown{
+      font-size: 13px;
+      color: rgba(244,241,234,.72);
+    }
+    .capsula-countdown.is-soon{
+      font-size: 18px;
+      letter-spacing: .02em;
+      color: rgba(244,241,234,.92);
+    }
     .ritual-seal { margin-top: 18px; border: 1px dashed rgba(255,255,255,.3); border-radius: 12px; padding: 20px; text-align: center; letter-spacing: .08em; text-transform: uppercase; }
     .ritual-content { margin-top: 16px; padding: 14px; border-radius: 10px; background: rgba(255,255,255,.06); white-space: pre-wrap; }
     .ritual-cover { width: min(320px, 100%); aspect-ratio: 1/1; object-fit: cover; border-radius: 12px; margin-top: 14px; border: 1px solid rgba(255,255,255,.18); }
@@ -50,7 +59,7 @@
       {% if not unlockable and not capsule.opened_at %}
         <div class="ritual-seal" id="ritualSeal">
           Sellada hasta su fecha
-          <div id="countdown" class="ritual-status"></div>
+          <div id="countdown" class="ritual-status capsula-countdown"></div>
         </div>
       {% endif %}
 
@@ -92,9 +101,21 @@
       const now = new Date();
       const diff = openDate - now;
       if (diff <= 0) {
+        countdownEl.classList.remove("is-soon");
         countdownEl.textContent = "Ya puedes volver al panel y abrirla.";
         return;
       }
+
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const targetDay = new Date(openDate.getFullYear(), openDate.getMonth(), openDate.getDate());
+      const dayDiff = Math.round((targetDay - today) / 86400000);
+      if (dayDiff === 1) {
+        countdownEl.classList.add("is-soon");
+        countdownEl.textContent = "Mañana.";
+        return;
+      }
+
+      countdownEl.classList.remove("is-soon");
       const h = Math.floor(diff / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);

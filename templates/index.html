@@ -48,6 +48,14 @@
     opacity: .92;
   }
 
+  .inicio-susurro{
+    margin: 10px auto 0;
+    max-width: 34ch;
+    font-size: 13px;
+    line-height: 1.45;
+    color: rgba(244,241,234,.70);
+  }
+
   /* Auth: tap-friendly + sticky sutil */
   .inicio-auth{
     position: sticky;
@@ -169,19 +177,37 @@
      Movil: recorta el aire muerto general
      ========================= */
   @media (max-width: 520px){
-    .inicio-hub{
-      padding-top: 10px;
-      gap: 12px;
-    }
-
+    /* 1) Hero más compacto */
+    .inicio-hero{ padding-top: 4px; }
     .inicio-subtitulo{
-      font-size: 24px;
-      max-width: 24ch;
+      font-size: 22px;
+      line-height: 1.15;
+      max-width: 22ch;
+      margin: 6px auto 10px;
     }
 
-    /* Empuja la tarjeta hacia arriba para que se vea antes */
-    .tocadiscos-placeholder{
-      margin-top: -6px;
+    /* 2) Oculta el saludo largo, deja solo botón salir/cuenta (temporal) */
+    .inicio-user{ display:none; }
+
+    /* 3) Tocadiscos más protagonista */
+    .tocadiscos-placeholder{ margin-top: 6px; }
+    .deck.deck-real{
+      border-radius: 22px;
+    }
+
+    /* 4) Quita el botón “Biblioteca” encima de la imagen (queda redundante) */
+    .deck-center-btn{ display:none; }
+
+    /* 5) FAB más discreto */
+    .home-fab.deck-fab{
+      width: 52px;
+      height: 52px;
+      font-size: 24px;
+      right: 14px;
+      bottom: calc(14px + env(safe-area-inset-bottom));
+      background: rgba(244,241,234,.92);
+      color: #0b0f1a;
+      box-shadow: 0 14px 30px rgba(0,0,0,.35);
     }
   }
 
@@ -209,6 +235,7 @@
       </div>
       <p class="inicio-kicker">Eco</p>
       <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
+      <p class="inicio-susurro" id="inicioSusurro"></p>
     </section>
 
     <section class="tocadiscos-placeholder" aria-label="Zona reservada para tocadiscos 3D">
@@ -240,5 +267,30 @@
 {% endblock %}
 
 {% block extra_js %}
+  <script>
+  (function(){
+    const el = document.getElementById("inicioSusurro");
+    if(!el) return;
+
+    const lines = [
+      "Algunas canciones esperan.",
+      "Hay recuerdos que suenan mejor de noche.",
+      "No todo lo que guardas quiere abrirse hoy.",
+      "El tiempo también escucha.",
+      "Guarda lo que no quieres olvidar.",
+      "A veces, volver a escuchar es volver a ser."
+    ];
+
+    // “Sorpresa estable” por día: cambia cada día, no cada recarga
+    const now = new Date();
+    const key = Number(String(now.getFullYear()) + String(now.getMonth()+1).padStart(2,"0") + String(now.getDate()).padStart(2,"0"));
+    const idx = key % lines.length;
+
+    el.textContent = lines[idx];
+    if (now.getHours() >= 23 || now.getHours() < 6) {
+      el.textContent = "Eco escucha mejor a estas horas.";
+    }
+  })();
+  </script>
   <script src="{{ url_for('static', filename='js/inicio.js') }}"></script>
 {% endblock %}

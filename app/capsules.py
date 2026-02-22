@@ -1,17 +1,16 @@
 from datetime import datetime
 
 from flask import abort
-from flask_login import current_user
-
 from . import db
 from .models import Capsule
 
 
-def can_create_capsule():
-    if current_user.is_premium:
+def can_create_capsule(user):
+    if bool(user.is_premium):
         return True
+
     active_closed = Capsule.query.filter(
-        Capsule.user_id == current_user.id,
+        Capsule.user_id == user.id,
         Capsule.opened_at.is_(None),
         Capsule.open_date > datetime.utcnow(),
     ).count()

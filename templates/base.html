@@ -119,6 +119,26 @@
     .auth-sub{color:var(--muted);margin:0 0 14px}
     .auth-switch{margin:10px 0 0;color:var(--muted);font-size:.9rem}
 
+    /* ========== GLOBAL MOBILE FIXES ========== */
+    @media (max-width: 520px){
+      html, body { overflow-x: hidden; }
+
+      /* Evita que contenedores se salgan */
+      img, video, canvas { max-width: 100%; height: auto; }
+
+      /* Tap targets */
+      a, button { -webkit-tap-highlight-color: transparent; }
+      button, .btn, .inicio-auth-link { min-height: 44px; }
+
+      /* Tipografía más compacta */
+      h1 { font-size: 24px; line-height: 1.15; }
+      h2 { font-size: 18px; line-height: 1.2; }
+
+      /* Reduce “aire muerto” vertical */
+      .wrap { padding: 16px 12px; }
+      .inner { padding: 18px 14px; }
+    }
+
     {% block extra_css %}{% endblock %}
   </style>
 </head>

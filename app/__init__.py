@@ -13,6 +13,13 @@ login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 
 
+def _env_bool(name: str, default: bool = False) -> bool:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in {"1", "true", "yes", "on"}
+
+
 def create_app():
     app = Flask(__name__, template_folder="../templates", static_folder="../static")
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-change-me")
@@ -30,6 +37,7 @@ def create_app():
 
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["PREMIUM_ENABLED"] = _env_bool("PREMIUM_ENABLED", default=False)
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -39,6 +47,10 @@ def create_app():
     from .main import main_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
+
+    @app.get("/healthz")
+    def healthz():
+        return {"ok": True}, 200
 
     return app
 

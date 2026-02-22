@@ -89,7 +89,7 @@ def test_capsules_create_and_list(client, app):
     assert len(data["abiertas"]) == 0
 
 
-def test_capsules_free_plan_only_one_closed_active(client, app):
+def test_capsules_allows_multiple_closed_active(client, app):
     user = _create_user(app, email="limit@test.local")
     _login(client, user)
 
@@ -100,8 +100,7 @@ def test_capsules_free_plan_only_one_closed_active(client, app):
     assert first.status_code == 201
 
     second = client.post("/capsulas", json={"title": "Dos", "open_date": second_open_date})
-    assert second.status_code == 403
-    assert "Plan Free" in second.get_json()["error"]
+    assert second.status_code == 201
 
 
 def test_capsules_open_denied_before_open_date_even_if_client_forces(client, app):
@@ -139,3 +138,41 @@ def test_capsules_open_success_when_server_time_allows(client, app):
     data = listed.get_json()
     assert len(data["abiertas"]) == 1
     assert len(data["cerradas"]) == 0
+
+
+def test_admin_premium_toggle_returns_404_when_feature_disabled(client, app):
+    user = _create_user(app, email="celiafm17@gmail.com")
+    _login(client, user)
+
+    resp = client.post("/admin/premium-toggle")
+    assert resp.status_code == 404
+
+
+def test_capsules_limit_is_reenabled_with_feature_flag(tmp_path, monkeypatch):
+    db_path = tmp_path / "test_eco_premium.db"
+    monkeypatch.setenv("DATABASE_URL", f"sqlite:///{db_path}")
+    monkeypatch.setenv("PREMIUM_ENABLED", "true")
+    flask_app = create_app()
+    flask_app.config.update(TESTING=True)
+
+    with flask_app.app_context():
+        db.create_all()
+
+    try:
+        client = flask_app.test_client()
+        user = _create_user(flask_app, email="limit2@test.local")
+        _login(client, user)
+
+        first_open_date = (datetime.utcnow() + timedelta(hours=2)).isoformat()
+        second_open_date = (datetime.utcnow() + timedelta(hours=3)).isoformat()
+
+        first = client.post("/capsulas", json={"title": "Uno", "open_date": first_open_date})
+        assert first.status_code == 201
+
+        second = client.post("/capsulas", json={"title": "Dos", "open_date": second_open_date})
+        assert second.status_code == 403
+        assert "Plan Free" in second.get_json()["error"]
+    finally:
+        with flask_app.app_context():
+            db.session.remove()
+            db.drop_all()

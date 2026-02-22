@@ -5,7 +5,7 @@ import uuid
 from datetime import datetime, timezone
 
 import requests
-from flask import Blueprint, jsonify, make_response, redirect, render_template, request, url_for
+from flask import Blueprint, current_app, jsonify, make_response, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from werkzeug.exceptions import HTTPException
 from werkzeug.utils import secure_filename
@@ -30,6 +30,10 @@ def anio_desde_fecha(fecha_str: str) -> str:
         return datetime.strptime(fecha_str, "%d/%m/%Y %H:%M").strftime("%Y")
     except ValueError:
         return fecha_str[6:10] if len(fecha_str) >= 10 else "Sin año"
+
+
+def premium_enabled() -> bool:
+    return bool(current_app.config.get("PREMIUM_ENABLED", False))
 
 
 def is_admin_user(user) -> bool:
@@ -383,14 +387,23 @@ def listar_capsulas():
 @main_bp.route("/capsulas/panel")
 @login_required
 def capsulas_panel():
-    return render_template("capsulas.html", is_admin=is_admin_user(current_user), is_premium=bool(current_user.is_premium))
+    premium_on = premium_enabled()
+    return render_template(
+        "capsulas.html",
+        premium_enabled=premium_on,
+        is_admin=is_admin_user(current_user) if premium_on else False,
+        is_premium=bool(current_user.is_premium),
+    )
 
 
 @main_bp.route("/admin/premium-toggle", methods=["POST"])
 @login_required
 def admin_premium_toggle():
+    if not premium_enabled():
+        return jsonify({"ok": False, "error": "premium desactivado"}), 404
     if not is_admin_user(current_user):
         return jsonify({"ok": False, "error": "forbidden"}), 403
+
     current_user.is_premium = not bool(current_user.is_premium)
     db.session.commit()
     return jsonify({"ok": True, "is_premium": bool(current_user.is_premium)})
@@ -411,7 +424,7 @@ def capsula_ritual(capsule_id: int):
 @main_bp.route("/capsulas", methods=["POST"])
 @login_required
 def crear_capsula():
-    if not can_create_capsule():
+    if premium_enabled() and not can_create_capsule(current_user):
         return jsonify({"ok": False, "error": "Plan Free: solo una cápsula cerrada activa."}), 403
 
     if request.is_json:
