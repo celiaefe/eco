@@ -222,6 +222,63 @@
     font-weight: 500;
   }
 
+  .inicio-gate{
+    min-height: 72vh;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap: 14px;
+    padding: 18px 14px;
+  }
+
+  .inicio-gate-logo{
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    opacity: .92;
+    margin-bottom: 4px;
+    filter: drop-shadow(0 6px 14px rgba(0,0,0,.28));
+  }
+
+  .inicio-gate-actions{
+    width: min(360px, 100%);
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .inicio-gate-btn{
+    min-height: 46px;
+    border-radius: 999px;
+    border: 1px solid rgba(244,241,234,.18);
+    background: rgba(244,241,234,.06);
+    color: rgba(244,241,234,.92);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    font-size: 15px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .inicio-gate-btn:active{ transform: scale(.98); }
+
+  .inicio-gate-btn-primary{
+    border-color: rgba(155,44,44,.40);
+    background: rgba(155,44,44,.18);
+  }
+
+  .inicio-gate-mini{
+    margin-top: 10px;
+    max-width: 34ch;
+    color: rgba(244,241,234,.62);
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+
   /* =========================
      Movil: recorta el aire muerto general
      ========================= */
@@ -370,31 +427,51 @@
 
 {% block content %}
   <main class="inicio-hub">
-    <section class="inicio-hero">
-      <div class="inicio-auth">
-        {% if current_user.is_authenticated %}
+    {% if not current_user.is_authenticated %}
+
+      <section class="inicio-gate" aria-label="Acceso">
+        <img
+          src="{{ url_for('static', filename='images/image_eco.png') }}"
+          alt="Eco"
+          class="inicio-gate-logo"
+          draggable="false"
+        >
+        <p class="inicio-kicker">Eco</p>
+        <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
+
+        <div class="inicio-gate-actions">
+          <a href="{{ url_for('auth.login') }}" class="inicio-gate-btn">Entrar</a>
+          <a href="{{ url_for('auth.register') }}" class="inicio-gate-btn inicio-gate-btn-primary">Registrarse</a>
+        </div>
+
+        <p class="inicio-gate-mini">
+          Guarda lo que no quieres olvidar.<br>
+          Y lo que aún no estás lista para volver a escuchar.
+        </p>
+      </section>
+
+    {% else %}
+
+      <!-- TODO: tu home actual con tocadiscos + chips -->
+      <section class="inicio-hero">
+        <div class="inicio-auth">
           <span class="inicio-user">Hola, {{ current_user.email }}</span>
           <form method="post" action="{{ url_for('auth.logout') }}" class="inicio-auth-form">
             <button type="submit" class="inicio-auth-link inicio-auth-btn">Salir</button>
           </form>
-        {% else %}
-          <a href="{{ url_for('auth.login') }}" class="inicio-auth-link">Entrar</a>
-          <a href="{{ url_for('auth.register') }}" class="inicio-auth-link">Registrarse</a>
-        {% endif %}
-      </div>
-      <p class="inicio-kicker">Eco</p>
-      <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
-      <p class="inicio-susurro" id="inicioSusurro"></p>
-    </section>
+        </div>
+        <p class="inicio-kicker">Eco</p>
+        <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
+      </section>
 
-    <section class="tocadiscos-placeholder" aria-label="Zona reservada para tocadiscos 3D">
-      <div class="deck deck-real">
-        <img src="{{ url_for('static', filename='portada_eco.jpg') }}" alt="Tocadiscos 3D de Eco" class="deck-image" draggable="false">
-        <a href="{{ url_for('main.biblioteca') }}" class="deck-center-btn" aria-label="Entrar a biblioteca">Biblioteca</a>
-      </div>
-    </section>
+      <section class="tocadiscos-placeholder" aria-label="Zona reservada para tocadiscos 3D">
+        <div class="deck deck-real">
+          <img src="{{ url_for('static', filename='portada_eco.jpg') }}" alt="Tocadiscos 3D de Eco" class="deck-image" draggable="false">
+          <a href="{{ url_for('main.biblioteca') }}" class="deck-center-btn" aria-label="Entrar a biblioteca">Biblioteca</a>
+        </div>
+      </section>
 
-    {% if current_user.is_authenticated %}
+      <!-- chips (opción 2) -->
       <section class="inicio-accesos" aria-label="Accesos principales">
         <a class="inicio-chip" href="{{ url_for('main.biblioteca') }}">
           <span class="inicio-chip-ico">⟡</span>
@@ -411,9 +488,9 @@
           <span class="inicio-chip-texto">Cápsulas</span>
         </a>
       </section>
+
     {% endif %}
   </main>
-  <button id="ritualAudioToggle" class="home-audio-toggle" type="button" aria-pressed="true">Sonido: ON</button>
 {% endblock %}
 
 {% block extra_js %}
