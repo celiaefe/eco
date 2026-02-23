@@ -623,10 +623,100 @@
       max-width: 32ch;
     }
   }
+
+  .inicio-mock{
+    min-height: 100vh;
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px 14px 22px;
+  }
+
+  .inicio-mock .inicio-hero{
+    text-align: center;
+    padding-top: 2px;
+  }
+
+  .inicio-logo{
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    margin: 6px auto 4px;
+    display: block;
+    opacity: .92;
+  }
+
+  .vinilo-zone{
+    margin-top: 2px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .inicio-mock .vinilo{
+    width: min(100%, 730px);
+    height: auto;
+    display: block;
+    border-radius: 0 28px 28px 28px;
+    border: 1px solid rgba(244,241,234,.24);
+  }
+
+  .inicio-mock .inicio-accesos{
+    margin: 12px 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .pill{
+    min-height: 72px;
+    border-radius: 999px;
+    border: 1px solid rgba(244,241,234,.2);
+    background: rgba(13, 21, 42, .56);
+    color: rgba(244,241,234,.95);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 0 24px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+  }
+
+  .pill-primary{
+    background: linear-gradient(90deg, rgba(69,15,33,.82), rgba(98,22,48,.78));
+    border-color: rgba(184,65,94,.42);
+  }
+
+  .pill-ico{
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    border: 1px solid rgba(244,241,234,.22);
+    background: rgba(244,241,234,.08);
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+  }
+
+  .pill-text{
+    font-size: 17px;
+    letter-spacing: .02em;
+  }
+
+  @media (max-width: 520px){
+    .inicio-mock .inicio-subtitulo{
+      font-size: 17px;
+      line-height: 1.24;
+      max-width: 13.5ch;
+      margin: 0 auto 4px;
+    }
+  }
 {% endblock %}
 
 {% block content %}
-  <main class="inicio-hub">
+  <main class="inicio-hub{% if current_user.is_authenticated %} inicio-mock{% endif %}">
     {% if not current_user.is_authenticated %}
 
       <section class="inicio-gate" aria-label="Acceso">
@@ -652,45 +742,42 @@
 
     {% else %}
 
-      <!-- TODO: tu home actual con tocadiscos + chips -->
       <section class="inicio-hero">
         <div class="inicio-auth">
-          <span class="inicio-user">Hola, {{ current_user.email }}</span>
           <form method="post" action="{{ url_for('auth.logout') }}" class="inicio-auth-form">
             <button type="submit" class="inicio-auth-link inicio-auth-btn">Salir</button>
           </form>
         </div>
-        <p class="inicio-kicker">Eco</p>
+
+        <img src="{{ url_for('static', filename='image_eco.png') }}" class="inicio-logo" alt="Eco" />
+
+        <p class="inicio-kicker">ECO</p>
         <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
       </section>
 
-      <section class="tocadiscos-placeholder" aria-label="Zona reservada para tocadiscos 3D">
-        <div class="deck deck-real">
-          <img src="{{ url_for('static', filename='portada_eco.jpg') }}" alt="Tocadiscos 3D de Eco" class="deck-image" draggable="false">
-          <img 
-            src="{{ url_for('static', filename='img/vinilo_eco.png') }}" 
-            class="deck-vinilo" 
-            alt="Vinilo Eco"
-            draggable="false">
-          <a href="{{ url_for('main.biblioteca') }}" class="deck-center-btn" aria-label="Entrar a biblioteca">Biblioteca</a>
-        </div>
+      <section class="vinilo-zone" aria-label="Vinilo Eco">
+        <img
+          src="{{ url_for('static', filename='vinilo_eco.png') }}"
+          class="vinilo"
+          alt="Vinilo Eco"
+          draggable="false"
+        />
       </section>
 
-      <!-- chips (opción 2) -->
       <section class="inicio-accesos" aria-label="Accesos principales">
-        <a class="inicio-chip" href="{{ url_for('main.biblioteca') }}">
-          <span class="inicio-chip-ico">⟡</span>
-          <span class="inicio-chip-texto">Biblioteca</span>
+        <a class="pill pill-primary" href="{{ url_for('main.recuerdos', crear=1) }}">
+          <span class="pill-ico">✎</span>
+          <span class="pill-text">Nuevo recuerdo</span>
         </a>
 
-        <a class="inicio-chip inicio-chip-primary" href="{{ url_for('main.recuerdos', crear=1) }}">
-          <span class="inicio-chip-ico">✎</span>
-          <span class="inicio-chip-texto">Nuevo recuerdo</span>
+        <a class="pill" href="{{ url_for('main.biblioteca') }}">
+          <span class="pill-ico">⟡</span>
+          <span class="pill-text">Biblioteca</span>
         </a>
 
-        <a class="inicio-chip" href="{{ url_for('main.capsulas_panel') }}">
-          <span class="inicio-chip-ico">⏳</span>
-          <span class="inicio-chip-texto">Cápsulas</span>
+        <a class="pill" href="{{ url_for('main.capsulas_panel') }}">
+          <span class="pill-ico">⏳</span>
+          <span class="pill-text">Cápsulas</span>
         </a>
       </section>
 
