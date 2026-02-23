@@ -234,12 +234,12 @@
   }
 
   .inicio-gate-logo{
-    width: 42px;
-    height: 42px;
+    width: clamp(96px, 18vw, 142px);
+    height: clamp(96px, 18vw, 142px);
     object-fit: contain;
-    opacity: .92;
-    margin-bottom: 4px;
-    filter: drop-shadow(0 6px 14px rgba(0,0,0,.28));
+    opacity: .96;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 10px 24px rgba(0,0,0,.34));
   }
 
   .inicio-gate-actions{
@@ -319,6 +319,11 @@
 
   /* Móvil */
   @media (max-width: 520px){
+    .inicio-gate-logo{
+      width: 120px;
+      height: 120px;
+    }
+
     .inicio-accesos{
       justify-content: space-between;
     }
