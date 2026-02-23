@@ -283,6 +283,50 @@
      Movil: recorta el aire muerto general
      ========================= */
   @media (max-width: 520px){
+    body.inicio-page:not(.inicio-guest){
+      background:
+        radial-gradient(900px 460px at 50% 34%, rgba(167,108,72,.18), rgba(12,16,36,0) 62%),
+        radial-gradient(700px 520px at 50% 85%, rgba(198,108,72,.16), rgba(12,16,36,0) 70%),
+        linear-gradient(180deg, #0a0f23 0%, #090d1d 46%, #070a16 100%);
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-hub{
+      gap: 10px;
+      padding: 14px 16px 20px;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-auth{
+      display: none;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-hero{
+      padding-top: 8px;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-kicker{
+      font-size: 11px;
+      letter-spacing: .36em;
+      margin: 2px 0 6px;
+      opacity: .78;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-kicker::before{
+      content: "☾";
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      margin-bottom: 10px;
+      letter-spacing: 0;
+      opacity: .82;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-subtitulo{
+      font-size: 18px !important;
+      line-height: 1.22;
+      max-width: 17ch;
+      margin: 0 auto 6px !important;
+    }
+
     /* 1) Hero más compacto */
     .inicio-hero{ padding-top: 4px; }
     .inicio-subtitulo{
@@ -399,6 +443,51 @@
       font-size: 19px !important;
       max-width: 20ch;
       margin: 4px auto 6px !important;
+    }
+
+    body.inicio-page:not(.inicio-guest) .tocadiscos-placeholder{
+      margin: 0 -16px 4px;
+    }
+
+    body.inicio-page:not(.inicio-guest) .deck-image{
+      height: 57vh;
+      min-height: 350px;
+      max-height: 59vh;
+      object-position: 50% 50%;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-accesos{
+      width: min(360px, calc(100vw - 32px));
+      margin: 10px auto 2px;
+      gap: 10px;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-chip{
+      min-height: 58px;
+      padding: 0 18px;
+      justify-content: flex-start;
+      border: 1px solid rgba(244,241,234,.2);
+      background: rgba(7,11,26,.46);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-chip-primary{
+      background: linear-gradient(180deg, rgba(125,38,58,.6), rgba(86,23,42,.72));
+      border-color: rgba(209,104,122,.42);
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-chip-ico{
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(244,241,234,.26);
+      background: rgba(244,241,234,.08);
+      font-size: 13px;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-chip-texto{
+      font-size: 13px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
     }
   }
 
