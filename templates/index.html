@@ -491,6 +491,132 @@
     }
   }
 
+  /* Mobile final lock: replica de referencia visual */
+  @media (max-width: 520px){
+    body.inicio-page:not(.inicio-guest){
+      background:
+        radial-gradient(900px 460px at 50% 34%, rgba(167,108,72,.14), rgba(12,16,36,0) 62%),
+        linear-gradient(180deg, #091127 0%, #071022 52%, #050c1c 100%);
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-hub{
+      gap: 12px;
+      padding: 14px 14px 20px;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-auth{
+      position: static;
+      top: auto;
+      justify-content: center;
+      padding: 2px 0 0;
+      margin: 0;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-user{
+      display: none;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-auth-link,
+    body.inicio-page:not(.inicio-guest) .inicio-auth-btn{
+      min-height: 54px;
+      padding: 0 26px;
+      border-radius: 999px;
+      font-size: 15px;
+      border: 1px solid rgba(244,241,234,.24);
+      background: rgba(18, 26, 48, .62);
+      color: rgba(244,241,234,.9);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-hero{
+      padding-top: 0;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-kicker{
+      font-size: 11px;
+      letter-spacing: .42em;
+      margin: 6px 0 6px;
+      opacity: .78;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-kicker::before{
+      content: none;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-subtitulo{
+      font-size: 17px !important;
+      line-height: 1.24;
+      max-width: 13.5ch;
+      margin: 0 auto 4px !important;
+      opacity: .94;
+    }
+
+    body.inicio-page:not(.inicio-guest) .tocadiscos-placeholder{
+      margin: 6px -14px 2px;
+      padding: 0 !important;
+    }
+
+    body.inicio-page:not(.inicio-guest) .deck.deck-real{
+      border-radius: 0 26px 26px 26px !important;
+      border: 1px solid rgba(244,241,234,.22) !important;
+      background: rgba(7,11,26,.25) !important;
+      box-shadow: none !important;
+    }
+
+    body.inicio-page:not(.inicio-guest) .deck-image{
+      height: 37vh;
+      min-height: 266px;
+      max-height: 310px;
+      object-position: 50% 50%;
+    }
+
+    body.inicio-page:not(.inicio-guest) .deck-vinilo,
+    body.inicio-page:not(.inicio-guest) .deck-center-btn,
+    body.inicio-page:not(.inicio-guest) .home-fab.deck-fab{
+      display: none !important;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-accesos{
+      width: calc(100vw - 28px);
+      margin: 12px auto 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-chip{
+      min-height: 78px;
+      padding: 0 24px;
+      border-radius: 999px;
+      justify-content: center;
+      border: 1px solid rgba(244,241,234,.2);
+      background: rgba(13, 21, 42, .56);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+      backdrop-filter: blur(6px);
+      gap: 14px;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-chip-primary{
+      order: 0;
+      background: linear-gradient(90deg, rgba(69,15,33,.82), rgba(98,22,48,.78));
+      border-color: rgba(184,65,94,.42);
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-chip-ico{
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(244,241,234,.22);
+      background: rgba(244,241,234,.08);
+      font-size: 14px;
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-chip-texto{
+      font-size: 17px;
+      letter-spacing: .02em;
+      text-transform: none;
+    }
+  }
+
   @media (min-width: 900px){
     .inicio-subtitulo{
       font-size: 30px;
@@ -552,14 +678,14 @@
 
       <!-- chips (opción 2) -->
       <section class="inicio-accesos" aria-label="Accesos principales">
-        <a class="inicio-chip inicio-chip-primary" href="{{ url_for('main.recuerdos', crear=1) }}">
-          <span class="inicio-chip-ico">✎</span>
-          <span class="inicio-chip-texto">Nuevo recuerdo</span>
-        </a>
-
         <a class="inicio-chip" href="{{ url_for('main.biblioteca') }}">
           <span class="inicio-chip-ico">⟡</span>
           <span class="inicio-chip-texto">Biblioteca</span>
+        </a>
+
+        <a class="inicio-chip inicio-chip-primary" href="{{ url_for('main.recuerdos', crear=1) }}">
+          <span class="inicio-chip-ico">✎</span>
+          <span class="inicio-chip-texto">Nuevo recuerdo</span>
         </a>
 
         <a class="inicio-chip" href="{{ url_for('main.capsulas_panel') }}">
