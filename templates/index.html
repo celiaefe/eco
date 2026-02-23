@@ -803,6 +803,17 @@
     filter: drop-shadow(0 26px 70px rgba(0,0,0,.45));
   }
 
+  .tocadiscos-needle{
+    position: absolute;
+    width: 34%;
+    height: auto;
+    right: 6.5%;
+    top: 14%;
+    z-index: 3;
+    pointer-events: none;
+    filter: drop-shadow(0 12px 24px rgba(0,0,0,.35));
+  }
+
   /* Giro lento y elegante */
   @media (prefers-reduced-motion: no-preference){
     .tocadiscos-vinilo{
@@ -876,6 +887,11 @@
     .tocadiscos-vinilo{
       width: 68%;
     }
+    .tocadiscos-needle{
+      width: 36%;
+      right: 5%;
+      top: 13%;
+    }
   }
 {% endblock %}
 
@@ -920,19 +936,30 @@
       </section>
 
       <section class="tocadiscos-hero" aria-label="Tocadiscos Eco">
+        <!-- capa 1: base sin aguja -->
         <img
-          src="{{ url_for('static', filename='tocadiscos_pose.png') }}"
+          src="{{ url_for('static', filename='tocadiscos_base.png') }}"
           class="tocadiscos-bg"
           alt="Tocadiscos"
           draggable="false"
         >
 
+        <!-- capa 2: vinilo eco girando -->
         <img
           src="{{ url_for('static', filename='vinilo_eco.png') }}"
           class="tocadiscos-vinilo"
           alt="Vinilo Eco"
           draggable="false"
         />
+
+        <!-- capa 3: aguja por encima -->
+        <img
+          src="{{ url_for('static', filename='tocadiscos_aguja.png') }}"
+          class="tocadiscos-needle"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+        >
       </section>
 
       <section class="inicio-accesos" aria-label="Accesos principales">
