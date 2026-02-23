@@ -777,6 +777,22 @@
     margin: 14px auto 10px;
   }
 
+  /* Oculta el punto blanco central que viene del asset del vinilo */
+  .tocadiscos-hero::before{
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    left: 49%;
+    top: 36%;
+    transform: translate(-50%, -50%);
+    background: #1a1618;
+    box-shadow: 0 0 0 2px rgba(26,22,24,.55);
+    z-index: 4;
+    pointer-events: none;
+  }
+
   /* Base y aguja ocupan todo el marco */
   .tocadiscos-bg,
   .tocadiscos-needle{
