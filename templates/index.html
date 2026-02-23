@@ -769,30 +769,45 @@
     opacity: .92;
   }
 
-  /* Zona vinilo */
-  .vinilo-zone{
+  /* Hero tocadiscos */
+  .tocadiscos-hero{
     width: 100%;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 6px;
   }
 
-  .vinilo{
-    width: min(78vw, 420px);
-    aspect-ratio: 1 / 1;
+  .tocadiscos-bg{
+    width: min(96vw, 740px);
+    height: auto;
+    display: block;
+    border-radius: 0 26px 26px 26px;
+    border: 1px solid rgba(244,241,234,.18);
+    filter: drop-shadow(0 22px 50px rgba(0,0,0,.45));
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .tocadiscos-vinilo{
+    position: absolute;
+    width: min(47vw, 350px);
+    height: auto;
+    left: 56%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 50%;
     clip-path: circle(49.5% at 50% 50%);
     background: transparent !important;
-    opacity: .95;
-    filter: drop-shadow(0 28px 70px rgba(0,0,0,.55));
+    filter: drop-shadow(0 20px 48px rgba(0,0,0,.45));
     user-select: none;
     pointer-events: none;
   }
 
   /* Giro lento (opción A) */
   @media (prefers-reduced-motion: no-preference){
-    .vinilo{
+    .tocadiscos-vinilo{
       animation: ecoSpin 55s linear infinite;
     }
   }
@@ -854,7 +869,8 @@
     .inicio-subtitulo{ font-size: 24px; }
     .pill{ min-height: 62px; }
     .pill-text{ font-size: 17px; }
-    .vinilo{ width: min(82vw, 420px); }
+    .tocadiscos-bg{ width: 100%; }
+    .tocadiscos-vinilo{ width: min(52vw, 300px); left: 58%; top: 50%; }
   }
 {% endblock %}
 
@@ -898,10 +914,17 @@
         <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
       </section>
 
-      <section class="vinilo-zone" aria-label="Vinilo Eco">
+      <section class="tocadiscos-hero" aria-label="Tocadiscos Eco">
+        <img
+          src="{{ url_for('static', filename='tocadiscos_pose.png') }}"
+          class="tocadiscos-bg"
+          alt="Tocadiscos"
+          draggable="false"
+        >
+
         <img
           src="{{ url_for('static', filename='vinilo_eco.png') }}"
-          class="vinilo"
+          class="tocadiscos-vinilo"
           alt="Vinilo Eco"
           draggable="false"
         />
