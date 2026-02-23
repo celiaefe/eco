@@ -713,6 +713,147 @@
       margin: 0 auto 4px;
     }
   }
+
+  /* ===== HOME estilo mockup ===== */
+  .inicio-mock{
+    min-height: 100vh;
+    padding: 18px 16px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+  }
+
+  /* Hero centrado */
+  .inicio-hero{
+    width: 100%;
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  .inicio-auth{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  .inicio-auth-btn{
+    border-radius: 999px;
+    padding: 10px 16px;
+    border: 1px solid rgba(244,241,234,.16);
+    background: rgba(244,241,234,.06);
+    color: rgba(244,241,234,.9);
+  }
+
+  .inicio-logo{
+    width: 32px;
+    height: 32px;
+    opacity: .85;
+    filter: drop-shadow(0 10px 26px rgba(0,0,0,.35));
+    margin: 8px auto 6px;
+    display: block;
+  }
+
+  .inicio-kicker{
+    margin: 6px 0 8px;
+    letter-spacing: .35em;
+    opacity: .7;
+    font-size: 12px;
+  }
+
+  .inicio-subtitulo{
+    margin: 0 auto;
+    max-width: 24ch;
+    font-size: 26px;
+    line-height: 1.12;
+    opacity: .92;
+  }
+
+  /* Zona vinilo */
+  .vinilo-zone{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6px;
+  }
+
+  .vinilo{
+    width: min(78vw, 420px);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    opacity: .95;
+    filter: drop-shadow(0 28px 70px rgba(0,0,0,.55));
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* Giro lento (opción A) */
+  @media (prefers-reduced-motion: no-preference){
+    .vinilo{
+      animation: ecoSpin 55s linear infinite;
+    }
+  }
+  @keyframes ecoSpin{
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Botones píldora */
+  .inicio-accesos{
+    width: min(520px, 100%);
+    display: grid;
+    gap: 14px;
+    margin-top: 8px;
+  }
+
+  .pill{
+    width: 100%;
+    min-height: 64px;
+    border-radius: 999px;
+    border: 1px solid rgba(244,241,234,.14);
+    background: rgba(244,241,234,.05);
+    color: rgba(244,241,234,.92);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    backdrop-filter: blur(12px);
+  }
+
+  .pill:active{ transform: scale(.98); }
+
+  .pill-ico{
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(244,241,234,.06);
+    border: 1px solid rgba(244,241,234,.10);
+    opacity: .9;
+  }
+
+  .pill-text{
+    font-size: 18px;
+    letter-spacing: .02em;
+  }
+
+  /* Primario (Nuevo recuerdo) */
+  .pill-primary{
+    background: rgba(155,44,44,.20);
+    border-color: rgba(155,44,44,.35);
+  }
+
+  /* Ajustes móvil */
+  @media (max-width: 520px){
+    .inicio-subtitulo{ font-size: 24px; }
+    .pill{ min-height: 62px; }
+    .pill-text{ font-size: 17px; }
+    .vinilo{ width: min(82vw, 420px); }
+  }
 {% endblock %}
 
 {% block content %}
