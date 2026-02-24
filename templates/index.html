@@ -774,6 +774,12 @@
     opacity: .92;
   }
 
+  .tocadiscos-wrapper{
+    box-shadow:
+      0 0 120px rgba(30,60,120,0.25),
+      0 40px 120px rgba(0,0,0,0.6);
+  }
+
   /* ===== HERO tocadiscos (pose vertical) ===== */
   .tocadiscos-hero{
     position: relative;
@@ -783,7 +789,7 @@
     touch-action: pan-y;
     --eco-vinyl-left: 49.8%;
     --eco-vinyl-top: 37.2%;
-    --eco-vinyl-size: 70%;
+    --eco-vinyl-size: 76%;
     --eco-needle-top: 6%;
     --eco-needle-right: 6%;
     --eco-needle-size: 48%;
@@ -819,6 +825,7 @@
 
   .tocadiscos-bg{
     box-shadow: 0 18px 55px rgba(0,0,0,.35);
+    filter: brightness(0.9) contrast(1.05) saturate(1.05);
   }
 
   /* Aguja siempre arriba */
@@ -920,7 +927,7 @@
       border-radius: 24px;
     }
     .tocadiscos-hero{
-      --eco-vinyl-size: 68%;
+      --eco-vinyl-size: 76%;
     }
   }
 {% endblock %}
