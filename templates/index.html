@@ -805,31 +805,26 @@
     display: block;
     position: relative;
     z-index: 1;
-    pointer-events: none;
-    user-select: none;
-    filter: drop-shadow(0 30px 90px rgba(0,0,0,.55));
   }
 
   /* VINILO (gira) */
   .tocadiscos-vinilo{
     position: absolute;
-    width: 60%;
-    left: 50%;
-    top: 52%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    z-index: 2;
-    pointer-events: none;
-    animation: ecoSpin 9s linear infinite;
-  }
-
-  /* AGUJA (encima de todo) */
-  .tocadiscos-aguja{
-    position: absolute;
-    width: 78%;
+    width: 62%;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 2;
+    animation: ecoSpin 12s linear infinite;
+  }
+
+  .tocadiscos-aguja{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     z-index: 3;
     pointer-events: none;
   }
@@ -934,26 +929,9 @@
       </section>
 
       <section class="tocadiscos-hero">
-        <img
-          src="{{ url_for('static', filename='tocadiscos_base_cutout.png') }}"
-          class="tocadiscos-base"
-          alt="Tocadiscos"
-          draggable="false"
-        >
-
-        <img
-          src="{{ url_for('static', filename='vinilo_eco.png') }}"
-          class="tocadiscos-vinilo"
-          alt="Vinilo Eco"
-          draggable="false"
-        />
-
-        <img
-          src="{{ url_for('static', filename='tocadiscos_aguja_cutout.png') }}"
-          class="tocadiscos-aguja"
-          alt="Aguja"
-          draggable="false"
-        >
+        <img src="{{ url_for('static', filename='tocadiscos_base_cutout.png') }}" class="tocadiscos-base">
+        <img src="{{ url_for('static', filename='vinilo_eco.png') }}" class="tocadiscos-vinilo">
+        <img src="{{ url_for('static', filename='tocadiscos_aguja_cutout.png') }}" class="tocadiscos-aguja">
       </section>
 
       <section class="inicio-accesos" aria-label="Accesos principales">
