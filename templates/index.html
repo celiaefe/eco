@@ -13,6 +13,10 @@
   .card{width:100%;border:0;background:transparent;backdrop-filter:none;box-shadow:none;border-radius:0}
   .topbar,.footer{display:none}
   .inner{padding:0}
+  body.inicio-page{
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 
   /* =========================
      HOME (index) - Mobile first polish
@@ -22,7 +26,8 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
-    padding: 18px 16px;
+    padding: 18px 16px calc(28px + env(safe-area-inset-bottom));
+    touch-action: pan-y;
   }
 
   /* Hero: menos aire y texto mas compacto */
@@ -775,6 +780,15 @@
     width: 100%;
     max-width: 520px;
     margin: 14px auto 10px;
+    touch-action: pan-y;
+    --eco-vinyl-left: 49.8%;
+    --eco-vinyl-top: 37.2%;
+    --eco-vinyl-size: 70%;
+    --eco-needle-top: 6%;
+    --eco-needle-right: 6%;
+    --eco-needle-size: 48%;
+    --eco-needle-scale: 0.9;
+    --eco-needle-rotate: 8deg;
   }
 
   /* Oculta el punto blanco central que viene del asset del vinilo */
@@ -784,8 +798,8 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    left: 49%;
-    top: 46.8%;
+    left: var(--eco-vinyl-left);
+    top: var(--eco-vinyl-top);
     transform: translate(-50%, -50%);
     background: #1a1618;
     box-shadow: 0 0 0 2px rgba(26,22,24,.55);
@@ -794,8 +808,7 @@
   }
 
   /* Base y aguja ocupan todo el marco */
-  .tocadiscos-bg,
-  .tocadiscos-needle{
+  .tocadiscos-bg{
     width: 100%;
     height: 50vh;
     min-height: 360px;
@@ -811,18 +824,22 @@
   /* Aguja siempre arriba */
   .tocadiscos-needle{
     position: absolute;
-    inset: 0;
-    z-index: 3;
+    top: var(--eco-needle-top);
+    right: var(--eco-needle-right);
+    width: var(--eco-needle-size);
+    transform-origin: top right;
+    transform: rotate(var(--eco-needle-rotate)) scale(var(--eco-needle-scale));
+    z-index: 5;
     pointer-events: none;
   }
 
   /* Vinilo en medio (ajustaremos a la primera) */
   .tocadiscos-vinilo{
     position: absolute;
-    width: 70%;
+    width: var(--eco-vinyl-size);
     aspect-ratio: 1 / 1;
-    left: 49%;
-    top: 46.8%;
+    left: var(--eco-vinyl-left);
+    top: var(--eco-vinyl-top);
     transform: translate(-50%, -50%);
     border-radius: 50%;
     opacity: .96;
@@ -864,6 +881,7 @@
     justify-content: center;
     gap: 12px;
     backdrop-filter: blur(12px);
+    touch-action: pan-y;
   }
 
   .pill:active{ transform: scale(.98); }
@@ -896,14 +914,13 @@
     .inicio-subtitulo{ font-size: 24px; }
     .pill{ min-height: 62px; }
     .pill-text{ font-size: 17px; }
-    .tocadiscos-bg,
-    .tocadiscos-needle{
+    .tocadiscos-bg{
       height: 52vh;
       min-height: 350px;
       border-radius: 24px;
     }
-    .tocadiscos-vinilo{
-      width: 68%;
+    .tocadiscos-hero{
+      --eco-vinyl-size: 68%;
     }
   }
 {% endblock %}
@@ -942,9 +959,6 @@
           </form>
         </div>
 
-        <img src="{{ url_for('static', filename='image_eco.png') }}" class="inicio-logo" alt="Eco" />
-
-        <p class="inicio-kicker">ECO</p>
         <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
       </section>
 
