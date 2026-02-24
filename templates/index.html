@@ -780,86 +780,58 @@
       0 40px 120px rgba(0,0,0,0.6);
   }
 
-  /* ===== HERO tocadiscos (pose vertical) ===== */
   .tocadiscos-hero{
     position: relative;
     width: 100%;
     max-width: 520px;
-    margin: 14px auto 10px;
-    touch-action: pan-y;
-    --eco-vinyl-left: 49.8%;
-    --eco-vinyl-top: 37.2%;
-    --eco-vinyl-size: 76%;
-    --eco-needle-top: 6%;
-    --eco-needle-right: 6%;
-    --eco-needle-size: 48%;
-    --eco-needle-scale: 0.9;
-    --eco-needle-rotate: 8deg;
+    margin: 10px auto 6px;
   }
 
-  /* Oculta el punto blanco central que viene del asset del vinilo */
   .tocadiscos-hero::before{
-    content: "";
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    left: var(--eco-vinyl-left);
-    top: var(--eco-vinyl-top);
-    transform: translate(-50%, -50%);
-    background: #1a1618;
-    box-shadow: 0 0 0 2px rgba(26,22,24,.55);
-    z-index: 4;
-    pointer-events: none;
+    content:"";
+    position:absolute;
+    inset:-60px -20px;
+    background: radial-gradient(
+      circle at 50% 40%,
+      rgba(255,140,80,0.12),
+      rgba(0,0,0,0) 70%
+    );
+    z-index:0;
   }
 
-  /* Base y aguja ocupan todo el marco */
-  .tocadiscos-bg{
+  /* BASE */
+  .tocadiscos-base{
     width: 100%;
-    height: 50vh;
-    min-height: 360px;
-    object-fit: cover;
-    border-radius: 26px;
     display: block;
-  }
-
-  .tocadiscos-bg{
-    box-shadow: 0 18px 55px rgba(0,0,0,.35);
-    filter: brightness(0.9) contrast(1.05) saturate(1.05);
-  }
-
-  /* Aguja siempre arriba */
-  .tocadiscos-needle{
-    position: absolute;
-    top: var(--eco-needle-top);
-    right: var(--eco-needle-right);
-    width: var(--eco-needle-size);
-    transform-origin: top right;
-    transform: rotate(var(--eco-needle-rotate)) scale(var(--eco-needle-scale));
-    z-index: 5;
+    position: relative;
+    z-index: 1;
     pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 30px 90px rgba(0,0,0,.55));
   }
 
-  /* Vinilo en medio (ajustaremos a la primera) */
+  /* VINILO (gira) */
   .tocadiscos-vinilo{
     position: absolute;
-    width: var(--eco-vinyl-size);
-    aspect-ratio: 1 / 1;
-    left: var(--eco-vinyl-left);
-    top: var(--eco-vinyl-top);
+    width: 60%;
+    left: 50%;
+    top: 52%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    opacity: .96;
-    pointer-events: none;
     z-index: 2;
-    filter: drop-shadow(0 30px 80px rgba(0,0,0,.55));
+    pointer-events: none;
+    animation: ecoSpin 9s linear infinite;
   }
 
-  /* Giro lento y elegante */
-  @media (prefers-reduced-motion: no-preference){
-    .tocadiscos-vinilo{
-      animation: ecoSpin 12s linear infinite;
-    }
+  /* AGUJA (encima de todo) */
+  .tocadiscos-aguja{
+    position: absolute;
+    width: 78%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    pointer-events: none;
   }
 
   @keyframes ecoSpin{
@@ -921,14 +893,6 @@
     .inicio-subtitulo{ font-size: 24px; }
     .pill{ min-height: 62px; }
     .pill-text{ font-size: 17px; }
-    .tocadiscos-bg{
-      height: 52vh;
-      min-height: 350px;
-      border-radius: 24px;
-    }
-    .tocadiscos-hero{
-      --eco-vinyl-size: 76%;
-    }
   }
 {% endblock %}
 
@@ -969,16 +933,14 @@
         <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
       </section>
 
-      <section class="tocadiscos-hero" aria-label="Tocadiscos Eco">
-        <!-- capa 1: base sin aguja -->
+      <section class="tocadiscos-hero">
         <img
-          src="{{ url_for('static', filename='tocadiscos_base.png') }}"
-          class="tocadiscos-bg"
+          src="{{ url_for('static', filename='tocadiscos_base_cutout.png') }}"
+          class="tocadiscos-base"
           alt="Tocadiscos"
           draggable="false"
         >
 
-        <!-- capa 2: vinilo eco girando -->
         <img
           src="{{ url_for('static', filename='vinilo_eco.png') }}"
           class="tocadiscos-vinilo"
@@ -986,12 +948,10 @@
           draggable="false"
         />
 
-        <!-- capa 3: aguja por encima -->
         <img
-          src="{{ url_for('static', filename='tocadiscos_aguja.png') }}"
-          class="tocadiscos-needle"
-          alt=""
-          aria-hidden="true"
+          src="{{ url_for('static', filename='tocadiscos_aguja_cutout.png') }}"
+          class="tocadiscos-aguja"
+          alt="Aguja"
           draggable="false"
         >
       </section>
