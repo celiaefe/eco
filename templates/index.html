@@ -774,66 +774,6 @@
     opacity: .92;
   }
 
-  .tocadiscos-wrapper{
-    box-shadow:
-      0 0 120px rgba(30,60,120,0.25),
-      0 40px 120px rgba(0,0,0,0.6);
-  }
-
-  .tocadiscos-hero{
-    position: relative;
-    width: 100%;
-    max-width: 520px;
-    margin: 10px auto 6px;
-  }
-
-  .tocadiscos-hero::before{
-    content:"";
-    position:absolute;
-    inset:-60px -20px;
-    background: radial-gradient(
-      circle at 50% 40%,
-      rgba(255,140,80,0.12),
-      rgba(0,0,0,0) 70%
-    );
-    z-index:0;
-  }
-
-  /* BASE */
-  .tocadiscos-base{
-    width: 100%;
-    display: block;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* VINILO (gira) */
-  .tocadiscos-vinilo{
-    position: absolute;
-    width: 62%;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    z-index: 2;
-    animation: ecoSpin 12s linear infinite;
-  }
-
-  .tocadiscos-aguja{
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    z-index: 3;
-    pointer-events: none;
-  }
-
-  @keyframes ecoSpin{
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to   { transform: translate(-50%, -50%) rotate(360deg); }
-  }
-
   /* Botones píldora */
   .inicio-accesos{
     width: min(520px, 100%);
@@ -926,12 +866,6 @@
         </div>
 
         <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
-      </section>
-
-      <section class="tocadiscos-hero">
-        <img src="{{ url_for('static', filename='tocadiscos_base_cutout.png') }}" class="tocadiscos-base">
-        <img src="{{ url_for('static', filename='vinilo_eco.png') }}" class="tocadiscos-vinilo">
-        <img src="{{ url_for('static', filename='tocadiscos_aguja_cutout.png') }}" class="tocadiscos-aguja">
       </section>
 
       <section class="inicio-accesos" aria-label="Accesos principales">
