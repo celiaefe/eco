@@ -18,6 +18,28 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  .intro-layer{
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #000;
+    display: grid;
+    place-items: center;
+    opacity: 1;
+    transition: opacity .55s ease;
+  }
+
+  .intro-layer video{
+    width: min(92vw, 920px);
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border-radius: 18px;
+  }
+
+  .intro-layer.is-fading{
+    opacity: 0;
+  }
+
   /* =========================
      HOME (index) - Mobile first polish
      ========================= */
@@ -832,7 +854,17 @@
 {% endblock %}
 
 {% block content %}
-  <main class="inicio-hub{% if current_user.is_authenticated %} inicio-mock{% endif %}">
+  {% if current_user.is_authenticated %}
+    <div id="intro" class="intro-layer">
+      <video id="introVideo" autoplay muted playsinline preload="auto">
+        <source src="{{ url_for('static', filename='eco_opener.mp4') }}" type="video/mp4">
+      </video>
+    </div>
+  {% endif %}
+
+  <main id="homeContent"
+        class="inicio-hub{% if current_user.is_authenticated %} inicio-mock{% endif %}"
+        {% if current_user.is_authenticated %}style="opacity:0; pointer-events:none"{% endif %}>
     {% if not current_user.is_authenticated %}
 
       <section class="inicio-gate" aria-label="Acceso">
@@ -890,6 +922,44 @@
 {% endblock %}
 
 {% block extra_js %}
+  <script>
+  (function(){
+    const intro = document.getElementById("intro");
+    const video = document.getElementById("introVideo");
+    const home  = document.getElementById("homeContent");
+
+    // Si no hay intro (guest), no hacemos nada
+    if (!intro || !video || !home) return;
+
+    let revealed = false;
+    const revealHome = () => {
+      if (revealed) return;
+      revealed = true;
+      intro.classList.add("is-fading");
+      setTimeout(() => {
+        intro.remove();
+        home.style.opacity = "1";
+        home.style.pointerEvents = "auto";
+      }, 560);
+    };
+
+    video.addEventListener("ended", revealHome);
+
+    // Por si el navegador bloquea autoplay o algo raro:
+    video.addEventListener("error", revealHome);
+    // Fallback de seguridad solo si el video ni siquiera empieza.
+    const startGuard = setTimeout(() => {
+      if (video.currentTime < 0.2) revealHome();
+    }, 8000);
+    video.addEventListener("playing", () => {
+      clearTimeout(startGuard);
+    }, { once: true });
+    const playTry = video.play();
+    if (playTry && typeof playTry.catch === "function") {
+      playTry.catch(revealHome);
+    }
+  })();
+  </script>
   <script>
   (function(){
     const el = document.getElementById("inicioSusurro");
