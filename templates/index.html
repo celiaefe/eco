@@ -758,6 +758,29 @@
     margin-top: 6px;
   }
 
+  .home-vinilo-wrap{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 4px 0 6px;
+  }
+
+  .home-vinilo-spin{
+    width: min(82vw, 360px);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    display: block;
+    animation: ecoSpin 12s linear infinite;
+    filter: drop-shadow(0 20px 36px rgba(0,0,0,.35));
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @keyframes ecoSpin{
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
   .inicio-auth{
     display: flex;
     justify-content: center;
@@ -896,8 +919,15 @@
             <button type="submit" class="inicio-auth-link inicio-auth-btn">Salir</button>
           </form>
         </div>
+      </section>
 
-        <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
+      <section class="home-vinilo-wrap" aria-label="Vinilo Eco">
+        <img
+          src="{{ url_for('static', filename='vinilo_eco.png') }}"
+          alt="Vinilo Eco"
+          class="home-vinilo-spin"
+          draggable="false"
+        >
       </section>
 
       <section class="inicio-accesos" aria-label="Accesos principales">
@@ -944,6 +974,8 @@
     };
 
     video.addEventListener("ended", revealHome);
+    intro.addEventListener("click", revealHome);
+    intro.addEventListener("touchstart", revealHome, { passive: true });
 
     // Por si el navegador bloquea autoplay o algo raro:
     video.addEventListener("error", revealHome);

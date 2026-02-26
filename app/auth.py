@@ -41,12 +41,13 @@ def login():
 def login_post():
     email = request.form.get("email", "").strip().lower()
     password = request.form.get("password", "")
+    remember = request.form.get("remember") == "1"
     u = User.query.filter_by(email=email).first()
     if not u or not u.check_password(password):
         flash("Credenciales incorrectas.")
         return redirect(url_for("auth.login"))
 
-    login_user(u)
+    login_user(u, remember=remember)
     return redirect(url_for("main.index"))
 
 

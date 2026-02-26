@@ -1,6 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Eco · Login{% endblock %}
 {% block navhint %}Entrar{% endblock %}
+{% block extra_css %}
+  @media (max-width: 768px){
+    .auth-form input{
+      font-size: 16px;
+    }
+  }
+  .auth-remember{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 2px 0 8px;
+    color: rgba(244,241,234,.84);
+    font-size: .92rem;
+  }
+  .auth-remember input{
+    width: 16px;
+    height: 16px;
+    accent-color: #9B2C2C;
+  }
+{% endblock %}
 
 {% block content %}
 <h1>Entrar</h1>
@@ -16,10 +36,15 @@
 
 <form method="post" action="{{ url_for('auth.login_post') }}" class="auth-form">
   <label for="email">Email</label>
-  <input id="email" name="email" type="email" required>
+  <input id="email" name="email" type="email" required autocomplete="email">
 
   <label for="password">Contraseña</label>
-  <input id="password" name="password" type="password" required>
+  <input id="password" name="password" type="password" required autocomplete="current-password">
+
+  <label class="auth-remember" for="remember">
+    <input id="remember" name="remember" type="checkbox" value="1">
+    <span>Mantener sesión abierta</span>
+  </label>
 
   <button type="submit">Entrar</button>
 </form>
