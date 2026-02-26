@@ -874,6 +874,21 @@
     .pill{ min-height: 62px; }
     .pill-text{ font-size: 17px; }
   }
+
+  /* Fondo fijo para toda la home */
+  body.inicio-page,
+  body.inicio-page:not(.inicio-guest){
+    background:
+      linear-gradient(rgba(8,10,18,.35), rgba(8,10,18,.55)),
+      url("{{ url_for('static', filename='fondo_home.png') }}") center / cover no-repeat fixed !important;
+  }
+
+  @media (max-width: 520px){
+    body.inicio-page,
+    body.inicio-page:not(.inicio-guest){
+      background-attachment: scroll !important;
+    }
+  }
 {% endblock %}
 
 {% block content %}
