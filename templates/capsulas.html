@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Eco · Cápsulas{% endblock %}
-{% block body_class %}noche{% endblock %}
+{% block body_class %}noche capsulas-page{% endblock %}
 {% block navhint %}Cápsulas{% endblock %}
 {% block extra_head %}
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
@@ -13,6 +13,18 @@
   .card{width:100%;border:0;background:transparent;backdrop-filter:none;box-shadow:none;border-radius:0}
   .topbar,.footer{display:none}
   .inner{padding:0}
+
+  body.capsulas-page{
+    background:
+      linear-gradient(rgba(8,10,18,.35), rgba(8,10,18,.55)),
+      url("{{ url_for('static', filename='fondo_home.png') }}") center / cover no-repeat fixed !important;
+  }
+
+  @media (max-width: 520px){
+    body.capsulas-page{
+      background-attachment: scroll !important;
+    }
+  }
 
   .caps-page { max-width: 980px; margin: 0 auto; padding: 24px 16px 40px; color: #f7f7f2; }
   .caps-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 20px; }

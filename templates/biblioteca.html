@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Eco · Biblioteca{% endblock %}
-{% block body_class %}noche{% endblock %}
+{% block body_class %}noche biblioteca-page{% endblock %}
 {% block navhint %}Biblioteca{% endblock %}
 {% block extra_head %}
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
@@ -13,6 +13,18 @@
   .card{width:100%;border:0;background:transparent;backdrop-filter:none;box-shadow:none;border-radius:0}
   .topbar,.footer{display:none}
   .inner{padding:0}
+
+  body.biblioteca-page{
+    background:
+      linear-gradient(rgba(8,10,18,.35), rgba(8,10,18,.55)),
+      url("{{ url_for('static', filename='fondo_home.png') }}") center / cover no-repeat fixed !important;
+  }
+
+  @media (max-width: 520px){
+    body.biblioteca-page{
+      background-attachment: scroll !important;
+    }
+  }
 {% endblock %}
 
 {% block content %}
