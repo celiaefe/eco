@@ -1,11 +1,23 @@
 {% extends "base.html" %}
 {% block title %}Eco · Login{% endblock %}
+{% block body_class %}login-page{% endblock %}
 {% block navhint %}Entrar{% endblock %}
 {% block extra_css %}
+  body.login-page .brand .dot{
+    display:none;
+  }
+  body.login-page .brand::before{
+    content:"";
+    width:28px;
+    height:28px;
+    display:inline-block;
+    background: url("{{ url_for('static', filename='logo_eco.png') }}") center / contain no-repeat;
+    border-radius: 6px;
+  }
   .auth-logo{
     display:block;
-    width:min(160px, 42vw);
-    margin: 0 auto 12px;
+    width:min(200px, 56vw);
+    margin: 0 auto 14px;
     height:auto;
   }
   @media (max-width: 768px){
