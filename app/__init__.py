@@ -29,8 +29,11 @@ def create_app():
     running_on_render = bool(os.getenv("RENDER") or os.getenv("RENDER_EXTERNAL_URL"))
     if not db_url:
         if running_on_render:
-            raise RuntimeError("DATABASE_URL no configurada en Render.")
-        db_url = "sqlite:///eco.db"
+            # Fallback defensivo para que el servicio arranque y responda health checks.
+            db_url = "sqlite:////tmp/eco_render_fallback.db"
+            app.logger.warning("DATABASE_URL no configurada en Render; usando SQLite temporal en /tmp.")
+        else:
+            db_url = "sqlite:///eco.db"
     # Render a veces da postgres://, SQLAlchemy prefiere postgresql://
     if db_url.startswith("postgres://"):
         db_url = db_url.replace("postgres://", "postgresql://", 1)
