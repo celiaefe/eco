@@ -2,6 +2,12 @@
 {% block title %}Eco · Login{% endblock %}
 {% block navhint %}Entrar{% endblock %}
 {% block extra_css %}
+  .auth-logo{
+    display:block;
+    width:min(160px, 42vw);
+    margin: 0 auto 12px;
+    height:auto;
+  }
   @media (max-width: 768px){
     .auth-form input{
       font-size: 16px;
@@ -23,6 +29,11 @@
 {% endblock %}
 
 {% block content %}
+<img
+  src="{{ url_for('static', filename='logo_eco.png') }}"
+  alt="Logo Eco"
+  class="auth-logo"
+>
 <h1>Entrar</h1>
 <p class="auth-sub">Accede a tu cuenta.</p>
 
