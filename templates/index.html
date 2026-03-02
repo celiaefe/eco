@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Eco · Inicio{% endblock %}
-{% block body_class %}inicio-page{% if not current_user.is_authenticated %} inicio-guest{% endif %}{% endblock %}
+{% block body_class %}inicio-page{% endblock %}
 {% block navhint %}Inicio{% endblock %}
 {% block extra_head %}
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
@@ -901,38 +901,18 @@
   {% endif %}
 
   <main id="homeContent"
-        class="inicio-hub{% if current_user.is_authenticated %} inicio-mock{% endif %}"
+        class="inicio-hub inicio-mock"
         {% if current_user.is_authenticated %}style="opacity:0; pointer-events:none"{% endif %}>
-    {% if not current_user.is_authenticated %}
-
-      <section class="inicio-gate" aria-label="Acceso">
-        <img
-          src="{{ url_for('static', filename='images/image_eco.png') }}"
-          alt="Eco"
-          class="inicio-gate-logo"
-          draggable="false"
-        >
-        <p class="inicio-kicker">Eco</p>
-        <p class="inicio-subtitulo">Una canción puede guardar un momento entero.</p>
-
-        <div class="inicio-gate-actions">
-          <a href="{{ url_for('auth.login') }}" class="inicio-gate-btn">Entrar</a>
-          <a href="{{ url_for('auth.register') }}" class="inicio-gate-btn inicio-gate-btn-primary">Registrarse</a>
-        </div>
-
-        <p class="inicio-gate-mini">
-          Guarda lo que no quieres olvidar.<br>
-          Y lo que aún no estás lista para volver a escuchar.
-        </p>
-      </section>
-
-    {% else %}
-
       <section class="inicio-hero">
         <div class="inicio-auth">
+          {% if current_user.is_authenticated %}
           <form method="post" action="{{ url_for('auth.logout') }}" class="inicio-auth-form">
             <button type="submit" class="inicio-auth-link inicio-auth-btn">Salir</button>
           </form>
+          {% else %}
+          <a href="{{ url_for('auth.login') }}" class="inicio-auth-link">Entrar</a>
+          <a href="{{ url_for('auth.register') }}" class="inicio-auth-link inicio-auth-btn">Registrarse</a>
+          {% endif %}
         </div>
       </section>
 
@@ -946,6 +926,7 @@
       </section>
 
       <section class="inicio-accesos" aria-label="Accesos principales">
+        {% if current_user.is_authenticated %}
         <a class="pill pill-primary" href="{{ url_for('main.recuerdos', crear=1) }}">
           <span class="pill-ico">✎</span>
           <span class="pill-text">Nuevo recuerdo</span>
@@ -960,9 +941,23 @@
           <span class="pill-ico">⏳</span>
           <span class="pill-text">Cápsulas</span>
         </a>
-      </section>
+        {% else %}
+        <a class="pill pill-primary" href="{{ url_for('auth.login') }}">
+          <span class="pill-ico">↪</span>
+          <span class="pill-text">Entrar</span>
+        </a>
 
-    {% endif %}
+        <a class="pill" href="{{ url_for('auth.register') }}">
+          <span class="pill-ico">✦</span>
+          <span class="pill-text">Registrarse</span>
+        </a>
+
+        <a class="pill" href="{{ url_for('auth.forgot_password') }}">
+          <span class="pill-ico">⌁</span>
+          <span class="pill-text">Recuperar acceso</span>
+        </a>
+        {% endif %}
+      </section>
   </main>
 {% endblock %}
 
