@@ -10,7 +10,7 @@ load_dotenv()
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
-login_manager.login_view = "auth.login"
+login_manager.login_view = "main.index"
 
 
 def _env_bool(name: str, default: bool = False) -> bool:

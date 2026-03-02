@@ -763,15 +763,21 @@
     display: flex;
     justify-content: center;
     margin: 4px 0 6px;
+    margin-top: 12vh;
+    transition: transform 0.6s ease, margin-top 0.6s ease;
+  }
+  .home-vinilo-wrap.mover,
+  .vinilo-container.mover{
+    transform: translateY(-40px);
   }
 
   .home-vinilo-spin{
-    width: min(82vw, 360px);
+    width: 240px;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     display: block;
-    animation: ecoSpin 12s linear infinite;
-    filter: drop-shadow(0 20px 36px rgba(0,0,0,.35));
+    animation: ecoSpin 30s linear infinite;
+    filter: brightness(.85) drop-shadow(0 20px 36px rgba(0,0,0,.35));
     pointer-events: none;
     user-select: none;
   }
@@ -867,6 +873,51 @@
     background: rgba(155,44,44,.20);
     border-color: rgba(155,44,44,.35);
   }
+  .home-login-box{
+    width: min(520px, 100%);
+    margin-top: 10px;
+    padding: 14px;
+    border-radius: 18px;
+    border: 1px solid rgba(244,241,234,.14);
+    background: rgba(11,15,26,.42);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+  }
+  .home-login-box.visible{
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .home-login-form{
+    display: grid;
+    gap: 10px;
+  }
+  .home-login-form input{
+    border-radius: 12px;
+    border: 1px solid rgba(244,241,234,.16);
+    background: rgba(244,241,234,.06);
+    color: rgba(244,241,234,.95);
+    padding: 11px 12px;
+  }
+  .home-login-form button{
+    min-height: 46px;
+    border-radius: 12px;
+    border: 1px solid rgba(155,44,44,.42);
+    background: rgba(155,44,44,.22);
+    color: rgba(244,241,234,.95);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .home-login-error{
+    margin: 0 0 10px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,120,120,.35);
+    background: rgba(120,24,24,.35);
+  }
 
   /* Ajustes móvil */
   @media (max-width: 520px){
@@ -910,7 +961,7 @@
             <button type="submit" class="inicio-auth-link inicio-auth-btn">Salir</button>
           </form>
           {% else %}
-          <a href="{{ url_for('auth.login') }}" class="inicio-auth-link">Entrar</a>
+          <button type="button" class="inicio-auth-link" data-open-login>Entrar</button>
           <a href="{{ url_for('auth.register') }}" class="inicio-auth-link inicio-auth-btn">Registrarse</a>
           {% endif %}
         </div>
@@ -942,10 +993,10 @@
           <span class="pill-text">Cápsulas</span>
         </a>
         {% else %}
-        <a class="pill pill-primary" href="{{ url_for('auth.login') }}">
+        <button type="button" class="pill pill-primary" data-open-login>
           <span class="pill-ico">↪</span>
           <span class="pill-text">Entrar</span>
-        </a>
+        </button>
 
         <a class="pill" href="{{ url_for('auth.register') }}">
           <span class="pill-ico">✦</span>
@@ -958,6 +1009,26 @@
         </a>
         {% endif %}
       </section>
+      {% if not current_user.is_authenticated %}
+      <section id="homeLoginBox" class="home-login-box" hidden>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for m in messages %}
+              <p class="home-login-error">{{ m }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <form method="post" action="{{ url_for('auth.login_post') }}" class="home-login-form">
+          <input name="email" type="email" placeholder="Email" required autocomplete="email">
+          <input name="password" type="password" placeholder="Contraseña" required autocomplete="current-password">
+          <label class="auth-remember" for="homeRemember">
+            <input id="homeRemember" name="remember" type="checkbox" value="1">
+            <span>Mantener sesión abierta</span>
+          </label>
+          <button type="submit">Entrar</button>
+        </form>
+      </section>
+      {% endif %}
   </main>
 {% endblock %}
 
@@ -1025,6 +1096,27 @@
     if (now.getHours() >= 23 || now.getHours() < 6) {
       el.textContent = "Eco escucha mejor a estas horas.";
     }
+  })();
+  </script>
+  <script>
+  (function(){
+    const box = document.getElementById("homeLoginBox");
+    const triggers = document.querySelectorAll("[data-open-login]");
+    if (!box || !triggers.length) return;
+
+    const openLogin = () => {
+      box.hidden = false;
+      requestAnimationFrame(() => box.classList.add("visible"));
+      box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    };
+
+    triggers.forEach((el) => {
+      el.addEventListener("click", openLogin);
+    });
+
+    const hasAuthHint = new URLSearchParams(window.location.search).get("auth") === "login";
+    const hasErrors = !!box.querySelector(".home-login-error");
+    if (hasAuthHint || hasErrors) openLogin();
   })();
   </script>
   <script src="{{ url_for('static', filename='js/inicio.js') }}"></script>

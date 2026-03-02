@@ -34,7 +34,7 @@ def register_post():
 
 @auth_bp.get("/login")
 def login():
-    return render_template("login.html")
+    return redirect(url_for("main.index", auth="login"))
 
 
 @auth_bp.post("/login")
@@ -45,7 +45,7 @@ def login_post():
     u = User.query.filter_by(email=email).first()
     if not u or not u.check_password(password):
         flash("Credenciales incorrectas.")
-        return redirect(url_for("auth.login"))
+        return redirect(url_for("main.index", auth="login"))
 
     login_user(u, remember=remember)
     return redirect(url_for("main.index"))
@@ -82,11 +82,11 @@ def forgot_password_post():
     u.set_password(password)
     db.session.commit()
     flash("Contraseña actualizada. Ya puedes entrar.")
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("main.index", auth="login"))
 
 
 @auth_bp.post("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("main.index"))
