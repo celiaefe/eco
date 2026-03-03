@@ -3,6 +3,18 @@
 {% block body_class %}login-page{% endblock %}
 {% block navhint %}Entrar{% endblock %}
 {% block extra_css %}
+  .login-container{
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    margin-top: 40px;
+    pointer-events: none;
+  }
+  .login-container.visible{
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
   body.login-page .brand .dot{
     display:none;
   }
@@ -19,6 +31,10 @@
     width:min(200px, 56vw);
     margin: 0 auto 14px;
     height:auto;
+    transition: transform 0.6s ease;
+  }
+  .auth-logo.mover{
+    transform: translateY(-40px);
   }
   @media (max-width: 768px){
     .auth-form input{
@@ -44,34 +60,49 @@
 <img
   src="{{ url_for('static', filename='superlogo_luna.png', v='20260227-5') }}"
   alt="Logo Eco"
+  id="vinilo"
   class="auth-logo"
 >
 <h1>Entrar</h1>
 <p class="auth-sub">Accede a tu cuenta.</p>
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    {% for m in messages %}
-      <p class="auth-error">{{ m }}</p>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+<div id="loginBox" class="login-container">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for m in messages %}
+        <p class="auth-error">{{ m }}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
 
-<form method="post" action="{{ url_for('auth.login_post') }}" class="auth-form">
-  <label for="email">Email</label>
-  <input id="email" name="email" type="email" required autocomplete="email">
+  <form method="post" action="{{ url_for('auth.login_post') }}" class="auth-form">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" required autocomplete="email">
 
-  <label for="password">Contraseña</label>
-  <input id="password" name="password" type="password" required autocomplete="current-password">
+    <label for="password">Contraseña</label>
+    <input id="password" name="password" type="password" required autocomplete="current-password">
 
-  <label class="auth-remember" for="remember">
-    <input id="remember" name="remember" type="checkbox" value="1">
-    <span>Mantener sesión abierta</span>
-  </label>
+    <label class="auth-remember" for="remember">
+      <input id="remember" name="remember" type="checkbox" value="1">
+      <span>Mantener sesión abierta</span>
+    </label>
 
-  <button type="submit">Entrar</button>
-</form>
+    <button type="submit">Entrar</button>
+  </form>
 
-<p class="auth-switch"><a href="{{ url_for('auth.forgot_password') }}">Olvidé mi contraseña</a></p>
-<p class="auth-switch">¿No tienes cuenta? <a href="{{ url_for('auth.register') }}">Regístrate</a></p>
+  <p class="auth-switch"><a href="{{ url_for('auth.forgot_password') }}">Olvidé mi contraseña</a></p>
+  <p class="auth-switch">¿No tienes cuenta? <a href="{{ url_for('auth.register') }}">Regístrate</a></p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    function mostrarLogin() {
+      const box = document.getElementById("loginBox");
+      const vinilo = document.getElementById("vinilo");
+      if (box) box.classList.add("visible");
+      if (vinilo) vinilo.classList.add("mover");
+    }
+    requestAnimationFrame(mostrarLogin);
+  </script>
 {% endblock %}

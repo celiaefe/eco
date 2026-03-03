@@ -1,3 +1,21 @@
+@font-face {
+  font-family: "Melodrama";
+  src: url("/static/fonts/Melodrama-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Melodrama";
+  src: url("/static/fonts/Melodrama-Medium.woff2") format("woff2");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Melodrama";
+  src: url("/static/fonts/Melodrama-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,12 +24,30 @@
 
 html, body {
   height: 100%;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Melodrama", serif;
 }
 
 body {
+  font-size: 16.5px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
   background: radial-gradient(circle at top left, #1b2240, #0c1024 70%);
   color: #eaeaf5;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+
+button {
+  font-weight: 500;
+}
+
+input, textarea {
+  font-family: "Melodrama", serif;
+  font-weight: 400;
 }
 
 body.recuerdos-page {
