@@ -16,7 +16,9 @@
   font-weight: 600;
 }
 
-* {
+*,
+*::before,
+*::after{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -24,6 +26,8 @@
 
 html, body {
   height: 100%;
+  width: 100%;
+  overflow-x: hidden;
   font-family: "Melodrama", serif;
 }
 
@@ -117,6 +121,82 @@ label, .field-label{
   font-weight: 600;
 }
 
+.filters-card{
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 14px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* Si dentro hay una fila con selects */
+.filters-row{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filters-row > *{
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+/* Inputs y selects: nunca mas anchos que su contenedor */
+.filters-card input,
+.filters-card select{
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Que la tarjeta no exceda */
+.bib-controls{
+  width:100%;
+  max-width:100%;
+}
+
+/* La clave: grid que se adapta sin overflow */
+.bib-controls-grid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  width:100%;
+  max-width:100%;
+}
+
+/* En pantallas medianas: 2 columnas (selects juntos) */
+@media (min-width: 520px){
+  .bib-controls-grid{
+    grid-template-columns: 1fr 1fr;
+  }
+  /* El search ocupa toda la fila */
+  .bib-controls-grid .bib-search-control{
+    grid-column: 1 / -1;
+  }
+}
+
+/* Inputs y selects: nunca empujan */
+.bib-search,
+.bib-select{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+}
+
+/* El <details> a veces mete padding raro, lo normalizamos */
+.bib-filtros-tab{
+  width:100%;
+  max-width:100%;
+  overflow:hidden;
+}
+
+.bib-filtros-tab > summary{
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  text-transform: none;
+}
+
 .user-pill {
   font-size: 14px;
   opacity: 0.7;
@@ -131,6 +211,67 @@ label, .field-label{
   position: absolute;
   inset: 0;
   background: linear-gradient(to bottom, rgba(0,0,0,.25), transparent 60%);
+}
+
+/* Topbar */
+.eco-topbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px 6px;
+}
+
+.eco-topbar--solo{
+  justify-content: flex-end;
+}
+
+.eco-title{ margin: 0; }
+.eco-subtitle{ margin: 6px 0 0; opacity: .78; }
+
+/* Cuenta */
+.eco-account{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(10,12,20,.35);
+  backdrop-filter: blur(10px);
+}
+
+.eco-email{
+  font-size: 13px;
+  opacity: .70;
+  max-width: 46vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eco-logout{
+  font-size: 13px;
+  font-weight: 500;
+  opacity: .85;
+  text-decoration: none;
+  padding-left: 10px;
+  border-left: 1px solid rgba(255,255,255,.12);
+}
+
+.eco-logout:active{ opacity: 1; }
+
+/* En movil muy estrecho, baja el chip abajo */
+@media (max-width: 360px){
+  .eco-topbar{ flex-direction: column; align-items: stretch; }
+  .eco-account{ width: fit-content; }
+  .eco-email{ max-width: 80vw; }
+}
+
+@media (max-width: 420px){
+  .filters-row > *{
+    flex-basis: 100%;
+  }
 }
 
 body.recuerdos-page {

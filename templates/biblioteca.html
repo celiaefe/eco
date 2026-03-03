@@ -79,40 +79,41 @@
     </div>
   {%- endmacro %}
 
-  <header class="bib-header">
-    <div class="bib-title">Biblioteca</div>
-    <div class="bib-sub">Tus recuerdos, como vinilos guardados.</div>
-    <div class="bib-userbar">
-      <span>{{ current_user.email }}</span>
-      <form method="post" action="{{ url_for('auth.logout') }}" class="bib-userbar-form">
-        <button type="submit" class="bib-userbar-link bib-userbar-btn">Salir</button>
-      </form>
+  <header class="eco-topbar">
+    <div class="eco-topbar-left">
+      <h1 class="eco-title">Biblioteca</h1>
+      <p class="eco-subtitle">Tus recuerdos, como vinilos guardados.</p>
     </div>
-    <div class="bib-mood" id="bibMood"></div>
-    <details class="bib-filtros-tab" open>
-      <summary>Filtros</summary>
-        <div class="bib-controls">
-          <div class="bib-controls-grid">
-            <input
-              id="bibliotecaSearch"
-              class="bib-search bib-search-control"
-              type="search"
-              placeholder="Buscar en la biblioteca..."
-              aria-label="Buscar recuerdos por momento, canción o artista">
-            <select id="filtroAnio" class="bib-select" aria-label="Filtrar por año">
-              <option value="">Todos los años</option>
-              {% for a in anos %}
-                <option value="{{ a }}">{{ a }}</option>
-              {% endfor %}
-            </select>
-            <select id="vistaBiblioteca" class="bib-select" aria-label="Tipo de vista de lomos">
-              <option value="spines_dynamic">Lomos dinámicos</option>
-              <option value="cards">Vista tarjetas</option>
-            </select>
-          </div>
-        </div>
-      </details>
+
+    <div class="eco-account">
+      <span class="eco-email">{{ current_user.email }}</span>
+      <a class="eco-logout" href="{{ url_for('auth.logout') }}">Salir</a>
+    </div>
   </header>
+  <div class="bib-mood" id="bibMood"></div>
+  <details class="bib-filtros-tab" open>
+    <summary>Filtros</summary>
+      <div class="bib-controls">
+        <div class="bib-controls-grid">
+          <input
+            id="bibliotecaSearch"
+            class="bib-search bib-search-control"
+            type="search"
+            placeholder="Buscar en la biblioteca..."
+            aria-label="Buscar recuerdos por momento, canción o artista">
+          <select id="filtroAnio" class="bib-select" aria-label="Filtrar por año">
+            <option value="">Todos los años</option>
+            {% for a in anos %}
+              <option value="{{ a }}">{{ a }}</option>
+            {% endfor %}
+          </select>
+          <select id="vistaBiblioteca" class="bib-select" aria-label="Tipo de vista de lomos">
+            <option value="spines_dynamic">Lomos dinámicos</option>
+            <option value="cards">Vista tarjetas</option>
+          </select>
+        </div>
+      </div>
+    </details>
 
   <main class="biblioteca biblioteca-secciones">
     <p class="bib-empty" id="bibEmpty" hidden>No hay coincidencias para esa búsqueda.</p>
