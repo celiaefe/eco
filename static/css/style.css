@@ -29,25 +29,60 @@ html, body {
 
 body {
   font-size: 16.5px;
+  font-family: "Melodrama", serif;
   font-weight: 400;
-  line-height: 1.6;
-  letter-spacing: 0.2px;
+  line-height: 1.65;
+  letter-spacing: 0.15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background: radial-gradient(circle at top left, #1b2240, #0c1024 70%);
   color: #eaeaf5;
 }
 
-h1, h2, h3 {
+h1, .modal-title, .panel-title {
   font-weight: 600;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
 }
 
-button {
+button, .btn{
+  font-family: "Melodrama", serif;
   font-weight: 500;
+  letter-spacing: -0.2px;
 }
 
-input, textarea {
+input, textarea, select{
   font-family: "Melodrama", serif;
   font-weight: 400;
+  letter-spacing: 0.1px;
+}
+
+input::placeholder,
+textarea::placeholder{
+  opacity: 0.55;
+  font-weight: 400;
+}
+
+label, .field-label{
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  opacity: 0.9;
+}
+
+.modal-subtitle, .helper-text, .muted, .description{
+  line-height: 1.7;
+  opacity: 0.85;
+}
+
+.modal, .sheet, .dialog{
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+}
+
+.modal-content, .sheet-content, .dialog-content{
+  padding: 22px 18px 18px;
 }
 
 body.recuerdos-page {
