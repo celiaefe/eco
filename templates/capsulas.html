@@ -9,12 +9,14 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 {% endblock %}
 {% block extra_css %}
-  .wrap{display:block;min-height:100vh;padding:0}
-  .card{width:100%;border:0;background:transparent;backdrop-filter:none;box-shadow:none;border-radius:0}
+  .wrap{display:block;min-height:100dvh;height:auto;padding:0}
+  .card{width:100%;border:0;background:transparent;backdrop-filter:none;box-shadow:none;border-radius:0;overflow:visible}
   .topbar,.footer{display:none}
   .inner{padding:0}
 
   body.capsulas-page{
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     background:
       linear-gradient(rgba(8,10,18,.35), rgba(8,10,18,.55)),
       url("{{ url_for('static', filename='fondo_home.png') }}") center / cover no-repeat fixed !important;
@@ -26,8 +28,21 @@
     }
   }
 
-  .caps-page { max-width: 980px; margin: 0 auto; padding: 24px 16px 40px; color: #f7f7f2; }
-  .caps-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 20px; }
+  .caps-page { max-width: 980px; margin: 0 auto; padding: 24px 16px calc(72px + env(safe-area-inset-bottom)); color: #f7f7f2; }
+  .caps-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 8px; }
+  .caps-head-left{ display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .capsulas-hero{
+    margin-bottom: 10px;
+  }
+  .capsulas-hero h1{
+    margin: 0;
+    font-size: 32px;
+    line-height: 1.08;
+  }
+  .capsulas-hero p{
+    margin: 8px 0 0;
+    opacity: .78;
+  }
   .caps-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
   .caps-card { background: rgba(20,20,20,.72); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 16px; }
   .caps-card h2 { margin: 0 0 10px; font-size: 1rem; }
@@ -43,6 +58,171 @@
   .caps-cover { width: 100%; max-width: 220px; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-top: 8px; border: 1px solid rgba(255,255,255,.18); }
   .caps-list { display: grid; gap: 10px; }
   .caps-text { display: grid; gap: 6px; }
+  .capsula-crear{
+    margin: 20px 0 30px 0;
+  }
+
+  .capsula-crear-boton{
+    cursor:pointer;
+    text-align:center;
+    padding:14px;
+    border-radius:30px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.15);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    font-weight:500;
+  }
+
+  .capsula-formulario{
+    margin-top:20px;
+    background: rgba(8, 12, 28, .28);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 24px;
+    padding: 18px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .capsula-formulario label{
+    opacity: .9;
+  }
+
+  .capsula-formulario input,
+  .capsula-formulario textarea,
+  .capsula-formulario select{
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.10);
+  }
+
+  .btn-guardar-capsula{
+    background: linear-gradient(180deg, #e8dfc7 0%, #d7ccb0 100%);
+    color: #171722;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 18px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.18);
+    font-weight: 600;
+  }
+
+  @keyframes flotar{
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-16px); }
+    100% { transform: translateY(0px); }
+  }
+
+  @keyframes brillo{
+    0% { box-shadow: 0 0 0 rgba(255,255,255,0); }
+    50% { box-shadow: 0 0 22px rgba(255,255,255,.18); }
+    100% { box-shadow: 0 0 0 rgba(255,255,255,0); }
+  }
+
+  .capsulas-espacio{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap: 34px;
+    padding: 28px 16px 40px;
+  }
+
+  .capsulas-espacio:has(.capsula-burbuja:only-child) .capsula-burbuja{
+    width: 160px;
+    height: 160px;
+  }
+
+  .capsula-burbuja{
+    position: relative;
+    width: 140px;
+    height: 140px;
+    border-radius:50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: rgba(255,255,255,.96);
+    background:
+      radial-gradient(circle at 28% 28%, rgba(255,255,255,.34), rgba(255,255,255,.10) 38%, transparent 70%),
+      radial-gradient(circle at 72% 75%, rgba(124,160,255,.16), transparent 42%),
+      rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.26);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:
+      inset 0 0 28px rgba(255,255,255,.12),
+      inset -10px -10px 20px rgba(255,255,255,.04),
+      0 16px 40px rgba(0,0,0,.35);
+    cursor:pointer;
+    animation: flotar 7.5s ease-in-out infinite;
+    overflow: hidden;
+    will-change: transform;
+  }
+
+  .capsula-burbuja::before{
+    content:"";
+    position:absolute;
+    top: 18px;
+    left: 24px;
+    width: 38px;
+    height:18px;
+    border-radius:50%;
+    background: rgba(255,255,255,.42);
+    filter: blur(3px);
+    transform: rotate(-18deg);
+  }
+
+  .capsula-burbuja::after{
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.10);
+  }
+
+  .capsula-titulo{
+    max-width: 88px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.15;
+    color: rgba(244,241,234,.95);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .capsula-fecha{
+    margin-top: 6px;
+    font-size: 11px;
+    opacity: .74;
+    line-height: 1.3;
+  }
+
+  .capsulas-bloque{
+    margin-top: 24px;
+    padding: 20px 14px 28px;
+    border-radius: 24px;
+    background: rgba(8,12,28,.16);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+
+  .capsulas-bloque h2{
+    margin: 0 0 14px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  @media (max-width: 520px){
+    .capsulas-espacio{
+      gap: 18px;
+      padding: 24px 12px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .capsula-burbuja{
+      animation: none;
+    }
+  }
 
   /* Tarjeta */
   .caps-item{
@@ -124,31 +304,40 @@
   .caps-open-btn:disabled { opacity: .45; cursor: not-allowed; }
   .caps-status { margin: 0 0 10px; font-size: .92rem; min-height: 1.2em; }
   .caps-links a { color: #f0e4c8; text-decoration: none; }
+  .capsulas-tabs,
   .caps-tabs{
     display: none;
     gap: 10px;
     margin: 8px 0 14px;
     padding: 6px;
     border-radius: 999px;
-    border: 1px solid rgba(244,241,234,.14);
-    background: rgba(244,241,234,.06);
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.10);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
+  .capsulas-tab,
   .caps-tab{
     flex: 1;
-    min-height: 40px;
+    text-align: center;
+    padding: 12px 16px;
     border-radius: 999px;
+    color: rgba(255,255,255,.72);
+    transition: all .25s ease;
+    min-height: 40px;
     border: 1px solid transparent;
     background: transparent;
-    color: rgba(244,241,234,.78);
     font-size: 14px;
     letter-spacing: .02em;
   }
 
+  .capsulas-tab.activa,
   .caps-tab.is-active{
-    background: rgba(11,15,26,.45);
-    border-color: rgba(244,241,234,.14);
-    color: rgba(244,241,234,.95);
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.10);
+    color: rgba(255,255,255,.96);
+    box-shadow: inset 0 0 16px rgba(255,255,255,.04);
   }
 
   /* Móvil: muestra tabs y oculta una sección según estado */
@@ -277,40 +466,48 @@
 {% block content %}
   <main class="caps-page">
     <div class="caps-head">
-      <h1>Cápsulas personales</h1>
+      <div class="caps-head-left">
+        <a href="{{ url_for('main.index') }}" class="eco-back">←</a>
+      </div>
       <div class="caps-links">
         {% if premium_enabled and is_admin %}
           <button id="premiumToggleBtn" class="caps-open-btn" type="button">
             {{ "Premium ON" if is_premium else "Activar premium" }}
           </button>
         {% endif %}
-        <a href="{{ url_for('main.biblioteca') }}">Biblioteca</a>
       </div>
     </div>
-
+    <section class="capsulas-hero">
+      <h1>Cápsulas</h1>
+      <p>Algunos recuerdos necesitan tiempo antes de volver a sonar.</p>
+    </section>
     <p class="caps-status" id="capsStatus"></p>
     <section class="caps-grid">
       <article class="caps-card">
-        <h2>Crear cápsula</h2>
-        <form id="capsForm" class="caps-form">
-          <label for="capsSongQuery">Canción + artista</label>
-          <input id="capsSongQuery" type="text" placeholder="Busca canción por título o artista">
-          <div id="capsSongSelected" class="caps-song-selected" hidden></div>
-          <div id="capsSongResults" class="caps-song-results"></div>
-          <label for="capsTitle">Título personal</label>
-          <input id="capsTitle" type="text" placeholder="Cómo quieres llamar a esta cápsula" required>
-          <label for="capsOpenDate">Fecha y hora de apertura</label>
-          <input id="capsSpotifyId" type="hidden">
-          <input id="capsSongTitle" type="hidden">
-          <input id="capsSongArtist" type="hidden">
-          <input id="capsSongCoverUrl" type="hidden">
-          <input id="capsOpenDate" type="datetime-local" required>
-          <label for="capsMessage">Texto de la cápsula</label>
-          <textarea id="capsMessage" rows="5" placeholder="Escribe aquí el mensaje que quieres dejar"></textarea>
-          <label for="capsPhoto">Foto de la cápsula (opcional)</label>
-          <input id="capsPhoto" type="file" accept="image/*">
-          <button type="submit">Guardar cápsula</button>
-        </form>
+        <details class="capsula-crear">
+          <summary class="capsula-crear-boton">✨ Crear cápsula</summary>
+          <div class="capsula-formulario">
+            <form id="capsForm" class="caps-form">
+              <label for="capsSongQuery">Canción + artista</label>
+              <input id="capsSongQuery" type="text" placeholder="Busca canción por título o artista">
+              <div id="capsSongSelected" class="caps-song-selected" hidden></div>
+              <div id="capsSongResults" class="caps-song-results"></div>
+              <label for="capsTitle">Título personal</label>
+              <input id="capsTitle" type="text" placeholder="Cómo quieres llamar a esta cápsula" required>
+              <label for="capsOpenDate">Fecha y hora de apertura</label>
+              <input id="capsSpotifyId" type="hidden">
+              <input id="capsSongTitle" type="hidden">
+              <input id="capsSongArtist" type="hidden">
+              <input id="capsSongCoverUrl" type="hidden">
+              <input id="capsOpenDate" type="datetime-local" required>
+              <label for="capsMessage">Texto de la cápsula</label>
+              <textarea id="capsMessage" rows="5" placeholder="Escribe aquí el mensaje que quieres dejar"></textarea>
+              <label for="capsPhoto">Foto de la cápsula (opcional)</label>
+              <input id="capsPhoto" type="file" accept="image/*">
+              <button class="btn-guardar-capsula" type="submit">Guardar cápsula</button>
+            </form>
+          </div>
+        </details>
       </article>
 
       <div class="caps-tabs" role="tablist" aria-label="Secciones de cápsulas">
@@ -322,9 +519,9 @@
         </button>
       </div>
 
-      <section id="tab-cerradas" class="caps-section caps-card">
+      <section id="tab-cerradas" class="caps-section caps-card capsulas-bloque">
         <h2>Cerradas</h2>
-        <div id="capsCerradas" class="caps-list"></div>
+        <div id="capsCerradas" class="capsulas-espacio"></div>
       </section>
 
       <section id="tab-abiertas" class="caps-section caps-card">
@@ -444,6 +641,7 @@
 
     function renderList(root, items, isClosed) {
       root.innerHTML = "";
+      root.classList.remove("capsulas-espacio");
       if (!items.length) {
         root.innerHTML = "<p>Sin cápsulas.</p>";
         return;
@@ -451,23 +649,25 @@
 
       for (const c of items) {
         const item = document.createElement("div");
-        item.className = "caps-item";
         if (isClosed) {
+          root.classList.add("capsulas-espacio");
+          item.className = "capsula-burbuja";
+          item.dataset.id = String(c.id || "");
+          item.setAttribute("role", "button");
+          item.setAttribute("tabindex", "0");
           item.innerHTML = `
-            <div class="caps-text">
-              <strong class="caps-title">${c.title}</strong>
-              <div class="caps-meta">Se abre: ${fmtDate(c.open_date)}</div>
-            </div>
-            <div class="caps-actions">
-              <button class="caps-btn caps-btn-primary" ${!c.is_unlockable_now ? "disabled" : ""}>
-                Abrir
-              </button>
-              <a class="caps-btn caps-btn-ghost" href="/capsulas/${c.id}/ritual">
-                Ritual
-              </a>
-            </div>
+            <div class="capsula-titulo">${c.title || "Sin título"}</div>
+            <div class="capsula-fecha">${fmtDate(c.open_date)}</div>
           `;
+          item.addEventListener("click", () => abrirCapsula(c.id));
+          item.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              abrirCapsula(c.id);
+            }
+          });
         } else {
+          item.className = "caps-item";
           item.innerHTML = `
             <strong>${c.title}</strong>
             ${c.artist ? `<div>${c.artist}</div>` : ""}
@@ -479,19 +679,7 @@
           `;
         }
 
-        if (isClosed) {
-          const btn = item.querySelector(".caps-btn-primary");
-          btn?.addEventListener("click", async () => {
-            const resp = await fetch(`/capsulas/${c.id}/abrir`, { method: "POST" });
-            const data = await resp.json();
-            if (!resp.ok || !data.ok) {
-              setStatus(data.error || "No se pudo abrir.", true);
-              return;
-            }
-            setStatus("Cápsula abierta.");
-            await cargarCapsulas();
-          });
-        } else {
+        if (!isClosed) {
           const ritual = document.createElement("a");
           ritual.className = "caps-open-btn";
           ritual.href = `/capsulas/${c.id}/ritual`;
@@ -501,6 +689,11 @@
 
         root.appendChild(item);
       }
+    }
+
+    function abrirCapsula(id) {
+      if (!id) return;
+      window.location.href = `/capsulas/${id}/ritual`;
     }
 
     async function cargarCapsulas() {

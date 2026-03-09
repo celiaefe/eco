@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Eco - Recuerdos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -71,6 +71,7 @@
     <label class="nuevo-recuerdo-label" for="cancion">Canción asociada</label>
     <input type="text" id="cancion" name="cancion" placeholder="Busca canción o artista" autocomplete="off">
     <div id="cancion-seleccionada" class="cancion-seleccionada" hidden></div>
+    <div id="spotify-resultados"></div>
     <input type="hidden" name="titulo_cancion">
     <input type="hidden" name="artista">
     <input type="hidden" name="spotify_url">
@@ -80,7 +81,10 @@
     <textarea id="nota" name="nota" placeholder="Tu frase personal para este recuerdo"></textarea>
     <label class="nuevo-recuerdo-label" for="foto_personal">Foto del momento (opcional)</label>
     <input id="foto_personal" type="file" name="foto_personal" accept="image/*">
-    <div id="spotify-resultados"></div>
+    <label class="auth-remember" for="selfie_mode_recuerdo">
+      <input id="selfie_mode_recuerdo" name="selfie_mode" type="checkbox" value="1" checked>
+      <span>Modo selfie (quitar efecto espejo)</span>
+    </label>
     <div class="nuevo-recuerdo-actions">
       <button id="cancelar-nuevo-recuerdo-btn" type="button" class="nuevo-recuerdo-btn-secundario">Cancelar</button>
       <button type="submit" class="nuevo-recuerdo-btn-primario">Guardar recuerdo</button>

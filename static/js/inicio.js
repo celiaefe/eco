@@ -42,6 +42,7 @@ function navegarConTransicion(destino) {
   navegando = true;
 
   document.body.classList.add("inicio-saliendo");
+  document.body.style.opacity = 0;
   window.setTimeout(() => {
     window.location.href = destino;
   }, 260);
@@ -63,6 +64,7 @@ window.addEventListener("pageshow", (event) => {
   }
   navegando = false;
   document.body.classList.remove("inicio-saliendo");
+  document.body.style.opacity = "";
 });
 
 refrescarAudioToggle();

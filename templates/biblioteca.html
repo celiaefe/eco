@@ -80,18 +80,13 @@
   {%- endmacro %}
 
   <header class="eco-topbar">
-    <div class="eco-topbar-left">
+    <div class="eco-header">
+      <a href="{{ url_for('main.index') }}" class="eco-back">←</a>
       <h1 class="eco-title">Biblioteca</h1>
-      <p class="eco-subtitle">Tus recuerdos, como vinilos guardados.</p>
-    </div>
-
-    <div class="eco-account">
-      <span class="eco-email">{{ current_user.email }}</span>
-      <a class="eco-logout" href="{{ url_for('auth.logout') }}">Salir</a>
     </div>
   </header>
-  <div class="bib-mood" id="bibMood"></div>
-  <details class="bib-filtros-tab" open>
+  <p class="eco-subtitle">Tus recuerdos, como vinilos guardados.</p>
+  <details class="bib-filtros-tab">
     <summary>Filtros</summary>
       <div class="bib-controls">
         <div class="bib-controls-grid">
@@ -124,18 +119,23 @@
   </main>
 
   <div class="detalle" id="detalle" aria-hidden="true">
-    <div class="detalle-card">
-      <button class="detalle-cerrar" id="detalleCerrar" type="button">×</button>
-      <button class="detalle-lapiz" id="toggleEditorBtn" type="button" aria-controls="detalleEditor" aria-expanded="false" aria-label="Editar recuerdo">✎</button>
-      <div class="detalle-cover" id="detalleCover"></div>
-      <div class="detalle-fecha" id="detalleFecha"></div>
-      <div class="detalle-diario">
-        <div class="detalle-diario-label">Texto de diario</div>
-        <div class="detalle-nota" id="detalleNota"></div>
+    <div class="detalle-card eco-modal">
+      <div class="eco-modal-actions">
+        <button class="detalle-lapiz" id="toggleEditorBtn" type="button" aria-controls="detalleEditor" aria-expanded="false" aria-label="Editar recuerdo">✎</button>
+        <button class="detalle-cerrar" id="detalleCerrar" type="button" aria-label="Cerrar">×</button>
       </div>
-      <div class="detalle-musica">
-        <div class="detalle-ficha-label">Ficha musical</div>
-        <div class="detalle-cancion" id="detalleCancion"></div>
+      <div class="detalle-cover eco-modal-cover" id="detalleCover">
+        <div class="eco-cover-blur" id="detalleCoverBlur" aria-hidden="true"></div>
+        <img id="detalleCoverImg" src="" alt="Foto del recuerdo">
+      </div>
+      <div class="detalle-fecha eco-meta" id="detalleFecha"></div>
+      <div class="detalle-diario eco-card">
+        <div class="detalle-diario-label eco-section-label">Texto de diario</div>
+        <div class="detalle-nota eco-card-text" id="detalleNota"></div>
+      </div>
+      <div class="detalle-musica eco-card">
+        <div class="detalle-ficha-label eco-section-label">Ficha musical</div>
+        <div class="detalle-cancion eco-card-title" id="detalleCancion"></div>
         <audio id="detalleAudio" controls></audio>
       </div>
       <div class="detalle-editor" id="detalleEditor" hidden>
@@ -145,6 +145,10 @@
           <div class="detalle-preview-meta">
             <label class="detalle-label" for="editarFoto">Cambiar foto personal</label>
             <input id="editarFoto" class="detalle-input-file" type="file" accept="image/*">
+            <label class="auth-remember" for="editarFotoSelfie">
+              <input id="editarFotoSelfie" type="checkbox" value="1" checked>
+              <span>Modo selfie (quitar efecto espejo)</span>
+            </label>
           </div>
         </div>
         <label class="detalle-label" for="editarTitulo">Título</label>
@@ -167,4 +171,161 @@
 
 {% block extra_js %}
   <script src="{{ url_for('static', filename='js/biblioteca.js') }}"></script>
+  <script>
+  (() => {
+    const spines = Array.from(document.querySelectorAll('.vinilo-lomo[data-cover]'));
+    if (!spines.length) return;
+
+    // ===== Config =====
+    const CACHE_KEY = "eco_cover_color_cache_v1";
+    const TTL_MS = 1000 * 60 * 60 * 24 * 60; // 60 dias
+
+    const USE_WHITELIST = true; // pon false si quieres permitir cualquier dominio
+    const ALLOWED_HOSTS = new Set([
+      "i.scdn.co",
+      "mosaic.scdn.co",
+      "image-cdn-ak.spotifycdn.com",
+      "images.genius.com",
+      "is1-ssl.mzstatic.com",
+      "is2-ssl.mzstatic.com",
+      "is3-ssl.mzstatic.com",
+      "is4-ssl.mzstatic.com",
+      "is5-ssl.mzstatic.com",
+    ]);
+
+    // ===== Cache helpers =====
+    function loadCache(){
+      try{
+        const raw = localStorage.getItem(CACHE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      }catch{ return {}; }
+    }
+    function saveCache(cache){
+      try{ localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); }catch{}
+    }
+    function getHost(url){
+      try{ return new URL(url, window.location.href).host; }catch{ return ""; }
+    }
+    function isAllowed(url){
+      if (!USE_WHITELIST) return true;
+      const host = getHost(url);
+      return ALLOWED_HOSTS.has(host);
+    }
+
+    // ===== Color math =====
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+    function rgba(r,g,b,a){ return `rgba(${r},${g},${b},${a})`; }
+
+    function avgColorFromImage(img){
+      // Reducimos para rapidez
+      const w = 24, h = 24;
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0, w, h);
+
+      const data = ctx.getImageData(0,0,w,h).data;
+      let r=0,g=0,b=0,count=0;
+
+      for (let i=0; i<data.length; i+=16){
+        const rr=data[i], gg=data[i+1], bb=data[i+2], aa=data[i+3];
+        if (aa < 220) continue;
+
+        const sum = rr+gg+bb;
+        // ignora casi negros / casi blancos (evita portadas extremas)
+        if (sum < 60) continue;
+        if (sum > 740) continue;
+
+        r += rr; g += gg; b += bb; count++;
+      }
+
+      if (!count) return { r: 210, g: 200, b: 180 }; // fallback calido
+      return { r: Math.round(r/count), g: Math.round(g/count), b: Math.round(b/count) };
+    }
+
+    function applyTint(el, rgb){
+      const { r, g, b } = rgb;
+
+      // "Eco style": suave, no neon
+      const aTop = rgba(r, g, b, 0.16);
+      const aBot = rgba(clamp(r-26,0,255), clamp(g-26,0,255), clamp(b-26,0,255), 0.08);
+      const glow = rgba(r, g, b, 0.22);
+
+      el.style.setProperty('--lomo-a', aTop);
+      el.style.setProperty('--lomo-b', aBot);
+      el.style.setProperty('--lomo-glow', glow);
+      el.setAttribute('data-has-color', '1');
+    }
+
+    // ===== Main =====
+    const cache = loadCache();
+    const now = Date.now();
+
+    function cachedValue(url){
+      const entry = cache[url];
+      if (!entry) return null;
+      if (!entry.t || !entry.c) return null;
+      if (now - entry.t > TTL_MS) return null;
+      return entry.c;
+    }
+
+    function setCached(url, rgb){
+      cache[url] = { t: Date.now(), c: rgb };
+    }
+
+    function proxyUrl(url){
+      return `/cover-proxy?url=${encodeURIComponent(url)}`;
+    }
+
+    async function tryGetRgbFromUrl(url, useCors = true){
+      const img = await new Promise((resolve) => {
+        const i = new Image();
+        if (useCors) i.crossOrigin = "anonymous";
+        i.onload = () => resolve(i);
+        i.onerror = () => resolve(null);
+        i.src = url;
+      });
+      if (!img) return null;
+      try{
+        return avgColorFromImage(img);
+      }catch{
+        return null;
+      }
+    }
+
+    (async () => {
+      for (const el of spines){
+        const url = (el.getAttribute('data-cover') || "").trim();
+        if (!url) continue;
+
+        // 1) Si esta en cache, aplicar y seguir
+        const cached = cachedValue(url);
+        if (cached){
+          applyTint(el, cached);
+          continue;
+        }
+
+        // 2) Whitelist opcional
+        if (!isAllowed(url)) continue;
+
+        // 3) Intentar calcular color:
+        //    primero directo; si falla CORS/tainted, fallback al proxy local.
+        let rgb = await tryGetRgbFromUrl(url, true);
+        if (!rgb) {
+          rgb = await tryGetRgbFromUrl(proxyUrl(url), false);
+        }
+        if (!rgb) continue;
+
+        try{
+          applyTint(el, rgb);
+          setCached(url, rgb);
+        }catch{
+          // Si el canvas queda "tainted" por CORS, no rompemos nada: queda neutro.
+        }
+      }
+
+      saveCache(cache);
+    })();
+  })();
+  </script>
 {% endblock %}

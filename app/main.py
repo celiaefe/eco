@@ -1,12 +1,16 @@
 from __future__ import annotations
 
 import os
+import ipaddress
+import socket
 import uuid
 from datetime import datetime, timezone
+from urllib.parse import urlsplit
 
 import requests
-from flask import Blueprint, current_app, jsonify, make_response, redirect, render_template, request, url_for
+from flask import Blueprint, current_app, jsonify, make_response, redirect, render_template, request, session, url_for
 from flask_login import current_user, login_required
+from PIL import Image, ImageOps, UnidentifiedImageError
 from werkzeug.exceptions import HTTPException
 from werkzeug.utils import secure_filename
 
@@ -20,6 +24,21 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UPLOAD_DIR = os.path.join(BASE_DIR, "static", "uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif"}
 MAX_IMAGE_BYTES = 6 * 1024 * 1024
+MAX_PROXY_IMAGE_BYTES = 5 * 1024 * 1024
+DEFAULT_COVER_PROXY_ALLOWED_DOMAINS = {
+    "i.scdn.co",
+    "mosaic.scdn.co",
+    "is1-ssl.mzstatic.com",
+    "is2-ssl.mzstatic.com",
+    "is3-ssl.mzstatic.com",
+    "is4-ssl.mzstatic.com",
+    "is5-ssl.mzstatic.com",
+    "is1.mzstatic.com",
+    "is2.mzstatic.com",
+    "is3.mzstatic.com",
+    "is4.mzstatic.com",
+    "is5.mzstatic.com",
+}
 
 
 def anio_desde_fecha(fecha_str: str) -> str:
@@ -34,6 +53,56 @@ def anio_desde_fecha(fecha_str: str) -> str:
 
 def premium_enabled() -> bool:
     return bool(current_app.config.get("PREMIUM_ENABLED", False))
+
+
+def get_cover_proxy_allowed_domains() -> set[str]:
+    configured = (os.getenv("ECO_COVER_PROXY_ALLOWED_DOMAINS") or "").strip()
+    if not configured:
+        return set(DEFAULT_COVER_PROXY_ALLOWED_DOMAINS)
+    return {d.strip().lower() for d in configured.split(",") if d.strip()}
+
+
+def is_allowed_cover_host(hostname: str) -> bool:
+    host = (hostname or "").strip().lower()
+    if not host:
+        return False
+    allowed = get_cover_proxy_allowed_domains()
+    return any(host == domain or host.endswith(f".{domain}") for domain in allowed)
+
+
+def is_public_image_url(url: str) -> bool:
+    try:
+        parsed = urlsplit((url or "").strip())
+    except Exception:
+        return False
+
+    if parsed.scheme not in {"http", "https"}:
+        return False
+    if not parsed.hostname:
+        return False
+
+    hostname = parsed.hostname
+    try:
+        infos = socket.getaddrinfo(hostname, None)
+    except Exception:
+        return False
+
+    for info in infos:
+        ip_str = info[4][0]
+        try:
+            ip = ipaddress.ip_address(ip_str)
+        except ValueError:
+            return False
+        if (
+            ip.is_private
+            or ip.is_loopback
+            or ip.is_link_local
+            or ip.is_multicast
+            or ip.is_reserved
+            or ip.is_unspecified
+        ):
+            return False
+    return True
 
 
 def is_admin_user(user) -> bool:
@@ -175,7 +244,44 @@ def guardar_foto_personal(file_storage):
     ext = filename.rsplit(".", 1)[1].lower()
     unique_name = f"{uuid.uuid4().hex}.{ext}"
     save_path = os.path.join(UPLOAD_DIR, unique_name)
-    file_storage.save(save_path)
+    has_selfie_flag = "selfie_mode" in request.form
+    selfie_mode = (request.form.get("selfie_mode") == "1")
+    try:
+        file_storage.stream.seek(0)
+        if ext in {"jpg", "jpeg", "png", "webp"}:
+            with Image.open(file_storage.stream) as img:
+                exif = img.getexif() if hasattr(img, "getexif") else None
+                orientation = int((exif.get(274) if exif else 1) or 1)
+                lens_model = str(exif.get(42036, "") if exif else "").lower()
+                lens_make = str(exif.get(42035, "") if exif else "").lower()
+                camera_model = str(exif.get(272, "") if exif else "").lower()
+                # Corrige orientación EXIF y casos de espejo cuando el dispositivo lo informa.
+                fixed = ImageOps.exif_transpose(img)
+                front_hint = any("front" in value for value in (lens_model, lens_make, camera_model))
+                # En algunos móviles la selfie llega ya espejada sin orientación EXIF de espejo.
+                # Si detectamos cámara frontal, desespejamos horizontalmente.
+                force_unmirror = (os.getenv("ECO_UNMIRROR_FRONT_CAMERA", "1").strip().lower() not in {"0", "false", "no"})
+                should_unmirror = selfie_mode if has_selfie_flag else (
+                    force_unmirror and front_hint and orientation in {1, 3, 6, 8}
+                )
+                if should_unmirror:
+                    flip_const = getattr(getattr(Image, "Transpose", Image), "FLIP_LEFT_RIGHT", Image.FLIP_LEFT_RIGHT)
+                    fixed = fixed.transpose(flip_const)
+                if ext in {"jpg", "jpeg"}:
+                    fixed = fixed.convert("RGB")
+                    fixed.save(save_path, format="JPEG", quality=92, optimize=True)
+                elif ext == "png":
+                    fixed.save(save_path, format="PNG", optimize=True)
+                elif ext == "webp":
+                    fixed.save(save_path, format="WEBP", quality=92, method=6)
+        else:
+            # GIF u otros formatos permitidos: se guardan sin reprocesar.
+            file_storage.stream.seek(0)
+            file_storage.save(save_path)
+    except (UnidentifiedImageError, OSError, ValueError):
+        # Fallback seguro si Pillow no puede procesar la imagen.
+        file_storage.stream.seek(0)
+        file_storage.save(save_path)
     return f"uploads/{unique_name}", None
 
 
@@ -266,10 +372,65 @@ def evitar_cache_html(response):
 
 @main_bp.route("/")
 def index():
-    response = make_response(render_template("index.html"))
+    show_intro = bool(current_user.is_authenticated and session.pop("show_intro_once", False))
+    response = make_response(render_template("index.html", show_intro=show_intro))
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
+    return response
+
+
+@main_bp.route("/cover-proxy")
+@login_required
+def cover_proxy():
+    target_url = (request.args.get("url") or "").strip()
+    parsed = urlsplit(target_url)
+    if not is_allowed_cover_host(parsed.hostname or ""):
+        return ("Host de portada no permitido.", 403)
+    if not is_public_image_url(target_url):
+        return ("URL de portada inválida.", 400)
+
+    try:
+        upstream = requests.get(
+            target_url,
+            timeout=7,
+            stream=True,
+            headers={"User-Agent": "EcoCoverProxy/1.0"},
+        )
+    except requests.RequestException:
+        return ("No se pudo cargar la portada.", 502)
+
+    if upstream.status_code >= 400:
+        return ("No se pudo cargar la portada.", 502)
+
+    content_type = (upstream.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+    if not content_type.startswith("image/"):
+        return ("El recurso no es una imagen.", 415)
+
+    content_length = upstream.headers.get("Content-Length")
+    if content_length:
+        try:
+            if int(content_length) > MAX_PROXY_IMAGE_BYTES:
+                return ("Imagen demasiado grande.", 413)
+        except ValueError:
+            pass
+
+    chunks = []
+    total = 0
+    try:
+        for chunk in upstream.iter_content(chunk_size=65536):
+            if not chunk:
+                continue
+            total += len(chunk)
+            if total > MAX_PROXY_IMAGE_BYTES:
+                return ("Imagen demasiado grande.", 413)
+            chunks.append(chunk)
+    finally:
+        upstream.close()
+
+    response = make_response(b"".join(chunks))
+    response.headers["Content-Type"] = content_type or "image/jpeg"
+    response.headers["Cache-Control"] = "public, max-age=86400, stale-while-revalidate=3600"
     return response
 
 

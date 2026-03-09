@@ -111,6 +111,18 @@ if (panelBackdrop && nuevoRecuerdoPanel) {
 cerrarNuevoRecuerdoBtn?.addEventListener("click", cerrarPanelNuevoRecuerdo);
 cancelarNuevoRecuerdoBtn?.addEventListener("click", cerrarPanelNuevoRecuerdo);
 
+if (nuevoRecuerdoPanel) {
+    nuevoRecuerdoPanel.addEventListener("focusin", (e) => {
+        const el = e.target;
+        if (!(el instanceof HTMLElement)) return;
+        if (!el.matches("input, textarea, select")) return;
+        // En móvil con teclado abierto, aseguramos que el campo quede visible dentro del panel.
+        window.setTimeout(() => {
+            el.scrollIntoView({ block: "center", behavior: "smooth" });
+        }, 120);
+    });
+}
+
 if (entrarRecuerdosBtn && zonaRecuerdos) {
     entrarRecuerdosBtn.addEventListener("click", () => {
         zonaRecuerdos.scrollIntoView({ behavior: "smooth", block: "start" });

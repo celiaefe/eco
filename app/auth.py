@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required
 from .models import User
 from . import db
@@ -29,6 +29,7 @@ def register_post():
     db.session.add(u)
     db.session.commit()
     login_user(u)
+    session["show_intro_once"] = True
     return redirect(url_for("main.index"))
 
 
@@ -48,6 +49,7 @@ def login_post():
         return redirect(url_for("main.index", auth="login"))
 
     login_user(u, remember=remember)
+    session["show_intro_once"] = True
     return redirect(url_for("main.index"))
 
 

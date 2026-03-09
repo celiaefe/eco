@@ -92,6 +92,65 @@
     justify-content: center;
     gap: 10px;
     padding: 8px 10px;
+    width: 100%;
+  }
+
+  .eco-settings{
+    position: relative;
+    margin-left: auto;
+  }
+
+  .eco-gear{
+    display: inline;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    border: 0;
+    background: transparent;
+    color: rgba(244,241,234,.92);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .eco-settings-menu{
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    display: none;
+    z-index: 70;
+  }
+
+  .eco-settings:hover .eco-settings-menu,
+  .eco-settings:focus-within .eco-settings-menu,
+  .eco-settings.open .eco-settings-menu{
+    display: block;
+  }
+
+  .eco-settings-menu form{
+    margin: 0;
+  }
+
+  .eco-settings-menu button{
+    width: auto;
+    min-height: auto;
+    border-radius: 0;
+    border: 0;
+    background: transparent;
+    color: rgba(244,241,234,.92);
+    font-size: 13px;
+    text-align: right;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    white-space: nowrap;
   }
 
   .inicio-auth-link,
@@ -532,11 +591,17 @@
     }
 
     body.inicio-page:not(.inicio-guest) .inicio-auth{
+      display: flex;
       position: static;
       top: auto;
-      justify-content: center;
+      justify-content: flex-end !important;
       padding: 2px 0 0;
       margin: 0;
+      width: 100%;
+    }
+    body.inicio-page:not(.inicio-guest) .inicio-auth-form{
+      margin-left: auto;
+      display: flex;
     }
 
     body.inicio-page:not(.inicio-guest) .inicio-user{
@@ -553,6 +618,12 @@
       background: rgba(18, 26, 48, .62);
       color: rgba(244,241,234,.9);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+
+    body.inicio-page:not(.inicio-guest) .inicio-auth-form .inicio-auth-btn{
+      min-height: 36px;
+      padding: 6px 12px;
+      font-size: 12.5px;
     }
 
     body.inicio-page:not(.inicio-guest) .inicio-hero{
@@ -763,7 +834,7 @@
     display: flex;
     justify-content: center;
     margin: 4px 0 6px;
-    margin-top: 12vh;
+    margin-top: 0;
     transition: transform 0.6s ease, margin-top 0.6s ease;
   }
   .home-vinilo-wrap.mover,
@@ -772,7 +843,7 @@
   }
 
   .home-vinilo-spin{
-    width: 192px;
+    width: min(82vw, 380px);
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     display: block;
@@ -943,7 +1014,7 @@
 {% endblock %}
 
 {% block content %}
-  {% if current_user.is_authenticated %}
+  {% if show_intro %}
     <div id="intro" class="intro-layer">
       <video id="introVideo" autoplay muted playsinline preload="auto">
         <source src="{{ url_for('static', filename='eco_opener.mp4') }}" type="video/mp4">
@@ -953,16 +1024,18 @@
 
   <main id="homeContent"
         class="inicio-hub inicio-mock"
-        {% if current_user.is_authenticated %}style="opacity:0; pointer-events:none"{% endif %}>
+        {% if show_intro %}style="opacity:0; pointer-events:none"{% endif %}>
       <section class="inicio-hero">
         <div class="inicio-auth">
           {% if current_user.is_authenticated %}
-          <form method="post" action="{{ url_for('auth.logout') }}" class="inicio-auth-form">
-            <button type="submit" class="inicio-auth-link inicio-auth-btn">Salir</button>
-          </form>
-          {% else %}
-          <button type="button" class="inicio-auth-link" data-open-login>Entrar</button>
-          <a href="{{ url_for('auth.register') }}" class="inicio-auth-link inicio-auth-btn">Registrarse</a>
+          <div class="eco-settings">
+            <button type="button" class="eco-gear" aria-label="Abrir ajustes">⚙</button>
+            <div class="eco-settings-menu">
+              <form method="post" action="{{ url_for('auth.logout') }}">
+                <button type="submit">Cerrar sesión</button>
+              </form>
+            </div>
+          </div>
           {% endif %}
         </div>
       </section>
@@ -1054,6 +1127,16 @@
       }, 560);
     };
 
+    // No reproducir intro al volver con atrás/adelante (caso biblioteca -> atrás).
+    const nav = performance.getEntriesByType("navigation")[0];
+    if (nav && nav.type === "back_forward") {
+      revealHome();
+      return;
+    }
+    window.addEventListener("pageshow", (event) => {
+      if (event.persisted) revealHome();
+    });
+
     video.addEventListener("ended", revealHome);
     intro.addEventListener("click", revealHome);
     intro.addEventListener("touchstart", revealHome, { passive: true });
@@ -1083,7 +1166,6 @@
       "Hay recuerdos que suenan mejor de noche.",
       "No todo lo que guardas quiere abrirse hoy.",
       "El tiempo también escucha.",
-      "Guarda lo que no quieres olvidar.",
       "A veces, volver a escuchar es volver a ser."
     ];
 
@@ -1121,5 +1203,55 @@
     if (hasAuthHint || hasErrors) openLogin();
   })();
   </script>
+  <script>
+  (function(){
+    const settings = document.querySelector('.eco-settings');
+    const gear = settings?.querySelector('.eco-gear');
+    if (!settings || !gear) return;
+
+    gear.addEventListener('click', (e) => {
+      e.stopPropagation();
+      settings.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!settings.contains(e.target)) settings.classList.remove('open');
+    });
+  })();
+  </script>
+  <style>
+  @media (max-width: 520px){
+    body.inicio-page:not(.inicio-guest) .inicio-hub{
+      gap: 4px !important;
+      padding-top: 8px !important;
+    }
+    body.inicio-page:not(.inicio-guest) .inicio-hero{
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    body.inicio-page:not(.inicio-guest) .inicio-auth{
+      display: flex !important;
+      width: 100% !important;
+      justify-content: flex-end !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    body.inicio-page:not(.inicio-guest) .eco-settings{
+      margin-left: auto !important;
+    }
+    body.inicio-page:not(.inicio-guest) .eco-gear{
+      width: auto !important;
+      height: auto !important;
+      font-size: 16px !important;
+    }
+    body.inicio-page:not(.inicio-guest) .home-vinilo-wrap{
+      margin-top: -6px !important;
+      margin-bottom: 4px !important;
+    }
+    body.inicio-page:not(.inicio-guest) .inicio-accesos{
+      gap: 18px !important;
+    }
+  }
+  </style>
   <script src="{{ url_for('static', filename='js/inicio.js') }}"></script>
 {% endblock %}

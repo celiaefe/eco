@@ -2,12 +2,22 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Eco{% endblock %}</title>
+  <meta name="description" content="Guarda tus recuerdos musicales en Eco.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{% block og_title %}Eco{% endblock %}">
+  <meta property="og:description" content="Guarda tus recuerdos musicales en Eco.">
+  <meta property="og:url" content="{{ request.url }}">
+  <meta property="og:image" content="{{ url_for('static', filename='superlogo_luna_og.jpg', _external=True) }}">
+  <meta property="og:image:alt" content="Logo de Eco con luna dorada">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% block twitter_title %}Eco{% endblock %}">
+  <meta name="twitter:description" content="Guarda tus recuerdos musicales en Eco.">
+  <meta name="twitter:image" content="{{ url_for('static', filename='superlogo_luna_og.jpg', _external=True) }}">
+  <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='superlogo_luna_og.jpg') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='superlogo_luna_og.jpg') }}">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   {% block extra_head %}{% endblock %}
 
   <style>
@@ -26,7 +36,7 @@
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family: "Melodrama", serif;
       color:var(--ink);
       background:
         radial-gradient(900px 600px at 50% 18%, rgba(145,120,255,.14), transparent 60%),
@@ -158,10 +168,6 @@
         {% block content %}{% endblock %}
       </div>
 
-      <div class="footer">
-        <span>Guarda lo que no quieres olvidar.</span>
-        <span>Y lo que aún no estás lista para volver a escuchar.</span>
-      </div>
     </div>
   </div>
 

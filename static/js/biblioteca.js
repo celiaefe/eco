@@ -1,6 +1,8 @@
 const modal = document.getElementById("detalle");
 const cerrar = document.getElementById("detalleCerrar");
 const coverEl = document.getElementById("detalleCover");
+const coverImgEl = document.getElementById("detalleCoverImg");
+const coverBlurEl = document.getElementById("detalleCoverBlur");
 const fechaEl = document.getElementById("detalleFecha");
 const cancionEl = document.getElementById("detalleCancion");
 const notaEl = document.getElementById("detalleNota");
@@ -10,7 +12,6 @@ const toastEl = document.getElementById("toastMsg");
 const searchInput = document.getElementById("bibliotecaSearch");
 const filtroAnio = document.getElementById("filtroAnio");
 const vistaSelect = document.getElementById("vistaBiblioteca");
-const moodEl = document.getElementById("bibMood");
 const bibliotecaMain = document.querySelector(".biblioteca-secciones");
 
 const secciones = document.querySelectorAll(".seccion-balda");
@@ -23,14 +24,42 @@ const editarCancion = document.getElementById("editarCancion");
 const editarArtista = document.getElementById("editarArtista");
 const editarNota = document.getElementById("editarNota");
 const editarFoto = document.getElementById("editarFoto");
+const editarFotoSelfie = document.getElementById("editarFotoSelfie");
 const detallePreviewCover = document.getElementById("detallePreviewCover");
 const guardarCambiosBtn = document.getElementById("guardarCambiosBtn");
 const borrarRecuerdoBtn = document.getElementById("borrarRecuerdoBtn");
 const toggleEditorBtn = document.getElementById("toggleEditorBtn");
 const detalleEditor = document.getElementById("detalleEditor");
+const modalCard = modal?.querySelector(".eco-modal");
 
 let recuerdoActivoId = null;
 let toastTimer = null;
+
+function syncModalCoverBlur() {
+  document.querySelectorAll(".eco-modal-cover").forEach((cover) => {
+    const img = cover.querySelector("img");
+    const blur = cover.querySelector(".eco-cover-blur");
+    if (img && blur && img.src) {
+      blur.style.backgroundImage = `url(${img.src})`;
+    }
+  });
+}
+
+function setDetalleCover(coverUrl) {
+  const cover = coverUrl || "";
+  if (coverImgEl) {
+    coverImgEl.src = cover;
+    coverImgEl.style.display = cover ? "block" : "none";
+  }
+  if (coverBlurEl) {
+    coverBlurEl.style.backgroundImage = cover ? `url('${cover}')` : "none";
+    coverBlurEl.style.display = cover ? "block" : "none";
+  }
+  if (coverEl) {
+    coverEl.classList.toggle("sin-cover", !cover);
+  }
+  syncModalCoverBlur();
+}
 
 function showToast(msg, tipo = "ok") {
   if (!toastEl) return;
@@ -145,6 +174,7 @@ function refrescarVistaBiblioteca() {
 function setVista(tipo) {
   if (!bibliotecaMain) return;
   bibliotecaMain.classList.toggle("vista-tarjetas", tipo === "cards");
+  document.documentElement.classList.toggle("bib-view-cards", tipo === "cards");
   try {
     localStorage.setItem("eco_biblioteca_vista", tipo);
   } catch (_) {}
@@ -153,13 +183,14 @@ function setVista(tipo) {
 function abrirDetalleDesdeVinilo(btn) {
   if (!btn) return;
   recuerdoActivoId = btn.dataset.id || null;
+  modalCard?.classList.remove("closing");
 
   const cover = btn.dataset.cover || "";
   const cancion = btn.dataset.cancion || "";
   const artista = btn.dataset.artista || "";
   const fecha = btn.dataset.fecha || "";
 
-  coverEl.style.backgroundImage = cover ? `url('${cover}')` : "none";
+  setDetalleCover(cover);
   fechaEl.textContent = fecha ? `Anotado: ${fecha}` : "Anotado sin fecha";
   cancionEl.textContent = artista ? `${cancion} · ${artista}` : cancion;
   notaEl.textContent = btn.dataset.nota || "";
@@ -174,22 +205,54 @@ function abrirDetalleDesdeVinilo(btn) {
   const preview = btn.dataset.preview || "";
   audioEl.src = preview;
   audioEl.style.display = preview ? "block" : "none";
+  if (preview) {
+    audioEl.currentTime = 0;
+    const playTry = audioEl.play();
+    if (playTry && typeof playTry.catch === "function") {
+      playTry.catch(() => {});
+    }
+  }
 
   if (detalleEditor) detalleEditor.hidden = true;
   toggleEditorBtn?.setAttribute("aria-expanded", "false");
 
   modal.classList.add("abierto");
   modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
 }
 
 function cerrarModal() {
-  modal.classList.remove("abierto");
-  modal.setAttribute("aria-hidden", "true");
-  audioEl.pause();
-  audioEl.src = "";
-  recuerdoActivoId = null;
-  if (detalleEditor) detalleEditor.hidden = true;
-  toggleEditorBtn?.setAttribute("aria-expanded", "false");
+  if (!modal) return;
+
+  const finalizarCierre = () => {
+    modalCard?.classList.remove("closing");
+    modal.classList.remove("abierto");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    audioEl.pause();
+    audioEl.src = "";
+    recuerdoActivoId = null;
+    if (detalleEditor) detalleEditor.hidden = true;
+    toggleEditorBtn?.setAttribute("aria-expanded", "false");
+  };
+
+  if (!modalCard || modalCard.classList.contains("closing")) {
+    finalizarCierre();
+    return;
+  }
+
+  modalCard.classList.add("closing");
+  const estilo = window.getComputedStyle(modalCard);
+  const duracion = parseFloat(estilo.animationDuration || "0");
+  const delay = parseFloat(estilo.animationDelay || "0");
+  const tieneAnimacion = Number.isFinite(duracion) && Number.isFinite(delay) && (duracion + delay) > 0;
+
+  if (!tieneAnimacion) {
+    finalizarCierre();
+    return;
+  }
+
+  modalCard.addEventListener("animationend", finalizarCierre, { once: true });
 }
 
 function actualizarRecuerdoEnDOM(recuerdo) {
@@ -237,6 +300,9 @@ async function guardarEdicionRecuerdo(recuerdoId, payload) {
 async function subirFotoRecuerdo(recuerdoId, file) {
   const form = new FormData();
   form.append("foto_personal", file);
+  if (editarFotoSelfie?.checked) {
+    form.append("selfie_mode", "1");
+  }
   const resp = await fetch(`/recuerdos/${encodeURIComponent(recuerdoId)}/foto`, {
     method: "POST",
     body: form
@@ -278,6 +344,19 @@ async function manejarToggleFavorito(estrella) {
   }
 }
 
+function centrarViniloEnRail(vinilo) {
+  const rail = vinilo.closest(".vinilos-container, .estanteria");
+  if (!rail) return false;
+  if (rail.scrollWidth <= rail.clientWidth) return false;
+
+  const railRect = rail.getBoundingClientRect();
+  const viniloRect = vinilo.getBoundingClientRect();
+  const delta = (viniloRect.left + viniloRect.width / 2) - (railRect.left + railRect.width / 2);
+
+  rail.scrollBy({ left: delta, behavior: "smooth" });
+  return true;
+}
+
 document.addEventListener("click", (e) => {
   const estrella = e.target.closest("[data-fav-toggle]");
   if (estrella) {
@@ -287,7 +366,14 @@ document.addEventListener("click", (e) => {
   }
 
   const vinilo = e.target.closest(".vinilo-lomo");
-  if (vinilo) abrirDetalleDesdeVinilo(vinilo);
+  if (!vinilo) return;
+
+  const centrado = centrarViniloEnRail(vinilo);
+  if (centrado) {
+    window.setTimeout(() => abrirDetalleDesdeVinilo(vinilo), 180);
+    return;
+  }
+  abrirDetalleDesdeVinilo(vinilo);
 });
 
 document.addEventListener("keydown", (e) => {
@@ -385,18 +471,6 @@ toggleEditorBtn?.addEventListener("click", () => {
   toggleEditorBtn.setAttribute("aria-expanded", abierto ? "true" : "false");
 });
 
-const frasesMood = [
-  "Cada lomo guarda un latido.",
-  "Hoy también puedes volver a un eco.",
-  "Tus canciones sostienen memoria.",
-  "Respira: aquí los recuerdos suenan suave."
-];
-
-function refrescarMood() {
-  if (!moodEl) return;
-  moodEl.textContent = frasesMood[Math.floor(Math.random() * frasesMood.length)];
-}
-
 try {
   const vistaGuardada = localStorage.getItem("eco_biblioteca_vista");
   if (vistaGuardada && vistaSelect) {
@@ -406,7 +480,6 @@ try {
 } catch (_) {}
 
 setVista(vistaSelect?.value || "spines_dynamic");
+coverImgEl?.addEventListener("load", syncModalCoverBlur);
 document.querySelectorAll(".vinilo-lomo").forEach(aplicarCoverEnVinilo);
-refrescarMood();
-window.setInterval(refrescarMood, 12000);
 refrescarVistaBiblioteca();
