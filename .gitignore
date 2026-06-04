@@ -13,3 +13,5 @@ eco_backup_*.sql
 data/*.sqlite3
 data/usuarios.json
 data/backup/
+.vercel
+.vscode/

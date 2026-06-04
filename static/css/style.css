@@ -100,7 +100,17 @@ label, .field-label{
 }
 
 .home-vinilo-spin {
-  filter: brightness(.75) contrast(1.03) drop-shadow(0 18px 30px rgba(0,0,0,.45));
+  display: block;
+  width: min(82vw, 380px);
+  height: auto;
+  object-fit: contain;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  clip-path: none;
+  filter: brightness(.75) contrast(1.03);
+  backface-visibility: hidden;
 }
 
 .btn-primary {
@@ -1471,7 +1481,7 @@ body.modo-crear::before{
   content: "";
   position: fixed;
   inset: 0;
-  background-image: url('/static/portada_eco.jpg');
+  background-image: url('/static/fondo_home.png');
   background-size: cover;
   background-position: center;
   filter: blur(10px) brightness(0.42);

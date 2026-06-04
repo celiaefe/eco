@@ -835,6 +835,12 @@
     justify-content: center;
     margin: 4px 0 6px;
     margin-top: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    overflow: hidden;
+    border-radius: 50%;
     transition: transform 0.6s ease, margin-top 0.6s ease;
   }
   .home-vinilo-wrap.mover,
@@ -844,13 +850,21 @@
 
   .home-vinilo-spin{
     width: min(82vw, 380px);
+    height: auto;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     display: block;
     animation: ecoSpin 30s linear infinite;
-    filter: brightness(.78) contrast(1.02) drop-shadow(0 20px 36px rgba(0,0,0,.35));
+    object-fit: contain;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    clip-path: none;
+    filter: brightness(.78) contrast(1.02);
     pointer-events: none;
     user-select: none;
+    backface-visibility: hidden;
+    transform-origin: center;
   }
 
   @keyframes ecoSpin{

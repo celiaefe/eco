@@ -14,101 +14,442 @@
   .topbar,.footer{display:none}
   .inner{padding:0}
 
+  html, body{
+    min-height: 100%;
+    background: #050814;
+  }
+
+  body{
+    min-height: 100vh;
+    background-image: url("/static/img/fondo_estrellas.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
   body.capsulas-page{
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    background:
-      linear-gradient(rgba(8,10,18,.35), rgba(8,10,18,.55)),
-      url("{{ url_for('static', filename='fondo_home.png') }}") center / cover no-repeat fixed !important;
   }
 
-  @media (max-width: 520px){
-    body.capsulas-page{
-      background-attachment: scroll !important;
-    }
-  }
-
-  .caps-page { max-width: 980px; margin: 0 auto; padding: 24px 16px calc(72px + env(safe-area-inset-bottom)); color: #f7f7f2; }
+  .caps-page { max-width: 920px; margin: 0 auto; padding: 34px 16px calc(88px + env(safe-area-inset-bottom)); color: #f7f7f2; }
   .caps-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 8px; }
   .caps-head-left{ display: flex; align-items: center; gap: 10px; min-width: 0; }
   .capsulas-hero{
-    margin-bottom: 10px;
+    margin: 0;
+    padding: 0;
   }
   .capsulas-hero h1{
-    margin: 0;
-    font-size: 32px;
-    line-height: 1.08;
+    margin: 0 0 14px;
+    font-size: 54px;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    font-weight: 600;
   }
   .capsulas-hero p{
-    margin: 8px 0 0;
-    opacity: .78;
+    margin: 34px 16px 12px;
+    font-size: 16px;
+    font-style: italic;
+    max-width: none;
+    white-space: nowrap;
+    opacity: .65;
   }
-  .caps-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+  .caps-grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
   .caps-card { background: rgba(20,20,20,.72); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 16px; }
   .caps-card h2 { margin: 0 0 10px; font-size: 1rem; }
-  .caps-form { display: grid; gap: 10px; }
-  .caps-form input, .caps-form textarea, .caps-form button { border-radius: 10px; border: 1px solid rgba(255,255,255,.2); padding: 10px 12px; background: rgba(255,255,255,.05); color: #fff; }
-  .caps-form button { cursor: pointer; background: #f0e4c8; color: #1d1d1d; border-color: #f0e4c8; font-weight: 600; }
-  .caps-form label { font-size: .84rem; opacity: .86; margin-top: 2px; }
-  .caps-song-results { display: grid; gap: 8px; max-height: 220px; overflow: auto; }
-  .caps-song-item { display: grid; grid-template-columns: 48px 1fr; gap: 10px; align-items: center; border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 8px; background: rgba(255,255,255,.04); cursor: pointer; }
-  .caps-song-item:hover { background: rgba(255,255,255,.08); }
-  .caps-song-item img { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; }
-  .caps-song-selected { border: 1px solid rgba(255,255,255,.2); border-radius: 10px; padding: 8px 10px; background: rgba(255,255,255,.06); font-size: .9rem; }
+  .capsula-crear-wrap{
+    margin: 28px 0 18px;
+    padding: 0 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .capsula-crear{
+    width: min(100%, 760px);
+  }
+  .capsula-crear-boton{
+    width: 100%;
+    padding: 18px 32px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,245,220,.35);
+    background: linear-gradient(180deg, rgba(236,226,200,.96), rgba(220,205,170,.92));
+    color: #2b2418;
+    font-size: 1.08rem;
+    line-height: 1.2;
+    text-align: center;
+    box-shadow:
+      0 0 32px rgba(220,188,120,.22),
+      0 10px 28px rgba(0,0,0,.18),
+      inset 0 1px 0 rgba(255,255,255,.45);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .capsula-crear-boton:hover{
+    transform: translateY(-1px);
+    box-shadow:
+      0 0 40px rgba(220,188,120,.28),
+      0 14px 32px rgba(0,0,0,.22),
+      inset 0 1px 0 rgba(255,255,255,.55);
+  }
+  .capsula-formulario{
+    margin-top: 22px;
+    padding: 36px 38px 34px;
+    border-radius: 32px;
+    border: 1px solid rgba(255,255,255,.08);
+    background:
+      radial-gradient(circle at top center, rgba(198,164,102,.08), transparent 28%),
+      linear-gradient(180deg, rgba(7,10,22,.92) 0%, rgba(4,7,18,.96) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.03),
+      0 24px 54px rgba(0,0,0,.24),
+      0 40px 80px rgba(0,0,0,.18);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .caps-form{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 100%;
+  }
+  .caps-form button { cursor: pointer; font-weight: 600; }
+  .caps-ritual-intro{
+    margin: 0 0 34px;
+  }
+  .caps-ritual-kicker{
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: .76rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(233,217,185,.72);
+  }
+  .caps-ritual-intro p{
+    margin: 0;
+    max-width: 28ch;
+    color: rgba(245,239,228,.82);
+    font-size: 1.03rem;
+    line-height: 1.8;
+  }
+  .caps-flow-section{
+    position: relative;
+    margin-top: 34px;
+    padding-top: 22px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .caps-flow-section::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(212,178,110,.16), rgba(255,255,255,.04) 55%, transparent);
+  }
+  .caps-flow-section:first-of-type{
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .caps-flow-section:first-of-type::before{
+    display: none;
+  }
+  .caps-block-kicker{
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(224,206,176,.56);
+  }
+  .caps-block-title{
+    margin: 0 0 14px;
+    max-width: 18ch;
+    font-size: 2rem;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    color: #faf6ec;
+  }
+  .caps-inline-label{
+    display: block;
+    margin: 8px 0 12px;
+    color: rgba(241,234,220,.86);
+    font-size: .98rem;
+    line-height: 1.5;
+  }
+  .caps-form input,
+  .caps-form textarea{
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.10);
+    padding: 15px 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+    color: #fff;
+    transition:
+      border-color .22s ease,
+      box-shadow .22s ease,
+      background .22s ease,
+      transform .22s ease;
+  }
+  .caps-form input::placeholder,
+  .caps-form textarea::placeholder{
+    color: rgba(226,218,205,.36);
+  }
+  .caps-form input:focus,
+  .caps-form textarea:focus{
+    outline: none;
+    border-color: rgba(214,188,133,.34);
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+    box-shadow:
+      0 0 0 4px rgba(184,150,86,.08),
+      0 0 18px rgba(184,150,86,.06);
+  }
+  .caps-flow-song input{
+    margin-bottom: 10px;
+  }
+  .caps-song-results{
+    display: grid;
+    gap: 10px;
+    max-height: 240px;
+    overflow: auto;
+    padding-right: 4px;
+  }
+  .caps-song-item{
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 12px;
+    align-items: center;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 16px;
+    padding: 10px;
+    background: rgba(255,255,255,.02);
+    cursor: pointer;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .caps-song-item:hover,
+  .caps-song-item:focus-visible{
+    border-color: rgba(216,192,143,.16);
+    box-shadow:
+      0 0 0 1px rgba(216,192,143,.05),
+      0 10px 24px rgba(0,0,0,.14),
+      0 0 18px rgba(212,176,108,.06);
+    transform: translateY(-1px);
+    outline: none;
+  }
+  .caps-song-cover{
+    width: 52px;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,.03);
+  }
+  .caps-song-cover img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .caps-song-item-title{
+    display: block;
+    color: rgba(248,245,236,.95);
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+  .caps-song-item-meta{
+    margin-top: 4px;
+    color: rgba(231,226,214,.62);
+    font-size: .92rem;
+  }
+  .caps-song-selected{
+    margin: 14px 0 10px;
+    padding: 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(226,199,143,.14);
+    background: radial-gradient(circle at top left, rgba(170,137,78,.08), transparent 36%);
+  }
+  .caps-song-selected-card{
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 14px;
+    align-items: center;
+  }
+  .caps-song-selected-card img{
+    width: 84px;
+    height: 84px;
+    border-radius: 18px;
+    object-fit: cover;
+  }
+  .caps-song-selected-placeholder{
+    width: 84px;
+    height: 84px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.04);
+  }
+  .caps-song-selected-kicker{
+    font-size: .75rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(236,220,188,.62);
+  }
+  .caps-song-selected-title{
+    margin-top: 6px;
+    color: #fbf7ee;
+    font-size: 1.08rem;
+    line-height: 1.2;
+  }
+  .caps-song-selected-artist{
+    margin-top: 4px;
+    color: rgba(232,225,211,.66);
+    font-size: .95rem;
+  }
+  .caps-song-selected-actions{
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .caps-song-selected audio{
+    width: min(100%, 280px);
+    height: 38px;
+    filter: sepia(.28) saturate(.7) brightness(.88);
+  }
+  .caps-song-clear{
+    width: auto;
+    padding: 9px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.05);
+    color: rgba(244,239,229,.84);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .caps-song-empty{
+    padding: 10px 0 0;
+    color: rgba(233,226,214,.50);
+    font-size: .92rem;
+  }
+  .caps-flow-message{
+    margin-top: 42px;
+  }
+  .caps-flow-message .caps-block-title{
+    font-size: 2.2rem;
+    max-width: 14ch;
+  }
+  .caps-message-textarea{
+    min-height: 320px;
+    font-size: 1.12rem;
+    line-height: 1.9;
+    padding: 22px 24px;
+    background:
+      radial-gradient(circle at top left, rgba(212,176,108,.07), transparent 40%),
+      linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+    border: 1px solid rgba(212,176,108,.18);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.03),
+      0 14px 30px rgba(0,0,0,.16);
+  }
+  .caps-field-note{
+    margin-top: 12px;
+    color: rgba(232,224,209,.56);
+    font-size: .92rem;
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .caps-flow-seal{
+    margin-top: 42px;
+  }
+  .caps-form-grid{
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .caps-form-grid > *{
+    min-width: 0;
+  }
+  .caps-date-note,
+  .caps-date-hint{
+    margin-top: 10px;
+    font-size: .92rem;
+    color: rgba(229,216,186,.58);
+  }
+  .caps-flow-photo{
+    margin-top: 40px;
+  }
+  .caps-photo-input{
+    padding: 14px 16px;
+  }
+  .caps-form-actions{
+    margin-top: 42px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: stretch;
+  }
+  .btn-guardar-capsula{
+    width: 100%;
+    padding: 17px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(235,220,186,.22);
+    background: linear-gradient(180deg, rgba(16,20,36,.92), rgba(8,11,24,.96));
+    color: rgba(248,238,213,.96);
+    font-weight: 600;
+    letter-spacing: .02em;
+    box-shadow:
+      0 0 24px rgba(212,176,108,.12),
+      inset 0 1px 0 rgba(255,255,255,.06);
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  }
+  .btn-guardar-capsula:hover{
+    transform: translateY(-1px);
+    border-color: rgba(235,220,186,.32);
+    box-shadow:
+      0 0 34px rgba(212,176,108,.18),
+      inset 0 1px 0 rgba(255,255,255,.08);
+  }
+  .caps-cancel-btn{
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+    color: rgba(238,230,216,.56);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+  }
   .caps-cover { width: 100%; max-width: 220px; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-top: 8px; border: 1px solid rgba(255,255,255,.18); }
   .caps-list { display: grid; gap: 10px; }
   .caps-text { display: grid; gap: 6px; }
-  .capsula-crear{
-    margin: 20px 0 30px 0;
+  .capsula-crear > summary{
+    list-style: none;
+    cursor: pointer;
   }
 
-  .capsula-crear-boton{
-    cursor:pointer;
-    text-align:center;
-    padding:14px;
-    border-radius:30px;
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.15);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    font-weight:500;
+  .capsula-crear > summary::-webkit-details-marker{
+    display: none;
   }
 
-  .capsula-formulario{
-    margin-top:20px;
-    background: rgba(8, 12, 28, .28);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 24px;
-    padding: 18px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+  .capsula-formulario.is-opening{
+    animation: ritualPanelReveal .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .capsula-formulario.is-opening .caps-flow-section{
+    animation: ritualBlockRise .65s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .capsula-formulario.is-opening .caps-flow-section:nth-of-type(1){ animation-delay: .05s; }
+  .capsula-formulario.is-opening .caps-flow-section:nth-of-type(2){ animation-delay: .12s; }
+  .capsula-formulario.is-opening .caps-flow-section:nth-of-type(3){ animation-delay: .19s; }
+  .capsula-formulario.is-opening .caps-flow-section:nth-of-type(4){ animation-delay: .26s; }
+  .capsula-formulario.is-opening .caps-flow-message{
+    animation:
+      ritualBlockRise .65s cubic-bezier(.2,.8,.2,1) both,
+      ritualMessageGlow 5.8s ease-in-out .7s infinite;
   }
 
-  .capsula-formulario label{
-    opacity: .9;
-  }
-
-  .capsula-formulario input,
-  .capsula-formulario textarea,
-  .capsula-formulario select{
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.10);
-  }
-
-  .btn-guardar-capsula{
-    background: linear-gradient(180deg, #e8dfc7 0%, #d7ccb0 100%);
-    color: #171722;
-    border: 1px solid rgba(255,255,255,.18);
-    border-radius: 18px;
-    box-shadow: 0 10px 24px rgba(0,0,0,.18);
-    font-weight: 600;
-  }
-
-  @keyframes flotar{
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-16px); }
-    100% { transform: translateY(0px); }
-  }
 
   @keyframes brillo{
     0% { box-shadow: 0 0 0 rgba(255,255,255,0); }
@@ -116,12 +457,123 @@
     100% { box-shadow: 0 0 0 rgba(255,255,255,0); }
   }
 
+  @keyframes ritualPanelReveal{
+    from{
+      opacity: 0;
+      transform: translateY(16px) scale(.988);
+      filter: blur(5px);
+    }
+    to{
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes ritualBlockRise{
+    from{
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to{
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes ritualMessageGlow{
+    0%, 100%{
+      box-shadow:
+        inset 0 0 0 1px rgba(255,242,210,.03),
+        0 28px 56px rgba(0,0,0,.28),
+        0 0 0 1px rgba(255,222,165,.04);
+    }
+    50%{
+      box-shadow:
+        inset 0 0 0 1px rgba(255,242,210,.04),
+        0 28px 56px rgba(0,0,0,.28),
+        0 0 24px rgba(186,149,80,.10),
+        0 0 0 1px rgba(255,222,165,.06);
+    }
+  }
+
+  @keyframes haloDoradoSuave{
+    0%, 100% {
+      box-shadow:
+        inset 0 0 38px rgba(255,247,218,.34),
+        inset -14px -16px 24px rgba(158,95,10,.20),
+        inset 10px 10px 18px rgba(255,236,172,.18),
+        0 10px 40px rgba(0,0,0,.35),
+        0 0 18px rgba(255,200,84,.34),
+        0 0 38px rgba(255,195,70,.24),
+        0 0 70px rgba(255,180,40,.18);
+      filter: brightness(1);
+    }
+
+    50% {
+      box-shadow:
+        inset 0 0 40px rgba(255,248,220,.38),
+        inset -14px -16px 24px rgba(165,98,14,.22),
+        inset 10px 10px 18px rgba(255,240,184,.22),
+        0 10px 40px rgba(0,0,0,.35),
+        0 0 22px rgba(255,207,98,.42),
+        0 0 46px rgba(255,198,78,.30),
+        0 0 82px rgba(255,186,44,.24);
+      filter: brightness(1.035);
+    }
+  }
+
+  @keyframes destelloMagico{
+    0%, 87%, 100% {
+      opacity: 0;
+      transform: translateX(-132%) rotate(-24deg);
+    }
+
+    90% {
+      opacity: 0.05;
+      transform: translateX(-82%) rotate(-24deg);
+    }
+
+    93% {
+      opacity: 0.15;
+      transform: translateX(-8%) rotate(-24deg);
+    }
+
+    96% {
+      opacity: 0.04;
+      transform: translateX(68%) rotate(-24deg);
+    }
+
+    98% {
+      opacity: 0;
+      transform: translateX(122%) rotate(-24deg);
+    }
+  }
+
   .capsulas-espacio{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap: 34px;
-    padding: 28px 16px 40px;
+    position: relative;
+    min-height: 68vh;
+    height: 68vh;
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .capsulas-bloque.is-creating .capsulas-espacio{
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .capsulas-bloque.is-creating::after{
+    content: "Las cápsulas actuales se ocultan mientras creas una nueva.";
+    display: grid;
+    place-items: center;
+    min-height: 68vh;
+    padding: 24px;
+    text-align: center;
+    color: rgba(255, 245, 214, 0.82);
+    font-size: .98rem;
+    letter-spacing: .03em;
   }
 
   .capsulas-espacio:has(.capsula-burbuja:only-child) .capsula-burbuja{
@@ -129,64 +581,181 @@
     height: 160px;
   }
 
+  .capsulas-espacio > .capsula-burbuja:only-child{
+    width: 160px;
+    height: 160px;
+  }
+
   .capsula-burbuja{
-    position: relative;
-    width: 140px;
-    height: 140px;
-    border-radius:50%;
+    --offset-x: 0px;
+    --offset-y: 0px;
+    --pos-x: 50%;
+    --pos-y: 50%;
+    --push-x: 0px;
+    --push-y: 0px;
+    --separation-x: 0px;
+    --separation-y: 0px;
+    --scroll-shift-y: 0px;
+    --float-x: 0px;
+    --float-y: 0px;
+    --spark-duration: 11.4s;
+    --spark-delay: -3.2s;
+    position: absolute;
+    left: var(--pos-x);
+    top: var(--pos-y);
+    width: 138px;
+    height: 138px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     color: rgba(255,255,255,.96);
+
     background:
-      radial-gradient(circle at 28% 28%, rgba(255,255,255,.34), rgba(255,255,255,.10) 38%, transparent 70%),
-      radial-gradient(circle at 72% 75%, rgba(124,160,255,.16), transparent 42%),
-      rgba(255,255,255,.045);
-    border: 1px solid rgba(255,255,255,.26);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+      radial-gradient(circle at 28% 24%, rgba(255,255,255,.42), rgba(255,255,255,.10) 26%, transparent 60%),
+      radial-gradient(circle at 72% 76%, rgba(255,220,180,.10), transparent 34%),
+      radial-gradient(circle at 60% 55%, rgba(120,160,255,.12), transparent 50%),
+      rgba(255,255,255,.035);
+
+    border: 1px solid rgba(255,255,255,.24);
+    backdrop-filter: blur(12px);
+
     box-shadow:
-      inset 0 0 28px rgba(255,255,255,.12),
-      inset -10px -10px 20px rgba(255,255,255,.04),
-      0 16px 40px rgba(0,0,0,.35);
-    cursor:pointer;
-    animation: flotar 7.5s ease-in-out infinite;
+      inset 0 0 28px rgba(255,255,255,.10),
+      inset -12px -12px 20px rgba(255,255,255,.03),
+      0 18px 42px rgba(0,0,0,.34);
+
     overflow: hidden;
+    margin: 0;
+    transform: translate(
+      calc(-50% + var(--offset-x) + var(--float-x) + var(--push-x) + var(--separation-x)),
+      calc(-50% + var(--offset-y) + var(--float-y) + var(--push-y) + var(--separation-y) + var(--scroll-shift-y))
+    ) rotate(var(--tilt, 0deg));
+    transition:
+      box-shadow .25s ease,
+      filter .25s ease;
     will-change: transform;
   }
 
-  .capsula-burbuja::before{
-    content:"";
-    position:absolute;
-    top: 18px;
-    left: 24px;
-    width: 38px;
-    height:18px;
-    border-radius:50%;
-    background: rgba(255,255,255,.42);
-    filter: blur(3px);
-    transform: rotate(-18deg);
+  .capsula-burbuja.cerrada{
+    background:
+      radial-gradient(circle at 26% 20%, rgba(255,252,240,.92), rgba(255,233,170,.62) 18%, rgba(255,204,92,.26) 42%, transparent 68%),
+      radial-gradient(circle at 70% 74%, rgba(255,214,98,.34), rgba(255,184,58,.14) 26%, transparent 48%),
+      radial-gradient(circle at 54% 52%, rgba(255,208,86,.26), rgba(255,183,54,.10) 34%, transparent 60%),
+      linear-gradient(155deg, rgba(255,246,214,.58) 0%, rgba(255,218,102,.42) 28%, rgba(214,146,28,.32) 62%, rgba(124,74,12,.26) 100%);
+
+    border: 1px solid rgba(255,228,150,.68);
+
+    box-shadow:
+      inset 0 0 38px rgba(255,247,218,.34),
+      inset -14px -16px 24px rgba(158,95,10,.20),
+      inset 10px 10px 18px rgba(255,236,172,.18),
+      0 10px 40px rgba(0,0,0,.35),
+      0 0 18px rgba(255,200,84,.34),
+      0 0 38px rgba(255,195,70,.24),
+      0 0 70px rgba(255,180,40,.18);
+    animation: haloDoradoSuave 7.2s ease-in-out infinite;
   }
 
-  .capsula-burbuja::after{
+  .capsula-burbuja.abierta{
+    background:
+      radial-gradient(circle at 26% 22%, rgba(246,250,255,.88), rgba(214,228,248,.46) 22%, rgba(166,186,214,.18) 48%, transparent 68%),
+      radial-gradient(circle at 72% 78%, rgba(186,204,232,.22), rgba(138,158,186,.10) 28%, transparent 46%),
+      linear-gradient(160deg, rgba(235,242,252,.36) 0%, rgba(196,210,230,.26) 38%, rgba(138,154,178,.20) 72%, rgba(86,98,120,.15) 100%);
+
+    border: 1px solid rgba(214,226,244,.58);
+
+    box-shadow:
+      inset 0 0 30px rgba(245,249,255,.20),
+      inset -12px -14px 22px rgba(88,104,130,.18),
+      inset 8px 8px 14px rgba(238,245,255,.12),
+      0 10px 40px rgba(0,0,0,.35),
+      0 0 14px rgba(196,214,240,.14);
+  }
+
+  .capsula-burbuja:nth-child(3n){
+    width: 128px;
+    height: 128px;
+  }
+
+  .capsula-burbuja:nth-child(2n){
+    width: 150px;
+    height: 150px;
+  }
+
+  .capsula-burbuja:nth-child(4n){
+    width: 168px;
+    height: 168px;
+  }
+
+  .capsula-burbuja::before{
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 24px;
+    width: 40px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.52);
+    filter: blur(4px);
+    transform: rotate(-18deg);
+    pointer-events: none;
+  }
+
+  .capsula-burbuja.cerrada::after{
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,233,182,.14);
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,249,230,.06) 28%,
+        rgba(255,243,194,.42) 49%,
+        rgba(255,227,142,.16) 68%,
+        rgba(255,255,255,0) 100%
+      );
+    background-repeat: no-repeat;
+    background-size: 32% 168%;
+    background-position: -48% 50%;
+    filter: blur(4px);
+    mix-blend-mode: screen;
+    opacity: 0;
+    transform: translateX(-132%) rotate(-24deg);
+    animation: destelloMagico var(--spark-duration) ease-in-out infinite;
+    animation-delay: var(--spark-delay);
+    pointer-events: none;
+  }
+
+  .capsula-burbuja.abierta::after{
     content: "";
     position: absolute;
     inset: 3px;
     border-radius: 50%;
     border: 1px solid rgba(255,255,255,.10);
+    pointer-events: none;
+  }
+
+  .capsula-burbuja:active{
+    box-shadow:
+      inset 0 0 28px rgba(255,255,255,.12),
+      inset -12px -12px 20px rgba(255,255,255,.04),
+      0 22px 48px rgba(0,0,0,.38),
+      0 0 22px rgba(255,255,255,.10);
+    filter: brightness(1.06);
   }
 
   .capsula-titulo{
-    max-width: 88px;
     font-size: 15px;
     font-weight: 600;
     line-height: 1.15;
-    color: rgba(244,241,234,.95);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    padding: 0 10px;
+    text-align: center;
   }
 
   .capsula-fecha{
@@ -194,28 +763,29 @@
     font-size: 11px;
     opacity: .74;
     line-height: 1.3;
+    padding: 0 10px;
+    text-align: center;
+  }
+
+  .capsula-estado-icono{
+    position: static;
+    font-size: 18px;
+    opacity: .95;
+    line-height: 1;
+    margin-bottom: 8px;
   }
 
   .capsulas-bloque{
-    margin-top: 24px;
-    padding: 20px 14px 28px;
-    border-radius: 24px;
-    background: rgba(8,12,28,.16);
-    border: 1px solid rgba(255,255,255,.08);
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-top: 40px;
   }
 
   .capsulas-bloque h2{
-    margin: 0 0 14px;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-  }
-
-  @media (max-width: 520px){
-    .capsulas-espacio{
-      gap: 18px;
-      padding: 24px 12px;
-    }
+    font-size: 16px;
+    opacity: .7;
+    margin-bottom: 20px;
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -306,12 +876,12 @@
   .caps-links a { color: #f0e4c8; text-decoration: none; }
   .capsulas-tabs,
   .caps-tabs{
-    display: none;
-    gap: 10px;
-    margin: 8px 0 14px;
-    padding: 6px;
+    display: flex;
+    gap: 8px;
+    margin: 24px 24px 18px;
+    padding: 8px;
     border-radius: 999px;
-    background: rgba(255,255,255,.04);
+    background: rgba(255,255,255,.03);
     border: 1px solid rgba(255,255,255,.10);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -323,7 +893,7 @@
     text-align: center;
     padding: 12px 16px;
     border-radius: 999px;
-    color: rgba(255,255,255,.72);
+    color: rgba(255,255,255,.68);
     transition: all .25s ease;
     min-height: 40px;
     border: 1px solid transparent;
@@ -335,14 +905,14 @@
   .capsulas-tab.activa,
   .caps-tab.is-active{
     background: rgba(255,255,255,.06);
+    color: rgba(255,255,255,.95);
+    box-shadow: inset 0 0 18px rgba(255,255,255,.04);
     border: 1px solid rgba(255,255,255,.10);
-    color: rgba(255,255,255,.96);
-    box-shadow: inset 0 0 16px rgba(255,255,255,.04);
   }
 
   /* Móvil: muestra tabs y oculta una sección según estado */
 @media (max-width: 520px){
-  .caps-tabs{ display: flex; }
+  .caps-tabs{ display: none; }
 
   .caps-card{
     padding: 12px 12px;
@@ -350,14 +920,80 @@
   }
 
   .caps-section{
-    display: none;
+    display: block;
   }
-    .caps-section.is-active{
-      display: block;
-    }
   }
 
-  @media (min-width: 880px) { .caps-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 880px) { .caps-grid { grid-template-columns: 1fr; } }
+
+  @media (max-width: 760px){
+    .caps-form-grid{
+      grid-template-columns: 1fr;
+    }
+
+    .capsula-crear-wrap{
+      padding: 0 14px;
+    }
+
+    .capsula-formulario{
+      padding: 28px 22px 28px;
+      border-radius: 26px;
+    }
+
+    .caps-block-title{
+      font-size: 1.6rem;
+      max-width: 16ch;
+    }
+
+    .caps-flow-message .caps-block-title{
+      font-size: 1.8rem;
+      max-width: 15ch;
+    }
+
+    .caps-message-textarea{
+      min-height: 260px;
+      font-size: 1.04rem;
+      padding: 18px 18px;
+    }
+
+    .caps-song-selected-card{
+      grid-template-columns: 1fr;
+    }
+
+    .caps-song-selected-card img,
+    .caps-song-selected-placeholder{
+      width: 100%;
+      max-width: 110px;
+      height: auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    .capsula-crear-boton{
+      font-size: 18px;
+      padding: 16px 18px;
+    }
+
+    .capsulas-espacio{
+      padding: 28px 10px 120px;
+      min-height: 360px;
+    }
+
+    .capsula-burbuja{
+      width: 120px;
+      height: auto;
+    }
+
+    .capsula-burbuja:nth-child(3n){
+      width: 132px;
+      height: auto;
+    }
+
+    .capsula-burbuja:nth-child(4n){
+      width: 108px;
+      height: auto;
+    }
+
+  }
 
   /* ========== CAPSULAS MOBILE LAYOUT ========== */
   @media (max-width: 520px){
@@ -478,54 +1114,106 @@
       </div>
     </div>
     <section class="capsulas-hero">
-      <h1>Cápsulas</h1>
-      <p>Algunos recuerdos necesitan tiempo antes de volver a sonar.</p>
+      <p>Guarda algo para el futuro. Y deja que el tiempo lo cuide.</p>
     </section>
     <p class="caps-status" id="capsStatus"></p>
     <section class="caps-grid">
-      <article class="caps-card">
-        <details class="capsula-crear">
-          <summary class="capsula-crear-boton">✨ Crear cápsula</summary>
-          <div class="capsula-formulario">
+      <div class="capsula-crear-wrap">
+        <div class="capsula-crear">
+          <button id="capsCrearBtn" class="capsula-crear-boton" type="button" aria-expanded="false">
+            ✨ Crear cápsula ✨
+          </button>
+          <div id="capsulaFormulario" class="capsula-formulario" hidden>
             <form id="capsForm" class="caps-form">
-              <label for="capsSongQuery">Canción + artista</label>
-              <input id="capsSongQuery" type="text" placeholder="Busca canción por título o artista">
-              <div id="capsSongSelected" class="caps-song-selected" hidden></div>
-              <div id="capsSongResults" class="caps-song-results"></div>
-              <label for="capsTitle">Título personal</label>
-              <input id="capsTitle" type="text" placeholder="Cómo quieres llamar a esta cápsula" required>
-              <label for="capsOpenDate">Fecha y hora de apertura</label>
-              <input id="capsSpotifyId" type="hidden">
-              <input id="capsSongTitle" type="hidden">
-              <input id="capsSongArtist" type="hidden">
-              <input id="capsSongCoverUrl" type="hidden">
-              <input id="capsOpenDate" type="datetime-local" required>
-              <label for="capsMessage">Texto de la cápsula</label>
-              <textarea id="capsMessage" rows="5" placeholder="Escribe aquí el mensaje que quieres dejar"></textarea>
-              <label for="capsPhoto">Foto de la cápsula (opcional)</label>
-              <input id="capsPhoto" type="file" accept="image/*">
-              <button class="btn-guardar-capsula" type="submit">Guardar cápsula</button>
+              <header class="caps-ritual-intro">
+                <span class="caps-ritual-kicker">Ritual de memoria</span>
+                <p>Guarda este instante como una carta para tu yo futuro.</p>
+              </header>
+
+              <section class="caps-flow-section caps-flow-song">
+                <span class="caps-block-kicker">Primera señal</span>
+                <h2 class="caps-block-title">Elige la canción de este recuerdo</h2>
+
+                <label for="capsSongQuery" class="caps-inline-label">
+                  ¿Qué canción debería sonar cuando este recuerdo despierte?
+                </label>
+
+                <input id="capsSongQuery" type="text" placeholder="Busca por canción o artista">
+
+                <div id="capsSongSelected" class="caps-song-selected" hidden></div>
+                <div id="capsSongResults" class="caps-song-results"></div>
+              </section>
+
+              <section class="caps-flow-section caps-flow-message">
+                <span class="caps-block-kicker">Corazón de la cápsula</span>
+                <h2 class="caps-block-title">Escribe lo que merece sobrevivir al tiempo</h2>
+
+                <label for="capsMessage" class="caps-inline-label">
+                  Mensaje para tu yo del futuro
+                </label>
+
+                <textarea
+                  id="capsMessage"
+                  class="caps-message-textarea"
+                  rows="10"
+                  placeholder="Escribe aquí lo que quieres volver a sentir cuando la cápsula se abra..."></textarea>
+
+                <p class="caps-field-note">
+                  No hace falta resumirlo. Este es el espacio principal del recuerdo.
+                </p>
+              </section>
+
+              <section class="caps-flow-section caps-flow-seal">
+                <span class="caps-block-kicker">Sellado final</span>
+                <h2 class="caps-block-title">Ponle nombre y destino a este instante</h2>
+
+                <div class="caps-form-grid">
+                  <div>
+                    <label for="capsTitle" class="caps-inline-label">
+                      ¿Cómo quieres llamar a esta cápsula?
+                    </label>
+                    <input id="capsTitle" type="text" placeholder="Ej. La noche en que todo cambió" required>
+                  </div>
+
+                  <div>
+                    <label for="capsOpenDate" class="caps-inline-label">
+                      ¿Cuándo podrá abrirse de nuevo?
+                    </label>
+                    <input id="capsSpotifyId" type="hidden">
+                    <input id="capsSongTitle" type="hidden">
+                    <input id="capsSongArtist" type="hidden">
+                    <input id="capsSongCoverUrl" type="hidden">
+                    <input id="capsOpenDate" type="datetime-local" required>
+                    <p class="caps-date-hint" id="capsDateHint" aria-live="polite"></p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="caps-flow-section caps-flow-photo">
+                <span class="caps-block-kicker">Huella visual</span>
+                <h2 class="caps-block-title">Si quieres, añade una imagen del momento</h2>
+
+                <label for="capsPhoto" class="caps-inline-label">
+                  Imagen para acompañar la apertura
+                </label>
+
+                <input id="capsPhoto" class="caps-photo-input" type="file" accept="image/*">
+              </section>
+
+              <div class="caps-form-actions">
+                <button class="btn-guardar-capsula" type="submit">✨ Sellar cápsula</button>
+                <button id="capsCancelBtn" class="caps-cancel-btn" type="button">Cancelar</button>
+              </div>
             </form>
           </div>
-        </details>
-      </article>
-
-      <div class="caps-tabs" role="tablist" aria-label="Secciones de cápsulas">
-        <button class="caps-tab is-active" type="button" data-tab="cerradas" role="tab" aria-selected="true">
-          Cerradas
-        </button>
-        <button class="caps-tab" type="button" data-tab="abiertas" role="tab" aria-selected="false">
-          Abiertas
-        </button>
+        </div>
       </div>
 
-      <section id="tab-cerradas" class="caps-section caps-card capsulas-bloque">
-        <h2>Cerradas</h2>
-        <div id="capsCerradas" class="capsulas-espacio"></div>
+      <section id="tab-cerradas" class="caps-section capsulas-bloque">
+        <div class="capsulas-espacio" id="capsulasEspacio"></div>
       </section>
 
-      <section id="tab-abiertas" class="caps-section caps-card">
-        <h2>Abiertas</h2>
+      <section id="tab-abiertas" class="caps-section">
         <div id="capsAbiertas" class="caps-list"></div>
       </section>
     </section>
@@ -536,7 +1224,7 @@
   <script>
     const form = document.getElementById("capsForm");
     const statusEl = document.getElementById("capsStatus");
-    const cerradasEl = document.getElementById("capsCerradas");
+    const cerradasEl = document.getElementById("capsulasEspacio");
     const abiertasEl = document.getElementById("capsAbiertas");
     const premiumToggleBtn = document.getElementById("premiumToggleBtn");
     const capsSongQuery = document.getElementById("capsSongQuery");
@@ -547,9 +1235,571 @@
     const capsSongArtist = document.getElementById("capsSongArtist");
     const capsSpotifyId = document.getElementById("capsSpotifyId");
     const capsSongCoverUrl = document.getElementById("capsSongCoverUrl");
+    const capsOpenDate = document.getElementById("capsOpenDate");
+    const capsOpenDateNote = document.getElementById("capsDateHint");
     const capsPhoto = document.getElementById("capsPhoto");
+    const capsMessage = document.getElementById("capsMessage");
+    const capsCrearBtn = document.getElementById("capsCrearBtn");
+    const capsCancelBtn = document.getElementById("capsCancelBtn");
+    const capsulaFormulario = document.getElementById("capsulaFormulario");
+    const capsFormBlocks = document.querySelectorAll(".caps-flow-section");
+    const cerradasSection = document.getElementById("tab-cerradas");
+    const bubbleLayoutRoots = new Set();
+    const bubbleRepulsionState = new WeakMap();
+    const bubbleScrollState = new WeakMap();
+    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+    let bubbleFloatFrame = null;
+    let bubbleRepulsionFrame = null;
+    let bubbleRepulsionLastTime = 0;
 
     let songSearchTimeout = null;
+
+    function seededUnit(seed) {
+      const x = Math.sin(seed * 12.9898) * 43758.5453;
+      return x - Math.floor(x);
+    }
+
+    function minBubbleDistance(widthA, heightA, widthB = widthA, heightB = heightA) {
+      const radiusA = Math.max(widthA, heightA) / 2;
+      const radiusB = Math.max(widthB, heightB) / 2;
+      return radiusA + radiusB + Math.min(radiusA, radiusB) * 0.14;
+    }
+
+    function overlaps(candidate, placed) {
+      const candidateRadius = Math.max(candidate.width, candidate.height) / 2;
+      const candidateCx = candidate.x + (candidate.width / 2);
+      const candidateCy = candidate.y + (candidate.height / 2);
+      return placed.some((item) => {
+        const itemCx = item.x + (item.width / 2);
+        const itemCy = item.y + (item.height / 2);
+        const dx = candidateCx - itemCx;
+        const dy = candidateCy - itemCy;
+        const minDist = minBubbleDistance(candidate.width, candidate.height, item.width, item.height);
+        return ((dx * dx) + (dy * dy)) < (minDist * minDist);
+      });
+    }
+
+    function ensureBubbleRepulsionState(root) {
+      let state = bubbleRepulsionState.get(root);
+      if (state) return state;
+      state = { bubbles: [] };
+      bubbleRepulsionState.set(root, state);
+      return state;
+    }
+
+    function scheduleBubbleFloat() {
+      if (prefersReducedMotion || bubbleFloatFrame !== null) return;
+      bubbleFloatFrame = window.requestAnimationFrame(runBubbleFloat);
+    }
+
+    function runBubbleFloat(now) {
+      bubbleFloatFrame = null;
+      let hasActiveRoot = false;
+      const time = now * 0.001;
+
+      bubbleLayoutRoots.forEach((root) => {
+        if (!root?.isConnected || !root.offsetParent) return;
+        const state = bubbleRepulsionState.get(root);
+        if (!state || !state.bubbles.length) return;
+
+        for (const bubble of state.bubbles) {
+          const waveX =
+            Math.sin((time * bubble.speed1) + bubble.phase1) * bubble.ampX +
+            Math.sin((time * bubble.speed2) + bubble.phase2) * bubble.ampX * 0.42 +
+            Math.cos((time * bubble.speed3) + bubble.phase3) * bubble.ampX * 0.18 +
+            Math.sin((time * bubble.driftSpeed) + bubble.driftPhase) * bubble.driftX;
+
+          const waveY =
+            Math.cos((time * (bubble.speed1 * 0.94)) + bubble.phase2) * bubble.ampY +
+            Math.sin((time * (bubble.speed2 * 0.68)) + bubble.phase1) * bubble.ampY * 0.36 +
+            Math.sin((time * (bubble.speed3 * 0.44)) + bubble.phase3) * bubble.ampY * 0.16;
+
+          bubble.floatX += (waveX - bubble.floatX) * 0.08;
+          bubble.floatY += (waveY - bubble.floatY) * 0.08;
+
+          bubble.el.style.setProperty("--float-x", `${bubble.floatX.toFixed(2)}px`);
+          bubble.el.style.setProperty("--float-y", `${bubble.floatY.toFixed(2)}px`);
+        }
+
+        hasActiveRoot = true;
+      });
+
+      if (hasActiveRoot) {
+        scheduleBubbleFloat();
+      }
+    }
+
+    function scheduleBubbleRepulsion() {
+      if (bubbleRepulsionFrame !== null) return;
+      bubbleRepulsionFrame = window.requestAnimationFrame(runBubbleRepulsion);
+    }
+
+    function runBubbleRepulsion(now) {
+      bubbleRepulsionFrame = null;
+      if (now - bubbleRepulsionLastTime < 80) {
+        scheduleBubbleRepulsion();
+        return;
+      }
+      bubbleRepulsionLastTime = now;
+
+      let hasActiveRoot = false;
+      bubbleLayoutRoots.forEach((root) => {
+        if (!root?.isConnected || !root.offsetParent) return;
+        const state = bubbleRepulsionState.get(root);
+        if (!state || state.bubbles.length < 2) return;
+        applyBubbleRepulsion(root, state);
+        hasActiveRoot = true;
+      });
+
+      if (hasActiveRoot) {
+        scheduleBubbleRepulsion();
+      }
+    }
+
+    function applyBubbleRepulsion(root, state) {
+      const entries = state.bubbles
+        .filter((entry) => entry.el.isConnected)
+        .map((entry) => {
+          const rect = entry.el.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          return {
+            ...entry,
+            cx: rect.left + (rect.width / 2),
+            cy: rect.top + (rect.height / 2),
+            size,
+            targetX: 0,
+            targetY: 0
+          };
+        })
+        .sort((a, b) => a.cx - b.cx);
+
+      for (let i = 0; i < entries.length; i += 1) {
+        const current = entries[i];
+        for (let j = i + 1; j < entries.length; j += 1) {
+          const other = entries[j];
+          const minDist = minBubbleDistance(current.size, current.size, other.size, other.size);
+          const dx = other.cx - current.cx;
+          if (dx > minDist) break;
+
+          const dy = other.cy - current.cy;
+          const distSq = (dx * dx) + (dy * dy);
+          if (distSq === 0 || distSq >= (minDist * minDist)) continue;
+
+          const dist = Math.sqrt(distSq) || 1;
+          const overlap = minDist - dist;
+          const force = Math.min(12, overlap * 0.22);
+          const nx = dx / dist;
+          const ny = dy / dist;
+
+          current.targetX -= nx * force;
+          current.targetY -= ny * force;
+          other.targetX += nx * force;
+          other.targetY += ny * force;
+        }
+      }
+
+      for (const entry of entries) {
+        entry.sepX = (entry.sepX || 0) + ((entry.targetX || 0) - (entry.sepX || 0)) * 0.18;
+        entry.sepY = (entry.sepY || 0) + ((entry.targetY || 0) - (entry.sepY || 0)) * 0.18;
+
+        if (Math.abs(entry.sepX) < 0.05) entry.sepX = 0;
+        if (Math.abs(entry.sepY) < 0.05) entry.sepY = 0;
+
+        entry.el.style.setProperty("--separation-x", `${entry.sepX.toFixed(2)}px`);
+        entry.el.style.setProperty("--separation-y", `${entry.sepY.toFixed(2)}px`);
+      }
+    }
+
+    const bubbleCompositionPresets = {
+      1: [
+        { x: 0.00, y: 0.00 }
+      ],
+      2: [
+        { x: -0.92, y: 0.18 },
+        { x: 0.86, y: -0.22 }
+      ],
+      3: [
+        { x: -1.02, y: 0.22 },
+        { x: 0.08, y: -0.82 },
+        { x: 0.96, y: 0.34 }
+      ],
+      4: [
+        { x: -1.14, y: 0.10 },
+        { x: -0.22, y: -0.96 },
+        { x: 1.02, y: -0.12 },
+        { x: 0.22, y: 1.04 }
+      ],
+      5: [
+        { x: -1.18, y: 0.12 },
+        { x: -0.42, y: -0.94 },
+        { x: 0.72, y: -0.58 },
+        { x: 1.08, y: 0.42 },
+        { x: -0.08, y: 1.02 }
+      ],
+      6: [
+        { x: -1.20, y: 0.08 },
+        { x: -0.62, y: -0.92 },
+        { x: 0.30, y: -1.02 },
+        { x: 1.16, y: -0.06 },
+        { x: 0.62, y: 0.98 },
+        { x: -0.44, y: 0.92 }
+      ]
+    };
+
+    function resolveBubblePresetPositions({ bubbles, cloudCenterX, cloudCenterY, cloudWidth, cloudHeight, boundsLeft, boundsRight, boundsTop }) {
+      const preset = bubbleCompositionPresets[bubbles.length];
+      if (!preset) return null;
+
+      let unit = 0;
+      for (let i = 0; i < bubbles.length; i += 1) {
+        for (let j = i + 1; j < bubbles.length; j += 1) {
+          const dx = preset[i].x - preset[j].x;
+          const dy = preset[i].y - preset[j].y;
+          const normDist = Math.sqrt((dx * dx) + (dy * dy));
+          if (!normDist) continue;
+          const minDist = minBubbleDistance(
+            bubbles[i].offsetWidth,
+            bubbles[i].offsetHeight,
+            bubbles[j].offsetWidth,
+            bubbles[j].offsetHeight
+          );
+          unit = Math.max(unit, minDist / normDist);
+        }
+      }
+
+      unit = Math.max(unit, 52);
+
+      const rawPositions = bubbles.map((bubble, index) => ({
+        width: bubble.offsetWidth,
+        height: bubble.offsetHeight,
+        cx: cloudCenterX + (preset[index].x * unit),
+        cy: cloudCenterY + (preset[index].y * unit)
+      }));
+
+      const minLeft = Math.min(...rawPositions.map((item) => item.cx - (item.width / 2)));
+      const maxRight = Math.max(...rawPositions.map((item) => item.cx + (item.width / 2)));
+      const minTop = Math.min(...rawPositions.map((item) => item.cy - (item.height / 2)));
+      const maxBottom = Math.max(...rawPositions.map((item) => item.cy + (item.height / 2)));
+
+      let shiftX = 0;
+      let shiftY = 0;
+      if (minLeft < boundsLeft) shiftX += boundsLeft - minLeft;
+      if (maxRight > boundsRight) shiftX -= maxRight - boundsRight;
+      if (minTop < boundsTop) shiftY += boundsTop - minTop;
+
+      const placed = rawPositions.map((item) => ({
+        x: item.cx + shiftX - (item.width / 2),
+        y: item.cy + shiftY - (item.height / 2),
+        width: item.width,
+        height: item.height
+      }));
+
+      return placed.every((candidate, index) => !overlaps(candidate, placed.slice(0, index))) ? placed : null;
+    }
+
+    function resolveBubbleCloudPosition({ bubbleId, width, height, cloudCenterX, cloudCenterY, cloudRadiusX, cloudRadiusY, boundsLeft, boundsRight, boundsTop, placed }) {
+      const candidateCount = placed.length ? 140 : 1;
+      let best = null;
+
+      for (let attempt = 0; attempt < candidateCount; attempt += 1) {
+        let x;
+        let y;
+
+        if (attempt === 0) {
+          x = cloudCenterX - (width / 2);
+          y = cloudCenterY - (height / 2);
+        } else {
+          const angle = seededUnit(bubbleId + (attempt * 1.713)) * Math.PI * 2;
+          const radiusX = Math.pow(seededUnit(bubbleId + 20 + attempt * 0.73), 0.82) * cloudRadiusX;
+          const radiusY = Math.pow(seededUnit(bubbleId + 40 + attempt * 0.91), 1.15) * cloudRadiusY;
+          const jitterX = (seededUnit(bubbleId + 60 + attempt * 1.11) - 0.5) * 18;
+          const jitterY = (seededUnit(bubbleId + 80 + attempt * 1.37) - 0.5) * 14;
+
+          x = cloudCenterX + (Math.cos(angle) * radiusX) + jitterX - (width / 2);
+          y = cloudCenterY + (Math.sin(angle) * radiusY) + jitterY - (height / 2);
+        }
+
+        const candidate = {
+          x: Math.max(boundsLeft, Math.min(boundsRight - width, x)),
+          y: Math.max(boundsTop, y),
+          width,
+          height
+        };
+
+        if (overlaps(candidate, placed)) continue;
+
+        const candidateCx = candidate.x + (width / 2);
+        const candidateCy = candidate.y + (height / 2);
+        const dxCenter = Math.abs(candidateCx - cloudCenterX);
+        const dyCenter = Math.abs(candidateCy - cloudCenterY);
+
+        let verticalPenalty = 0;
+        let nearestGapPenalty = 0;
+        for (const item of placed) {
+          const itemCx = item.x + (item.width / 2);
+          const itemCy = item.y + (item.height / 2);
+          const dx = Math.abs(candidateCx - itemCx);
+          const dy = Math.abs(candidateCy - itemCy);
+          const desired = minBubbleDistance(width, height, item.width, item.height);
+          const dist = Math.sqrt((dx * dx) + (dy * dy));
+
+          if (dx < Math.min(width, item.width) * 0.28 && dy < desired * 1.7) {
+            verticalPenalty += (desired * 1.7) - dy;
+          }
+
+          nearestGapPenalty += Math.max(0, dist - desired) * 0.018;
+        }
+
+        const score = (dxCenter * 0.88) + (dyCenter * 1.08) + verticalPenalty + nearestGapPenalty;
+        if (!best || score < best.score) {
+          best = { ...candidate, score };
+        }
+      }
+
+      if (best) {
+        return { x: best.x, y: best.y, width, height };
+      }
+
+      const fallbackGap = Math.max(18, Math.round(Math.min(width, height) * 0.22));
+      const fallbackTop = placed.length
+        ? Math.max(...placed.map((item) => item.y + item.height)) + fallbackGap
+        : cloudCenterY - (height / 2);
+      const fallbackX = Math.max(
+        boundsLeft,
+        Math.min(boundsRight - width, cloudCenterX - (width / 2))
+      );
+
+      return {
+        x: fallbackX,
+        y: Math.max(boundsTop, fallbackTop),
+        width,
+        height
+      };
+    }
+
+    function layoutBubbleField(root) {
+      if (!root) return;
+      const bubbles = Array.from(root.querySelectorAll(".capsula-burbuja"));
+      if (!bubbles.length) {
+        root.style.minHeight = "0px";
+        return;
+      }
+
+      const styles = getComputedStyle(root);
+      const padLeft = parseFloat(styles.paddingLeft) || 0;
+      const padRight = parseFloat(styles.paddingRight) || 0;
+      const padTop = parseFloat(styles.paddingTop) || 0;
+      const padBottom = parseFloat(styles.paddingBottom) || 0;
+      const innerWidth = Math.max(140, root.clientWidth - padLeft - padRight);
+      const isMobile = window.innerWidth <= 520;
+      const cloudWidth = Math.max(180, Math.min(innerWidth, innerWidth * (isMobile ? 0.92 : 0.74)));
+      const cloudHeight = Math.max(180, Math.min(root.clientHeight * 0.58, 220 + (Math.ceil(bubbles.length / 2.5) * (isMobile ? 42 : 50))));
+      const cloudCenterX = padLeft + (innerWidth / 2);
+      const cloudCenterY = padTop + Math.max(110, Math.min(root.clientHeight * 0.38, 220));
+      const cloudRadiusX = Math.max(72, (cloudWidth / 2) - 18);
+      const cloudRadiusY = Math.max(64, (cloudHeight / 2) - 12);
+      const placed = [];
+      let maxBottom = padTop;
+      const state = ensureBubbleRepulsionState(root);
+      state.bubbles = [];
+
+      const orderedBubbles = [...bubbles].sort((a, b) => b.offsetWidth - a.offsetWidth);
+      const presetPositions = resolveBubblePresetPositions({
+        bubbles: orderedBubbles,
+        cloudCenterX,
+        cloudCenterY,
+        cloudWidth,
+        cloudHeight,
+        boundsLeft: cloudCenterX - (cloudWidth / 2),
+        boundsRight: cloudCenterX + (cloudWidth / 2),
+        boundsTop: padTop + 18
+      });
+
+      orderedBubbles.forEach((bubble, index) => {
+        const bubbleId = Number(bubble.dataset.id) || ((index + 1) * 17);
+        const width = bubble.offsetWidth;
+        const height = bubble.offsetHeight;
+        const position = presetPositions?.[index] || resolveBubbleCloudPosition({
+          bubbleId,
+          width,
+          height,
+          cloudCenterX,
+          cloudCenterY,
+          cloudRadiusX,
+          cloudRadiusY,
+          boundsLeft: cloudCenterX - (cloudWidth / 2),
+          boundsRight: cloudCenterX + (cloudWidth / 2),
+          boundsTop: padTop + 18,
+          placed
+        });
+
+        bubble.style.left = `${(position.x + (width / 2)).toFixed(2)}px`;
+        bubble.style.top = `${(position.y + (height / 2)).toFixed(2)}px`;
+        bubble.style.setProperty("--float-x", "0px");
+        bubble.style.setProperty("--float-y", "0px");
+        bubble.style.setProperty("--separation-x", "0px");
+        bubble.style.setProperty("--separation-y", "0px");
+        bubble.style.setProperty("--scroll-shift-y", "0px");
+        placed.push(position);
+        state.bubbles.push({
+          el: bubble,
+          id: bubbleId,
+          sepX: 0,
+          sepY: 0,
+          floatX: 0,
+          floatY: 0,
+          ampX: 1.6 + (seededUnit(bubbleId + 20.1) * 2.8),
+          ampY: 2.6 + (seededUnit(bubbleId + 21.7) * 4.2),
+          speed1: 0.42 + (seededUnit(bubbleId + 23.3) * 0.32),
+          speed2: 0.24 + (seededUnit(bubbleId + 24.9) * 0.18),
+          speed3: 0.12 + (seededUnit(bubbleId + 26.5) * 0.1),
+          phase1: seededUnit(bubbleId + 28.1) * Math.PI * 2,
+          phase2: seededUnit(bubbleId + 29.7) * Math.PI * 2,
+          phase3: seededUnit(bubbleId + 31.3) * Math.PI * 2,
+          driftX: ((seededUnit(bubbleId + 32.9) * 2) - 1) * (0.8 + (seededUnit(bubbleId + 34.5) * 1.8)),
+          driftSpeed: 0.08 + (seededUnit(bubbleId + 36.1) * 0.06),
+          driftPhase: seededUnit(bubbleId + 37.7) * Math.PI * 2
+        });
+        maxBottom = Math.max(maxBottom, position.y + height);
+      });
+
+      root.style.minHeight = `${Math.ceil(maxBottom + padBottom + 24)}px`;
+      scheduleBubbleFloat();
+      scheduleBubbleRepulsion();
+    }
+
+    function bindBubbleFieldLayout(root) {
+      if (!root) return;
+      bubbleLayoutRoots.add(root);
+      layoutBubbleField(root);
+    }
+
+    function ensureBubbleScrollState(root) {
+      let state = bubbleScrollState.get(root);
+      if (state) return state;
+      state = { lastScrollTop: root.scrollTop || 0, relaxTimer: null };
+      bubbleScrollState.set(root, state);
+      return state;
+    }
+
+    function applyBubbleScrollDepth(root, shift) {
+      const bubbles = root.querySelectorAll(".capsula-burbuja");
+      bubbles.forEach((bubble) => {
+        bubble.style.setProperty("--scroll-shift-y", `${shift.toFixed(2)}px`);
+      });
+    }
+
+    function bindBubbleScrollDepth(root) {
+      if (!root || root.dataset.scrollDepthBound === "true") return;
+      const state = ensureBubbleScrollState(root);
+
+      root.addEventListener("scroll", () => {
+        const current = root.scrollTop || 0;
+        const delta = Math.abs(current - state.lastScrollTop);
+        state.lastScrollTop = current;
+
+        const shift = Math.min(8, Math.max(1.5, delta * 0.3));
+        applyBubbleScrollDepth(root, shift);
+
+        if (state.relaxTimer) {
+          window.clearTimeout(state.relaxTimer);
+        }
+        state.relaxTimer = window.setTimeout(() => {
+          applyBubbleScrollDepth(root, 0);
+        }, 90);
+      }, { passive: true });
+
+      root.dataset.scrollDepthBound = "true";
+    }
+
+    function updateBubblePointerField(root, clientX, clientY) {
+      const burbujas = Array.from(root.querySelectorAll(".capsula-burbuja"));
+      if (!burbujas.length) return;
+
+      for (const b of burbujas) {
+        const rect = b.getBoundingClientRect();
+        const cx = rect.left + (rect.width / 2);
+        const cy = rect.top + (rect.height / 2);
+        const dx = cx - clientX;
+        const dy = cy - clientY;
+        const dist = Math.sqrt((dx * dx) + (dy * dy));
+        const radio = 150;
+
+        if (dist < radio) {
+          const fuerza = (radio - dist) / radio;
+          const angulo = Math.atan2(dy, dx);
+          const moveX = Math.cos(angulo) * fuerza * 14;
+          const moveY = Math.sin(angulo) * fuerza * 14;
+          b.style.setProperty("--push-x", `${moveX.toFixed(2)}px`);
+          b.style.setProperty("--push-y", `${moveY.toFixed(2)}px`);
+        } else {
+          b.style.setProperty("--push-x", "0px");
+          b.style.setProperty("--push-y", "0px");
+        }
+      }
+    }
+
+    function resetBubblePointerField(root) {
+      const burbujas = root.querySelectorAll(".capsula-burbuja");
+      burbujas.forEach((b) => {
+        b.style.setProperty("--push-x", "0px");
+        b.style.setProperty("--push-y", "0px");
+      });
+    }
+
+    function bindBubblePointerField(root) {
+      if (!root || root.dataset.pointerFieldBound === "true") return;
+
+      root.addEventListener("pointermove", (e) => {
+        updateBubblePointerField(root, e.clientX, e.clientY);
+      });
+      root.addEventListener("pointerleave", () => resetBubblePointerField(root));
+      root.addEventListener("pointerup", () => resetBubblePointerField(root));
+      root.addEventListener("pointercancel", () => resetBubblePointerField(root));
+      root.addEventListener("touchend", () => resetBubblePointerField(root));
+      root.dataset.pointerFieldBound = "true";
+    }
+
+    function openCreationMode() {
+      if (!capsulaFormulario || !capsCrearBtn) return;
+      capsulaFormulario.hidden = false;
+      capsCrearBtn.setAttribute("aria-expanded", "true");
+      capsulaFormulario.classList.remove("is-opening");
+      cerradasSection?.classList.add("is-creating");
+      window.requestAnimationFrame(() => {
+        capsulaFormulario.classList.add("is-opening");
+      });
+    }
+
+    function closeCreationMode() {
+      if (!capsulaFormulario || !capsCrearBtn) return;
+      capsulaFormulario.hidden = true;
+      capsCrearBtn.setAttribute("aria-expanded", "false");
+      capsulaFormulario.classList.remove("is-opening");
+      cerradasSection?.classList.remove("is-creating");
+    }
+
+    if (capsCrearBtn && capsulaFormulario) {
+      capsCrearBtn.addEventListener("click", () => {
+        if (capsulaFormulario.hidden) {
+          openCreationMode();
+        } else {
+          closeCreationMode();
+        }
+      });
+    }
+
+    capsCancelBtn?.addEventListener("click", closeCreationMode);
+    capsOpenDate?.addEventListener("input", updateOpenDateNote);
+    capsOpenDate?.addEventListener("change", updateOpenDateNote);
+    updateOpenDateNote();
+    capsFormBlocks.forEach((block) => {
+      block.addEventListener("pointermove", (e) => {
+        const rect = block.getBoundingClientRect();
+        block.style.setProperty("--x", `${e.clientX - rect.left}px`);
+        block.style.setProperty("--y", `${e.clientY - rect.top}px`);
+      });
+    });
 
     function setStatus(msg, isError = false) {
       statusEl.textContent = msg || "";
@@ -576,15 +1826,92 @@
       return d.toISOString();
     }
 
+    function formatOpenDelay(localValue) {
+      if (!localValue) return "";
+      const target = new Date(localValue);
+      const now = new Date();
+      if (Number.isNaN(target.getTime())) return "";
+
+      const diff = target.getTime() - now.getTime();
+      if (diff <= 0) return "La fecha de apertura debe estar en el futuro.";
+
+      const minute = 60 * 1000;
+      const hour = 60 * minute;
+      const day = 24 * hour;
+      const year = 365 * day;
+
+      let amount;
+      let unit;
+      if (diff >= year) {
+        amount = Math.round(diff / year);
+        unit = amount === 1 ? "año" : "años";
+      } else if (diff >= day) {
+        amount = Math.round(diff / day);
+        unit = amount === 1 ? "día" : "días";
+      } else if (diff >= hour) {
+        amount = Math.round(diff / hour);
+        unit = amount === 1 ? "hora" : "horas";
+      } else {
+        amount = Math.max(1, Math.round(diff / minute));
+        unit = amount === 1 ? "minuto" : "minutos";
+      }
+
+      return `Se abrirá dentro de ${amount} ${unit}`;
+    }
+
+    function updateOpenDateNote() {
+      if (!capsOpenDateNote) return;
+      capsOpenDateNote.textContent = formatOpenDelay(capsOpenDate?.value || "");
+    }
+
     function clearSongSelection() {
       if (capsSongSelected) {
         capsSongSelected.hidden = true;
-        capsSongSelected.textContent = "";
+        capsSongSelected.innerHTML = "";
       }
       if (capsSpotifyId) capsSpotifyId.value = "";
       if (capsSongTitle) capsSongTitle.value = "";
       if (capsSongArtist) capsSongArtist.value = "";
       if (capsSongCoverUrl) capsSongCoverUrl.value = "";
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function renderSelectedSong(item) {
+      if (!capsSongSelected) return;
+      const title = item?.titulo || "Canción sin título";
+      const artist = item?.artista || "Artista desconocido";
+      const cover = item?.portada || "";
+      const preview = item?.preview_url || "";
+
+      capsSongSelected.innerHTML = `
+        <div class="caps-song-selected-card">
+          ${cover ? `<img src="${escapeHtml(cover)}" alt="Portada de ${escapeHtml(title)}">` : `<div class="caps-song-selected-placeholder" aria-hidden="true"></div>`}
+          <div>
+            <div class="caps-song-selected-kicker">Melodía elegida</div>
+            <div class="caps-song-selected-title">${escapeHtml(title)}</div>
+            <div class="caps-song-selected-artist">${escapeHtml(artist)}</div>
+            <div class="caps-song-selected-actions">
+              ${preview ? `<audio controls preload="none" src="${escapeHtml(preview)}"></audio>` : `<span class="caps-song-empty">Sin preview disponible, pero la canción quedará vinculada igual.</span>`}
+              <button type="button" class="caps-song-clear" id="capsSongClearBtn">Cambiar canción</button>
+            </div>
+          </div>
+        </div>
+      `;
+      capsSongSelected.hidden = false;
+      document.getElementById("capsSongClearBtn")?.addEventListener("click", () => {
+        clearSongSelection();
+        capsSongQuery.value = "";
+        capsSongResults.innerHTML = "";
+        capsSongQuery.focus();
+      });
     }
 
     function extractSpotifyId(url) {
@@ -594,16 +1921,21 @@
 
     function renderSongResults(items) {
       capsSongResults.innerHTML = "";
-      if (!Array.isArray(items) || !items.length) return;
+      if (!Array.isArray(items) || !items.length) {
+        capsSongResults.innerHTML = '<div class="caps-song-empty">No encontré una coincidencia clara. Prueba con otro título o artista.</div>';
+        return;
+      }
       for (const item of items) {
         const row = document.createElement("button");
         row.type = "button";
         row.className = "caps-song-item";
         row.innerHTML = `
-          ${item.portada ? `<img src="${item.portada}" alt="">` : `<div></div>`}
+          <div class="caps-song-cover">
+            ${item.portada ? `<img src="${escapeHtml(item.portada)}" alt="Portada de ${escapeHtml(item.titulo || "canción")}">` : ``}
+          </div>
           <div>
-            <strong>${item.titulo || "Sin título"}</strong>
-            <div class="caps-meta">${item.artista || "Artista desconocido"}</div>
+            <strong class="caps-song-item-title">${escapeHtml(item.titulo || "Sin título")}</strong>
+            <div class="caps-song-item-meta">${escapeHtml(item.artista || "Artista desconocido")}</div>
           </div>
         `;
         row.addEventListener("click", () => {
@@ -612,8 +1944,7 @@
           capsSpotifyId.value = extractSpotifyId(item.spotify_url || "");
           capsSongCoverUrl.value = item.portada || "";
           capsSongQuery.value = item.titulo ? `${item.titulo}${item.artista ? ` - ${item.artista}` : ""}` : "";
-          capsSongSelected.hidden = false;
-          capsSongSelected.textContent = `Seleccionada: ${capsSongQuery.value}`;
+          renderSelectedSong(item);
           capsSongResults.innerHTML = "";
         });
         capsSongResults.appendChild(row);
@@ -639,23 +1970,65 @@
       }, 280);
     });
 
-    function renderList(root, items, isClosed) {
+    function renderList(root, items, mode = "mixed") {
       root.innerHTML = "";
       root.classList.remove("capsulas-espacio");
+      resetBubblePointerField(root);
       if (!items.length) {
-        root.innerHTML = "<p>Sin cápsulas.</p>";
         return;
       }
 
-      for (const c of items) {
+    function applyBubbleFreeLayout(el, capsuleId, index, total = 1) {
+      const base = Number(capsuleId) || (index + 1) * 17;
+
+      const tilt = ((seededUnit(base + 5.9) * 8) - 4).toFixed(2);
+      const sparkDuration = (9.8 + (seededUnit(base + 41.1) * 5.6)).toFixed(2);
+      const sparkDelay = (seededUnit(base + 43.7) * -13.5).toFixed(2);
+
+      if (total === 1) {
+        el.style.setProperty("--pos-x", "50%");
+        el.style.setProperty("--pos-y", "52%");
+      } else {
+        const minX = 18;
+        const maxX = 82;
+        const minY = 14;
+        const maxY = 82;
+
+        const bandCount = Math.max(2, Math.ceil(Math.sqrt(total)));
+        const band = index % bandCount;
+
+        const bandTop = minY + (((maxY - minY) / bandCount) * band);
+        const bandBottom = minY + (((maxY - minY) / bandCount) * (band + 1));
+
+        let x = minX + (seededUnit(base + 12.1) * (maxX - minX));
+        let y = bandTop + (seededUnit(base + 13.7) * (bandBottom - bandTop));
+
+        x += ((seededUnit(base + 15.2) * 10) - 5);
+        y += ((seededUnit(base + 16.4) * 8) - 4);
+
+        x = Math.max(12, Math.min(88, x));
+        y = Math.max(12, Math.min(86, y));
+
+        el.style.setProperty("--pos-x", `${x}%`);
+        el.style.setProperty("--pos-y", `${y}%`);
+      }
+      el.style.setProperty("--tilt", `${tilt}deg`);
+      el.style.setProperty("--spark-duration", `${sparkDuration}s`);
+      el.style.setProperty("--spark-delay", `${sparkDelay}s`);
+    }
+
+      for (const [index, c] of items.entries()) {
         const item = document.createElement("div");
+        const isClosed = mode === "mixed" ? !c.is_opened : mode === "closed";
         if (isClosed) {
           root.classList.add("capsulas-espacio");
-          item.className = "capsula-burbuja";
+          item.className = "capsula-burbuja cerrada";
           item.dataset.id = String(c.id || "");
+          applyBubbleFreeLayout(item, c.id, index, items.length);
           item.setAttribute("role", "button");
           item.setAttribute("tabindex", "0");
           item.innerHTML = `
+            <div class="capsula-estado-icono">🔒</div>
             <div class="capsula-titulo">${c.title || "Sin título"}</div>
             <div class="capsula-fecha">${fmtDate(c.open_date)}</div>
           `;
@@ -667,28 +2040,32 @@
             }
           });
         } else {
-          item.className = "caps-item";
+          root.classList.add("capsulas-espacio");
+          item.className = "capsula-burbuja abierta";
+          item.dataset.id = String(c.id || "");
+          applyBubbleFreeLayout(item, c.id, index, items.length);
+          item.setAttribute("role", "button");
+          item.setAttribute("tabindex", "0");
           item.innerHTML = `
-            <strong>${c.title}</strong>
-            ${c.artist ? `<div>${c.artist}</div>` : ""}
-            ${c.message ? `<div>${c.message}</div>` : ""}
-            ${c.cover_url ? `<img src="${c.cover_url}" alt="Foto cápsula" class="caps-cover">` : ""}
-            <div class="caps-meta">Se abre: ${fmtDate(c.open_date)}</div>
-            <div class="caps-meta">Creada: ${fmtDate(c.created_at)}</div>
-            ${c.opened_at ? `<div class="caps-meta">Abierta: ${fmtDate(c.opened_at)}</div>` : ""}
+            <div class="capsula-estado-icono">🔓</div>
+            <div class="capsula-titulo">${(c.message || "Cápsula abierta").slice(0, 44)}</div>
+            <div class="capsula-fecha">${fmtDate(c.opened_at || c.open_date)}</div>
           `;
-        }
-
-        if (!isClosed) {
-          const ritual = document.createElement("a");
-          ritual.className = "caps-open-btn";
-          ritual.href = `/capsulas/${c.id}/ritual`;
-          ritual.textContent = "Ritual";
-          item.appendChild(ritual);
+          item.addEventListener("click", () => abrirCapsula(c.id));
+          item.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              abrirCapsula(c.id);
+            }
+          });
         }
 
         root.appendChild(item);
       }
+
+      bindBubbleFieldLayout(root);
+      bindBubblePointerField(root);
+      bindBubbleScrollDepth(root);
     }
 
     function abrirCapsula(id) {
@@ -703,8 +2080,13 @@
         setStatus(data.error || "No se pudieron cargar las cápsulas.", true);
         return;
       }
-      renderList(cerradasEl, data.cerradas || [], true);
-      renderList(abiertasEl, data.abiertas || [], false);
+      const combinadas = [...(data.cerradas || []), ...(data.abiertas || [])];
+      renderList(cerradasEl, combinadas, "mixed");
+      if (abiertasEl) {
+        abiertasEl.innerHTML = "";
+        const abiertaSection = abiertasEl.closest(".caps-section");
+        if (abiertaSection) abiertaSection.hidden = true;
+      }
     }
 
     form.addEventListener("submit", async (e) => {
@@ -744,9 +2126,15 @@
       }
       setStatus("Cápsula creada.");
       form.reset();
+      updateOpenDateNote();
       clearSongSelection();
       capsSongResults.innerHTML = "";
       await cargarCapsulas();
+      if (capsulaFormulario && capsCrearBtn) {
+        closeCreationMode();
+      }
+      const tabCerradas = document.querySelector('.capsulas-tab[data-tab="cerradas"], .caps-tab[data-tab="cerradas"]');
+      tabCerradas?.click();
     });
 
     premiumToggleBtn?.addEventListener("click", async () => {
@@ -765,6 +2153,10 @@
       } finally {
         premiumToggleBtn.disabled = false;
       }
+    });
+
+    window.addEventListener("resize", () => {
+      bubbleLayoutRoots.forEach((root) => layoutBubbleField(root));
     });
 
     cargarCapsulas();
@@ -825,10 +2217,10 @@
   </script>
   <script>
   (function(){
-    const tabs = document.querySelectorAll(".caps-tab[data-tab]");
+    const tabs = document.querySelectorAll(".capsulas-tab[data-tab], .caps-tab[data-tab]");
     const secCerradas = document.getElementById("tab-cerradas");
     const secAbiertas = document.getElementById("tab-abiertas");
-    const listCerradas = document.getElementById("capsCerradas");
+    const listCerradas = document.getElementById("capsulasEspacio");
     const listAbiertas = document.getElementById("capsAbiertas");
 
     if(!tabs.length || !secCerradas || !secAbiertas) return;
@@ -840,6 +2232,7 @@
       tabs.forEach(t => {
         const on = t.dataset.tab === name;
         t.classList.toggle("is-active", on);
+        t.classList.toggle("activa", on);
         t.setAttribute("aria-selected", on ? "true" : "false");
       });
     }
@@ -849,8 +2242,8 @@
     // Default inteligente:
     // Si hay cápsulas cerradas, abre Cerradas.
     // Si no, abre Abiertas.
-    const hasCerradas = !!(listCerradas && listCerradas.querySelector(".caps-item"));
-    const hasAbiertas  = !!(listAbiertas && listAbiertas.querySelector(".caps-item"));
+    const hasCerradas = !!(listCerradas && listCerradas.querySelector(".capsula-burbuja"));
+    const hasAbiertas  = !!(listAbiertas && listAbiertas.querySelector(".capsula-burbuja"));
 
     activate(hasCerradas ? "cerradas" : (hasAbiertas ? "abiertas" : "cerradas"));
   })();
