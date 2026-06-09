@@ -1,0 +1,398 @@
+/* Mobile-first refinements shared by Eco's main screens. */
+@media (max-width: 768px){
+  body{
+    overflow-x: hidden;
+  }
+
+  .recuerdos-page .ambient-toggle,
+  body.modal-open .ambient-toggle,
+  body:has(#capsulaFormulario:not([hidden])) .ambient-toggle{
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Home */
+  body.inicio-page .inicio-mock{
+    width: 100%;
+    padding: 8px 14px calc(72px + env(safe-area-inset-bottom));
+    gap: 10px;
+  }
+
+  body.inicio-page .inicio-hero-copy{
+    width: 100%;
+    margin: 0 auto 4px;
+  }
+
+  body.inicio-page .inicio-hero-kicker{
+    margin-bottom: 8px;
+    font-size: 9px;
+    letter-spacing: .3em;
+  }
+
+  body.inicio-page .inicio-hero-title{
+    max-width: 15ch;
+    font-size: clamp(30px, 9.5vw, 42px);
+    line-height: 1.03;
+  }
+
+  body.inicio-page .inicio-hero-subtitle{
+    max-width: 36ch;
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.42;
+  }
+
+  body.inicio-page .inicio-hero-quote{
+    max-width: 35ch;
+    margin-top: 13px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.32;
+  }
+
+  body.inicio-page .inicio-hero-quote-label{
+    margin-bottom: 4px;
+    font-size: 7px;
+  }
+
+  body.inicio-page .home-vinilo-wrap{
+    margin: 0 auto !important;
+  }
+
+  body.inicio-page .home-vinilo-spin{
+    width: min(58vw, 230px);
+  }
+
+  body.inicio-page .inicio-accesos{
+    width: min(100%, 440px);
+    gap: 8px !important;
+    margin-top: 0;
+  }
+
+  body.inicio-page .pill{
+    min-height: 50px;
+    padding: 0 14px;
+    border-radius: 16px;
+  }
+
+  body.inicio-page .pill-text{
+    font-size: 14px;
+  }
+
+  body.inicio-page .inicio-explicacion{
+    gap: 7px;
+    margin-top: 8px;
+  }
+
+  body.inicio-page .inicio-explicacion-item{
+    padding: 12px 14px;
+    border-radius: 16px;
+    text-align: left;
+  }
+
+  body.inicio-page .inicio-explicacion-num{
+    margin-bottom: 4px;
+    font-size: 9px;
+  }
+
+  body.inicio-page .inicio-explicacion-item h2{
+    margin-bottom: 3px;
+    font-size: 15px;
+  }
+
+  body.inicio-page .inicio-explicacion-item p{
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  /* New memory and timeline */
+  .recuerdos-page .zona-recuerdos{
+    padding-bottom: 78px;
+  }
+
+  .nuevo-recuerdo-panel{
+    max-height: 88svh;
+    padding: 14px 14px calc(env(safe-area-inset-bottom, 0px) + 14px);
+  }
+
+  .nuevo-recuerdo-head h2{
+    font-size: 1.2rem;
+  }
+
+  .nuevo-recuerdo-sub{
+    max-width: 38ch;
+    line-height: 1.4;
+  }
+
+  .nuevo-recuerdo-form{
+    gap: 10px;
+  }
+
+  .nuevo-recuerdo-paso{
+    padding: 13px 12px;
+  }
+
+  .nuevo-recuerdo-panel .nuevo-recuerdo-form input[type="text"],
+  .nuevo-recuerdo-panel .nuevo-recuerdo-form textarea,
+  .nuevo-recuerdo-panel .nuevo-recuerdo-form input[type="file"]{
+    min-height: 46px;
+    font-size: 16px;
+  }
+
+  .nuevo-recuerdo-actions{
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    padding: 8px 0 0;
+    background: linear-gradient(180deg, transparent, rgba(11,16,38,.96) 28%);
+  }
+
+  .nuevo-recuerdo-btn-secundario,
+  .nuevo-recuerdo-btn-primario{
+    min-height: 46px;
+  }
+
+  /* Biblioteca and memory detail */
+  body.biblioteca-page .eco-topbar{
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+
+  body.biblioteca-page .eco-subtitle{
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+
+  body.biblioteca-page .bib-filtros-tab{
+    width: calc(100% - 24px);
+    margin: 10px 12px 0;
+    padding: 4px 8px;
+    border-radius: 14px;
+  }
+
+  body.biblioteca-page .bib-filtros-tab > summary{
+    padding: 10px 8px;
+    font-size: 15px;
+  }
+
+  body.biblioteca-page .bib-controls{
+    padding: 8px 4px 10px;
+  }
+
+  body.biblioteca-page .bib-controls-grid{
+    gap: 8px;
+  }
+
+  body.biblioteca-page .bib-search,
+  body.biblioteca-page .bib-select{
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  body.biblioteca-page .biblioteca-secciones{
+    margin-top: 4px;
+    padding: 0 12px;
+  }
+
+  body.biblioteca-page .estanteria{
+    margin-inline: -12px;
+    padding: 10px 12px 20px;
+    gap: 8px;
+    scroll-padding-inline: 12px;
+  }
+
+  body.biblioteca-page .vinilo-lomo{
+    max-height: 280px;
+  }
+
+  body.biblioteca-page .biblioteca-secciones.vista-tarjetas .estanteria{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-inline: 0;
+    gap: 9px;
+  }
+
+  body.biblioteca-page .biblioteca-secciones.vista-tarjetas .vinilo-lomo{
+    min-height: 190px;
+    border-radius: 15px;
+  }
+
+  .detalle{
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .detalle-card{
+    width: 100%;
+    max-height: 92svh;
+    padding: 54px 14px calc(14px + env(safe-area-inset-bottom));
+    border-radius: 22px 22px 0 0;
+  }
+
+  .detalle-cover,
+  .eco-modal-cover{
+    min-height: 190px;
+    max-height: 300px;
+  }
+
+  .detalle-cover img,
+  .eco-modal-cover img{
+    max-height: 300px;
+  }
+
+  .detalle-input,
+  .detalle-textarea,
+  .detalle-btn{
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  /* Capsules */
+  body.capsulas-page{
+    background-attachment: scroll;
+  }
+
+  body.capsulas-page .caps-page{
+    padding: 14px 12px calc(76px + env(safe-area-inset-bottom));
+  }
+
+  body.capsulas-page .caps-head{
+    margin-bottom: 2px;
+  }
+
+  body.capsulas-page .capsulas-hero p{
+    max-width: 34ch;
+    margin: 14px 4px 8px;
+    white-space: normal;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  body.capsulas-page .capsula-crear-wrap{
+    margin: 14px 0 10px;
+    padding: 0;
+  }
+
+  body.capsulas-page .capsula-crear-boton{
+    min-height: 50px;
+    padding: 13px 16px;
+    font-size: 15px;
+  }
+
+  body.capsulas-page .capsula-formulario{
+    margin-top: 12px;
+    padding: 20px 14px;
+    border-radius: 20px;
+  }
+
+  body.capsulas-page .caps-ritual-intro{
+    margin-bottom: 22px;
+  }
+
+  body.capsulas-page .caps-ritual-intro p{
+    font-size: .92rem;
+    line-height: 1.55;
+  }
+
+  body.capsulas-page .caps-flow-section,
+  body.capsulas-page .caps-flow-message,
+  body.capsulas-page .caps-flow-seal,
+  body.capsulas-page .caps-flow-photo{
+    margin-top: 24px;
+    padding-top: 17px;
+  }
+
+  body.capsulas-page .caps-block-title,
+  body.capsulas-page .caps-flow-message .caps-block-title{
+    max-width: 19ch;
+    margin-bottom: 9px;
+    font-size: 1.35rem;
+    line-height: 1.1;
+  }
+
+  body.capsulas-page .caps-inline-label{
+    margin: 6px 0 8px;
+    font-size: .88rem;
+    line-height: 1.4;
+  }
+
+  body.capsulas-page .caps-form input,
+  body.capsulas-page .caps-form textarea{
+    min-height: 46px;
+    padding: 12px 13px;
+    border-radius: 14px;
+    font-size: 16px;
+  }
+
+  body.capsulas-page .caps-message-textarea{
+    min-height: 180px;
+    line-height: 1.6;
+  }
+
+  body.capsulas-page .caps-form-actions{
+    margin-top: 26px;
+    gap: 8px;
+  }
+
+  body.capsulas-page .btn-guardar-capsula,
+  body.capsulas-page .caps-cancel-btn{
+    min-height: 48px;
+    padding: 12px 14px;
+  }
+
+  body.capsulas-page .capsulas-bloque{
+    margin-top: 22px;
+  }
+
+  body.capsulas-page .capsulas-espacio{
+    min-height: 52vh;
+    height: 52vh;
+    padding-bottom: 70px;
+  }
+
+  .capsula-ritual-page .ritual-wrap{
+    padding: 12px 10px calc(68px + env(safe-area-inset-bottom));
+  }
+
+  .capsula-ritual-page .ritual-card{
+    padding: 14px;
+  }
+}
+
+@media (max-width: 480px){
+  body.inicio-page .inicio-hero-title{
+    font-size: clamp(28px, 9vw, 36px);
+  }
+
+  body.inicio-page .inicio-hero-subtitle{
+    font-size: 12px;
+  }
+
+  body.inicio-page .inicio-hero-quote{
+    font-size: 13px;
+  }
+
+  body.inicio-page .home-vinilo-spin{
+    width: min(52vw, 190px);
+  }
+
+  body.inicio-page .pill{
+    min-height: 46px;
+  }
+
+  body.inicio-page .inicio-explicacion-item p{
+    display: none;
+  }
+
+  body.biblioteca-page .biblioteca-secciones.vista-tarjetas .vinilo-lomo{
+    min-height: 170px;
+  }
+
+  .detalle-preview-wrap{
+    align-items: flex-start;
+  }
+
+  .detalle-actions{
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
