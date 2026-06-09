@@ -1,0 +1,70 @@
+.ambient-toggle{
+  position: fixed;
+  right: max(14px, env(safe-area-inset-right));
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: 120;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 7px 11px;
+  border: 1px solid rgba(244,241,234,.16);
+  border-radius: 999px;
+  background: rgba(8,12,24,.58);
+  box-shadow: 0 12px 30px rgba(0,0,0,.24);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: rgba(244,241,234,.66);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: .03em;
+  cursor: pointer;
+  transition: color .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+
+.ambient-toggle:hover,
+.ambient-toggle:focus-visible{
+  color: rgba(244,241,234,.9);
+  border-color: rgba(224,185,137,.28);
+  outline: none;
+}
+
+.ambient-toggle.is-active{
+  color: rgba(253,229,200,.94);
+  border-color: rgba(224,185,137,.34);
+  background: rgba(62,43,34,.55);
+  box-shadow: 0 0 22px rgba(202,151,100,.11), 0 12px 30px rgba(0,0,0,.24);
+}
+
+.ambient-toggle.is-enabled:not(.is-active){
+  color: rgba(244,241,234,.76);
+}
+
+.ambient-toggle.is-unavailable{
+  opacity: .48;
+}
+
+.ambient-toggle-icon{
+  font-size: 14px;
+  line-height: 1;
+}
+
+.ambient-toggle-state{
+  color: rgba(224,185,137,.68);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 520px){
+  .ambient-toggle{
+    right: max(10px, env(safe-area-inset-right));
+    bottom: max(10px, env(safe-area-inset-bottom));
+    min-height: 36px;
+    padding: 7px 10px;
+  }
+
+  .ambient-toggle-label{
+    display: none;
+  }
+}

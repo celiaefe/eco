@@ -8,6 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Eco · Ritual</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ambient.css', v='20260609-1') }}">
   <style>
     body.capsula-ritual-page{
       background:
@@ -87,6 +88,7 @@
     </div>
   </main>
 
+  {% include "_ambient_audio.html" %}
   <script>
     const openDate = new Date("{{ capsule.open_date.isoformat() }}Z");
     const openedAt = {{ "true" if capsule.opened_at else "false" }};

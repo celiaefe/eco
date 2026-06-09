@@ -17,6 +17,7 @@
   <meta name="twitter:image" content="{{ url_for('static', filename='superlogo_luna_og.jpg', _external=True) }}">
   <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='superlogo_luna_og.jpg') }}">
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='superlogo_luna_og.jpg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ambient.css', v='20260609-1') }}">
 
   {% block extra_head %}{% endblock %}
 
@@ -171,6 +172,7 @@
     </div>
   </div>
 
+  {% include "_ambient_audio.html" %}
   {% block extra_js %}{% endblock %}
 </body>
 </html>

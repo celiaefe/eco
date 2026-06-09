@@ -1,0 +1,18 @@
+<!-- Coloca la melodía ambiental en static/audio/eco-ambiente.mp3. -->
+<audio
+  id="ecoAmbientAudio"
+  src="{{ url_for('static', filename='audio/eco-ambiente.mp3') }}"
+  loop
+  preload="auto"
+  aria-hidden="true"></audio>
+<button
+  id="ambientToggle"
+  class="ambient-toggle"
+  type="button"
+  aria-pressed="false"
+  aria-label="Activar melodía ambiental">
+  <span class="ambient-toggle-icon" aria-hidden="true">♪</span>
+  <span class="ambient-toggle-label">Ambiente</span>
+  <span class="ambient-toggle-state">Off</span>
+</button>
+<script src="{{ url_for('static', filename='js/ambient.js', v='20260609-1') }}" defer></script>

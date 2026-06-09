@@ -8,6 +8,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v='20260609-1') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ambient.css', v='20260609-1') }}">
 </head>
 <body class="recuerdos-page">
 <div id="zona-recuerdos" class="zona-recuerdos">
@@ -111,6 +112,7 @@
 <div id="nuevo-recuerdo-backdrop" class="nuevo-recuerdo-backdrop" aria-hidden="true"></div>
 <div id="panel-backdrop" class="panel-backdrop" aria-hidden="true"></div>
 
+{% include "_ambient_audio.html" %}
 <script src="{{ url_for('static', filename='js/recuerdos.js', v='20260609-1') }}"></script>
 </body>
 </html>
