@@ -1,9 +1,10 @@
 import os
+import secrets
 from dotenv import load_dotenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user, login_user
 
 load_dotenv()
 
@@ -41,6 +42,8 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PREMIUM_ENABLED"] = _env_bool("PREMIUM_ENABLED", default=False)
+    app.config["AUTH_ENABLED"] = _env_bool("AUTH_ENABLED", default=False)
+    app.config["AUTH_BYPASS_EMAIL"] = os.getenv("AUTH_BYPASS_EMAIL", "celiafm17@gmail.com").strip().lower()
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -50,6 +53,27 @@ def create_app():
     from .main import main_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
+
+    @app.before_request
+    def auto_login_when_auth_is_disabled():
+        if app.config["AUTH_ENABLED"] or current_user.is_authenticated:
+            return None
+
+        from .models import User
+
+        email = app.config["AUTH_BYPASS_EMAIL"]
+        user = User.query.filter_by(email=email).first()
+        if user is None:
+            user = User(email=email)
+            user.set_password(secrets.token_urlsafe(32))
+            db.session.add(user)
+            db.session.commit()
+        login_user(user, remember=True)
+        return None
+
+    @app.context_processor
+    def expose_auth_status():
+        return {"auth_enabled": app.config["AUTH_ENABLED"]}
 
     @app.get("/healthz")
     def healthz():

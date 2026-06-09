@@ -1,9 +1,16 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, current_app, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required
 from .models import User
 from . import db
 
 auth_bp = Blueprint("auth", __name__)
+
+
+@auth_bp.before_request
+def skip_auth_screens_when_disabled():
+    if not current_app.config["AUTH_ENABLED"]:
+        return redirect(url_for("main.index"))
+    return None
 
 
 @auth_bp.get("/register")

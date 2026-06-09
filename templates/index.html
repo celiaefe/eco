@@ -1041,7 +1041,7 @@
         {% if show_intro %}style="opacity:0; pointer-events:none"{% endif %}>
       <section class="inicio-hero">
         <div class="inicio-auth">
-          {% if current_user.is_authenticated %}
+          {% if current_user.is_authenticated and auth_enabled %}
           <div class="eco-settings">
             <button type="button" class="eco-gear" aria-label="Abrir ajustes">⚙</button>
             <div class="eco-settings-menu">

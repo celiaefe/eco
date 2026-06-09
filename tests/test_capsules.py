@@ -89,6 +89,23 @@ def test_capsules_create_and_list(client, app):
     assert len(data["abiertas"]) == 0
 
 
+def test_auth_disabled_logs_in_configured_user_automatically(client, app):
+    user = _create_user(app, email="celiafm17@gmail.com")
+
+    response = client.get("/biblioteca")
+
+    assert response.status_code == 200
+    with client.session_transaction() as session:
+        assert session["_user_id"] == str(user.id)
+
+
+def test_auth_disabled_redirects_login_screen(client):
+    response = client.get("/login")
+
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/")
+
+
 def test_capsules_allows_multiple_closed_active(client, app):
     user = _create_user(app, email="limit@test.local")
     _login(client, user)
