@@ -22,7 +22,14 @@ def _env_bool(name: str, default: bool = False) -> bool:
 
 
 def create_app():
-    app = Flask(__name__, template_folder="../templates", static_folder="../static")
+    running_on_vercel = bool(os.getenv("VERCEL"))
+    instance_path = "/tmp/eco-instance" if running_on_vercel else None
+    app = Flask(
+        __name__,
+        template_folder="../templates",
+        static_folder="../static",
+        instance_path=instance_path,
+    )
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-change-me")
 
     # Local: sqlite. Render/prod: DATABASE_URL obligatorio.
@@ -33,6 +40,8 @@ def create_app():
             # Fallback defensivo para que el servicio arranque y responda health checks.
             db_url = "sqlite:////tmp/eco_render_fallback.db"
             app.logger.warning("DATABASE_URL no configurada en Render; usando SQLite temporal en /tmp.")
+        elif running_on_vercel:
+            db_url = "sqlite:////tmp/eco_vercel.db"
         else:
             db_url = "sqlite:///eco.db"
     # Render a veces da postgres://, SQLAlchemy prefiere postgresql://
@@ -53,6 +62,10 @@ def create_app():
     from .main import main_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
+
+    if running_on_vercel and not os.getenv("DATABASE_URL"):
+        with app.app_context():
+            db.create_all()
 
     @app.before_request
     def auto_login_when_auth_is_disabled():
