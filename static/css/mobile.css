@@ -4,11 +4,8 @@
     overflow-x: hidden;
   }
 
-  .recuerdos-page .ambient-toggle,
-  body.modal-open .ambient-toggle,
-  body:has(#capsulaFormulario:not([hidden])) .ambient-toggle{
-    opacity: 0;
-    pointer-events: none;
+  .recuerdos-page .ambient-toggle{
+    bottom: calc(82px + env(safe-area-inset-bottom));
   }
 
   /* Home */

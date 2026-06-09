@@ -40,8 +40,10 @@
   color: rgba(244,241,234,.76);
 }
 
-.ambient-toggle.is-unavailable{
-  opacity: .48;
+.ambient-toggle.is-ducked{
+  color: rgba(244,241,234,.7);
+  border-color: rgba(224,185,137,.2);
+  box-shadow: 0 0 14px rgba(202,151,100,.06), 0 12px 30px rgba(0,0,0,.24);
 }
 
 .ambient-toggle-icon{
