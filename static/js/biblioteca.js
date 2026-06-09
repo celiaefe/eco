@@ -15,7 +15,8 @@ const vistaSelect = document.getElementById("vistaBiblioteca");
 const bibliotecaMain = document.querySelector(".biblioteca-secciones");
 
 const secciones = document.querySelectorAll(".seccion-balda");
-const vacioEl = document.getElementById("bibEmpty");
+const vacioInicialEl = document.getElementById("bibEmptyInitial");
+const vacioFiltroEl = document.getElementById("bibEmptyFilter");
 const favoritosSection = document.getElementById("favoritosSection");
 const favoritosShelf = document.getElementById("favoritosShelf");
 
@@ -143,6 +144,7 @@ function quitarDeFavoritos(recuerdoId) {
 function aplicarFiltroYBusqueda() {
   const query = normalizar(searchInput?.value || "");
   const anio = filtroAnio?.value || "";
+  const totalRecuerdos = document.querySelectorAll(".vinilo-lomo").length;
 
   let totalVisibles = 0;
   document.querySelectorAll(".vinilo-lomo").forEach((btn) => {
@@ -164,7 +166,8 @@ function aplicarFiltroYBusqueda() {
     });
   });
 
-  if (vacioEl) vacioEl.hidden = totalVisibles > 0;
+  if (vacioInicialEl) vacioInicialEl.hidden = totalRecuerdos > 0;
+  if (vacioFiltroEl) vacioFiltroEl.hidden = totalRecuerdos === 0 || totalVisibles > 0;
 }
 
 function refrescarVistaBiblioteca() {

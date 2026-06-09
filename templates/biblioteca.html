@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v='20260609-2') }}">
 {% endblock %}
 {% block extra_css %}
   .wrap{display:block;min-height:100vh;padding:0}
@@ -111,7 +111,17 @@
     </details>
 
   <main class="biblioteca biblioteca-secciones">
-    <p class="bib-empty" id="bibEmpty" hidden>No hay coincidencias para esa búsqueda.</p>
+    <section class="bib-empty bib-empty-inicial" id="bibEmptyInitial" {% if recuerdos %}hidden{% endif %}>
+      <span class="bib-empty-symbol" aria-hidden="true">♪</span>
+      <h2>Todavía no has guardado ningún eco.</h2>
+      <p>Cuando guardes tu primer recuerdo, aparecerá aquí como parte de tu biblioteca.</p>
+      <a class="bib-empty-action" href="{{ url_for('main.recuerdos', crear=1) }}">Guardar mi primer recuerdo</a>
+    </section>
+    <section class="bib-empty bib-empty-filtro" id="bibEmptyFilter" hidden>
+      <span class="bib-empty-symbol" aria-hidden="true">⌕</span>
+      <h2>No hay recuerdos que coincidan con ese filtro.</h2>
+      <p>Prueba con otra palabra, año o tipo de vista.</p>
+    </section>
     <section class="seccion-balda">
       <h2 class="seccion-titulo">Todos los recuerdos</h2>
       {{ render_estanteria(recuerdos, 'todosShelf') }}
@@ -170,7 +180,7 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{{ url_for('static', filename='js/biblioteca.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/biblioteca.js', v='20260609-2') }}"></script>
   <script>
   (() => {
     const spines = Array.from(document.querySelectorAll('.vinilo-lomo[data-cover]'));
