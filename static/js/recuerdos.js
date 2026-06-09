@@ -167,7 +167,7 @@ if (isCrearMode && formNuevoRecuerdo) {
         const submitBtn = formNuevoRecuerdo.querySelector("button[type='submit']");
         if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.textContent = "Guardando...";
+            submitBtn.textContent = "Guardando este eco...";
         }
         window.setTimeout(() => formNuevoRecuerdo.submit(), 240);
     });

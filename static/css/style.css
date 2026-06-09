@@ -1255,6 +1255,15 @@ body.js-scroll-intro .zona-recuerdos.visible {
   gap: 8px;
 }
 
+.nuevo-recuerdo-kicker{
+  display: block;
+  margin-bottom: 5px;
+  color: rgba(214, 176, 130, 0.72);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
 .nuevo-recuerdo-handle{
   grid-column: 1 / -1;
   width: 44px;
@@ -1281,19 +1290,45 @@ body.js-scroll-intro .zona-recuerdos.visible {
 }
 
 .nuevo-recuerdo-sub{
-  margin: 8px 0 14px;
-  font-size: 0.88rem;
-  color: rgba(232, 237, 255, 0.8);
+  max-width: 52ch;
+  margin: 12px 0 20px;
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: rgba(232, 237, 255, 0.76);
 }
 
 .nuevo-recuerdo-form{
-  gap: 10px;
+  gap: 14px;
+}
+
+.nuevo-recuerdo-paso{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 17px 16px;
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 18px;
+  background: linear-gradient(155deg, rgba(24, 31, 62, 0.58), rgba(5, 10, 28, 0.42));
+}
+
+.nuevo-recuerdo-paso-num{
+  color: rgba(214, 176, 130, 0.68);
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
 }
 
 .nuevo-recuerdo-label{
-  font-size: 0.82rem;
-  letter-spacing: 0.01em;
-  color: rgba(229, 235, 255, 0.88);
+  font-size: 1.02rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+  color: rgba(244, 242, 255, 0.96);
+}
+
+.nuevo-recuerdo-ayuda{
+  margin: -2px 0 3px;
+  color: rgba(225, 230, 250, 0.6);
+  font-size: 0.76rem;
+  line-height: 1.45;
 }
 
 .nuevo-recuerdo-panel .nuevo-recuerdo-form input[type="text"],
@@ -1307,7 +1342,7 @@ body.js-scroll-intro .zona-recuerdos.visible {
 }
 
 .nuevo-recuerdo-panel .nuevo-recuerdo-form textarea{
-  min-height: 112px;
+  min-height: 132px;
 }
 
 .nuevo-recuerdo-panel .nuevo-recuerdo-form input[type="file"]::file-selector-button{
@@ -1326,6 +1361,12 @@ body.js-scroll-intro .zona-recuerdos.visible {
   max-height: 34vh;
   overflow: auto;
   padding-right: 3px;
+}
+
+.nuevo-recuerdo-selfie{
+  margin-top: 2px;
+  color: rgba(232, 237, 255, 0.7);
+  font-size: 0.76rem;
 }
 
 .nuevo-recuerdo-actions{
@@ -1656,6 +1697,19 @@ body.panel-abierto {
   .nuevo-recuerdo-sub{
     margin-top: 0;
     font-size: 0.84rem;
+  }
+
+  .nuevo-recuerdo-paso{
+    padding: 15px 13px;
+    border-radius: 16px;
+  }
+
+  .nuevo-recuerdo-label{
+    font-size: 0.96rem;
+  }
+
+  .nuevo-recuerdo-ayuda{
+    font-size: 0.73rem;
   }
 
   .nuevo-recuerdo-actions{
