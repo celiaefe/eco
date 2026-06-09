@@ -1,4 +1,7 @@
 {
+  "env": {
+    "APP_URL": "https://eco-five-phi.vercel.app"
+  },
   "builds": [
     {
       "src": "wsgi.py",

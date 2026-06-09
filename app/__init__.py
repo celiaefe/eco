@@ -50,6 +50,7 @@ def create_app():
 
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["APP_URL"] = os.getenv("APP_URL", "https://eco-five-phi.vercel.app").rstrip("/")
     app.config["PREMIUM_ENABLED"] = _env_bool("PREMIUM_ENABLED", default=False)
     app.config["AUTH_ENABLED"] = _env_bool("AUTH_ENABLED", default=False)
     app.config["AUTH_BYPASS_EMAIL"] = os.getenv("AUTH_BYPASS_EMAIL", "celiafm17@gmail.com").strip().lower()
