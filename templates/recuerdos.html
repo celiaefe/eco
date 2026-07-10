@@ -7,9 +7,9 @@
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v='20260609-1') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v='20260710-1') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/ambient.css', v='20260609-2') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css', v='20260609-2') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css', v='20260710-1') }}">
 </head>
 <body class="recuerdos-page">
 <div id="zona-recuerdos" class="zona-recuerdos">
@@ -65,18 +65,17 @@
   <div class="nuevo-recuerdo-head">
     <span class="nuevo-recuerdo-handle" aria-hidden="true"></span>
     <div>
-      <span class="nuevo-recuerdo-kicker">Un momento para guardar</span>
+      <span class="nuevo-recuerdo-kicker">UN MOMENTO PARA GUARDAR</span>
       <h2>Guardar un nuevo eco</h2>
     </div>
     <button id="cerrar-nuevo-recuerdo-btn" class="nuevo-recuerdo-close" type="button" aria-label="Cerrar panel">×</button>
   </div>
-  <p class="nuevo-recuerdo-sub">Hay recuerdos que vuelven enteros cuando empieza una canción. Guarda aquí el tuyo.</p>
+  <p class="nuevo-recuerdo-sub">Guarda la canción, las palabras y la imagen de este momento.</p>
   <form method="POST" enctype="multipart/form-data" class="nuevo-recuerdo-form">
     <input type="hidden" name="desde_crear" value="{{ '1' if request.args.get('crear') == '1' else '0' }}">
     <section class="nuevo-recuerdo-paso">
       <span class="nuevo-recuerdo-paso-num">01 · LA CANCIÓN</span>
       <label class="nuevo-recuerdo-label" for="cancion">¿Qué canción guarda este momento?</label>
-      <p class="nuevo-recuerdo-ayuda">Busca esa canción que, al sonar, te lleva de vuelta.</p>
       <input type="text" id="cancion" name="cancion" placeholder="Busca una canción o un artista" autocomplete="off">
       <div id="cancion-seleccionada" class="cancion-seleccionada" hidden></div>
       <div id="spotify-resultados"></div>
@@ -90,15 +89,17 @@
     <section class="nuevo-recuerdo-paso">
       <span class="nuevo-recuerdo-paso-num">02 · LAS PALABRAS</span>
       <label class="nuevo-recuerdo-label" for="nota">Escribe lo que no quieres que se borre</label>
-      <p class="nuevo-recuerdo-ayuda">Puede ser una frase, una sensación o todo lo que nunca dijiste.</p>
       <textarea id="nota" name="nota" placeholder="Escribe aquí lo que este momento significa para ti"></textarea>
     </section>
 
     <section class="nuevo-recuerdo-paso">
       <span class="nuevo-recuerdo-paso-num">03 · LA IMAGEN</span>
-      <label class="nuevo-recuerdo-label" for="foto_personal">Una imagen, si este recuerdo tiene rostro</label>
-      <p class="nuevo-recuerdo-ayuda">Es opcional. A veces una canción y unas palabras ya lo contienen todo.</p>
-      <input id="foto_personal" type="file" name="foto_personal" accept="image/*">
+      <label class="nuevo-recuerdo-label" for="foto_personal">Añade una imagen, si este recuerdo la necesita</label>
+      <div class="nuevo-recuerdo-file-row">
+        <input id="foto_personal" class="nuevo-recuerdo-file-input" type="file" name="foto_personal" accept="image/*">
+        <label class="nuevo-recuerdo-file-trigger" for="foto_personal">Añadir imagen</label>
+        <span id="foto-personal-nombre" class="nuevo-recuerdo-file-name" aria-live="polite">Ninguna imagen seleccionada</span>
+      </div>
       <label class="auth-remember nuevo-recuerdo-selfie" for="selfie_mode_recuerdo">
         <input id="selfie_mode_recuerdo" name="selfie_mode" type="checkbox" value="1" checked>
         <span>Es una selfie: guardar la imagen sin efecto espejo</span>
@@ -114,6 +115,6 @@
 <div id="panel-backdrop" class="panel-backdrop" aria-hidden="true"></div>
 
 {% include "_ambient_audio.html" %}
-<script src="{{ url_for('static', filename='js/recuerdos.js', v='20260609-1') }}"></script>
+<script src="{{ url_for('static', filename='js/recuerdos.js', v='20260710-1') }}"></script>
 </body>
 </html>

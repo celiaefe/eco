@@ -17,6 +17,8 @@ const entrarRecuerdosBtn = document.getElementById("entrar-recuerdos-btn");
 const zonaRecuerdos = document.getElementById("zona-recuerdos");
 const entradaNocturna = document.getElementById("entrada-nocturna");
 const formNuevoRecuerdo = nuevoRecuerdoPanel?.querySelector("form");
+const fotoPersonalInput = document.getElementById("foto_personal");
+const fotoPersonalNombre = document.getElementById("foto-personal-nombre");
 const params = new URLSearchParams(window.location.search);
 const isCrearMode = params.get("crear") === "1";
 
@@ -76,6 +78,12 @@ function mostrarCancionSeleccionada(track) {
         </div>
     `;
     cancionSeleccionada.hidden = false;
+}
+
+function actualizarNombreFoto() {
+    if (!fotoPersonalInput || !fotoPersonalNombre) return;
+    const file = fotoPersonalInput.files && fotoPersonalInput.files[0];
+    fotoPersonalNombre.textContent = file ? file.name : "Ninguna imagen seleccionada";
 }
 
 if (params.get("guardado") === "1") {
@@ -172,6 +180,9 @@ if (isCrearMode && formNuevoRecuerdo) {
         window.setTimeout(() => formNuevoRecuerdo.submit(), 240);
     });
 }
+
+fotoPersonalInput?.addEventListener("change", actualizarNombreFoto);
+actualizarNombreFoto();
 
 if (zonaRecuerdos) {
     const observerRecuerdos = new IntersectionObserver(

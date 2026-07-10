@@ -1058,7 +1058,7 @@
   }
 
   .inicio-hero-copy{
-    width: min(640px, 100%);
+    width: min(420px, 100%);
     margin: 0 auto;
     text-align: center;
   }
@@ -1073,9 +1073,9 @@
 
   .inicio-hero-title{
     margin: 0 auto;
-    max-width: 14ch;
-    font-size: clamp(38px, 6.2vw, 68px);
-    line-height: 1.01;
+    max-width: 12ch;
+    font-size: clamp(30px, 4.8vw, 48px);
+    line-height: 1.04;
     font-weight: 500;
     text-wrap: balance;
     text-shadow: 0 12px 34px rgba(0,0,0,.34);
@@ -1083,36 +1083,60 @@
 
   .inicio-hero-subtitle{
     margin: 14px auto 0;
-    max-width: 40ch;
-    color: rgba(244,241,234,.75);
-    font-size: clamp(15px, 2vw, 18px);
-    line-height: 1.44;
+    max-width: 28ch;
+    color: rgba(244,241,234,.7);
+    font-size: clamp(14px, 1.6vw, 16px);
+    line-height: 1.42;
     text-wrap: balance;
   }
 
   .inicio-hero-stage{
     width: min(620px, 100%);
     margin: 0 auto;
-    padding: 10px 0 0;
+    padding: 6px 0 0;
+    display: grid;
+    justify-items: center;
+    gap: 12px;
   }
 
   .home-vinilo-wrap{
+    position: relative;
     width: 100%;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .home-vinilo-wrap::before{
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: min(38vw, 240px);
+    height: min(38vw, 240px);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(214,176,130,.18), rgba(214,176,130,0) 72%);
+    filter: blur(12px);
+    pointer-events: none;
   }
 
   .home-vinilo-spin{
-    width: min(46vw, 310px);
-    filter: brightness(.82) contrast(1.04) drop-shadow(0 20px 34px rgba(0,0,0,.34));
+    position: relative;
+    width: min(48vw, 320px);
+    filter:
+      brightness(.84)
+      contrast(1.04)
+      drop-shadow(0 0 22px rgba(214,176,130,.12))
+      drop-shadow(0 24px 36px rgba(39,14,17,.34));
   }
 
   .inicio-accesos{
     width: 100%;
-    margin-top: 10px;
+    margin-top: 2px;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 10px;
   }
 
   .pill{
@@ -1129,7 +1153,7 @@
   }
 
   .pill-primary{
-    min-height: 64px;
+    min-height: 58px;
     background: linear-gradient(135deg, rgba(106,24,47,.92), rgba(137,38,60,.86));
     border-color: rgba(201,122,122,.24);
     box-shadow:
@@ -1144,26 +1168,49 @@
   }
 
   .inicio-accesos-secundarios{
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 8px;
   }
 
   .pill-secondary{
-    min-height: 44px;
-    border-radius: 16px;
-    padding: 10px 10px;
+    width: auto;
+    min-height: 0;
+    border-radius: 999px;
+    padding: 4px 2px;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    border-color: rgba(244,241,234,.08);
-    background: rgba(244,241,234,.025);
+    gap: 6px;
+    border-color: rgba(244,241,234,.06);
+    background: rgba(244,241,234,.015);
     box-shadow: none;
   }
 
   .pill-secondary .pill-text{
-    font-size: 13px;
-    line-height: 1.15;
+    font-size: 12px;
+    line-height: 1.1;
+    color: rgba(244,241,234,.72);
+  }
+
+  .pill-secondary .pill-ico{
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+    border-color: rgba(244,241,234,.1);
+    background: rgba(244,241,234,.04);
+  }
+
+  .inicio-coda{
+    margin: 4px auto 0;
+    max-width: 24ch;
+    color: rgba(225,184,135,.7);
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
+    font-style: italic;
+    text-wrap: balance;
   }
 
   @media (max-width: 700px){
@@ -1180,7 +1227,7 @@
     }
 
     .inicio-hero-copy{
-      width: min(100%, 32rem);
+      width: min(100%, 19rem);
     }
 
     .inicio-hero-kicker{
@@ -1189,39 +1236,49 @@
     }
 
     .inicio-hero-title{
-      max-width: 14ch;
-      font-size: clamp(31px, 9.8vw, 42px);
-      line-height: 1.02;
+      max-width: 12ch;
+      font-size: clamp(24px, 7vw, 32px);
+      line-height: 1.06;
     }
 
     .inicio-hero-subtitle{
-      max-width: 34ch;
-      margin-top: 10px;
-      font-size: 13px;
-      line-height: 1.38;
+      max-width: 26ch;
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.36;
     }
 
     .inicio-hero-stage{
       width: min(100%, 430px);
-      padding: 6px 0 0;
+      padding: 2px 0 0;
+      gap: 10px;
     }
 
     .home-vinilo-wrap{
       margin: 0 !important;
     }
 
+    .home-vinilo-wrap::before{
+      width: min(62vw, 260px);
+      height: min(62vw, 260px);
+    }
+
     .home-vinilo-spin{
-      width: min(56vw, 202px);
+      width: clamp(250px, 70vw, 280px);
     }
 
     .inicio-accesos{
-      margin-top: 8px;
+      margin-top: 0;
       gap: 8px;
     }
 
     .pill{
-      min-height: 56px;
+      min-height: 52px;
       padding: 0 14px;
+    }
+
+    .pill-primary{
+      min-height: 54px;
     }
 
     .pill-text{
@@ -1229,19 +1286,31 @@
     }
 
     .inicio-accesos-secundarios{
-      gap: 8px;
+      gap: 12px;
     }
 
     .pill-secondary{
-      min-height: 42px;
-      padding: 9px 10px;
-      border-radius: 15px;
+      min-height: 0;
+      padding: 2px 0;
+      border-radius: 999px;
+      background: transparent;
+      border-color: transparent;
+    }
+
+    .pill-secondary .pill-text{
+      font-size: 12px;
+    }
+
+    .inicio-coda{
+      margin-top: 8px;
+      max-width: 22ch;
+      font-size: 11px;
     }
   }
 
   @media (max-width: 389px){
     .inicio-accesos-secundarios{
-      grid-template-columns: 1fr;
+      gap: 10px;
     }
   }
 {% endblock %}
@@ -1274,10 +1343,7 @@
           </div>
           <div class="inicio-hero-copy">
             <p class="inicio-hero-kicker">ECO · ARCHIVO ÍNTIMO</p>
-            <h1 class="inicio-hero-title">Para cuando una canción no es solo una canción.</h1>
-            <p class="inicio-hero-subtitle">
-              Guarda canciones, palabras e imágenes para volver a ellas cuando llegue el momento.
-            </p>
+            <h1 class="inicio-hero-title">Para cuando una canción guarda algo de ti.</h1>
           </div>
         </section>
 
@@ -1290,6 +1356,10 @@
               draggable="false"
             >
           </div>
+
+          <p class="inicio-hero-subtitle">
+            Guarda una canción, unas palabras y una imagen para volver a ese momento.
+          </p>
 
           <section class="inicio-accesos" aria-label="Accesos principales">
             {% if current_user.is_authenticated %}
@@ -1328,6 +1398,8 @@
             </div>
             {% endif %}
           </section>
+
+          <p class="inicio-coda">Lo que hoy sientes, mañana te encontrará.</p>
         </section>
       </section>
       {% if not current_user.is_authenticated %}
