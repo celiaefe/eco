@@ -11,46 +11,49 @@
   /* Home */
   body.inicio-page .inicio-mock{
     width: 100%;
-    padding: 8px 14px calc(72px + env(safe-area-inset-bottom));
-    gap: 10px;
+    padding:
+      calc(max(16px, env(safe-area-inset-top)) + 6px)
+      14px
+      calc(88px + env(safe-area-inset-bottom));
+    gap: 14px;
+  }
+
+  body.inicio-page .inicio-hero-shell{
+    gap: 14px;
+  }
+
+  body.inicio-page .inicio-auth{
+    top: max(10px, env(safe-area-inset-top));
+    margin-bottom: 12px;
   }
 
   body.inicio-page .inicio-hero-copy{
     width: 100%;
-    margin: 0 auto 4px;
+    margin: 0 auto;
   }
 
   body.inicio-page .inicio-hero-kicker{
-    margin-bottom: 8px;
+    margin-bottom: 9px;
     font-size: 9px;
-    letter-spacing: .3em;
+    letter-spacing: .28em;
   }
 
   body.inicio-page .inicio-hero-title{
-    max-width: 15ch;
-    font-size: clamp(30px, 9.5vw, 42px);
-    line-height: 1.03;
+    max-width: 14ch;
+    font-size: clamp(30px, 9vw, 40px);
+    line-height: 1.02;
   }
 
   body.inicio-page .inicio-hero-subtitle{
     max-width: 36ch;
-    margin-top: 12px;
+    margin-top: 10px;
     font-size: 13px;
-    line-height: 1.42;
+    line-height: 1.36;
   }
 
-  body.inicio-page .inicio-hero-quote{
-    max-width: 35ch;
-    margin-top: 13px;
-    padding: 12px 14px;
-    border-radius: 16px;
-    font-size: 14px;
-    line-height: 1.32;
-  }
-
-  body.inicio-page .inicio-hero-quote-label{
-    margin-bottom: 4px;
-    font-size: 7px;
+  body.inicio-page .inicio-hero-stage{
+    width: min(100%, 430px);
+    padding: 6px 0 0;
   }
 
   body.inicio-page .home-vinilo-wrap{
@@ -58,49 +61,58 @@
   }
 
   body.inicio-page .home-vinilo-spin{
-    width: min(58vw, 230px);
+    width: min(54vw, 202px);
   }
 
   body.inicio-page .inicio-accesos{
-    width: min(100%, 440px);
+    width: 100%;
     gap: 8px !important;
-    margin-top: 0;
+    margin-top: 8px;
+  }
+
+  body.inicio-page .inicio-accesos-secundarios{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
   body.inicio-page .pill{
-    min-height: 50px;
+    min-height: 54px;
     padding: 0 14px;
     border-radius: 16px;
+  }
+
+  body.inicio-page .pill-primary{
+    min-height: 58px;
+  }
+
+  body.inicio-page .pill-secondary{
+    min-height: 42px;
+    padding: 9px 10px;
+    align-items: center;
+    border-radius: 15px;
+    background: rgba(244,241,234,.02);
+    border-color: rgba(244,241,234,.08);
+    box-shadow: none;
   }
 
   body.inicio-page .pill-text{
     font-size: 14px;
   }
 
-  body.inicio-page .inicio-explicacion{
-    gap: 7px;
-    margin-top: 8px;
-  }
-
-  body.inicio-page .inicio-explicacion-item{
-    padding: 12px 14px;
-    border-radius: 16px;
-    text-align: left;
-  }
-
-  body.inicio-page .inicio-explicacion-num{
-    margin-bottom: 4px;
-    font-size: 9px;
-  }
-
-  body.inicio-page .inicio-explicacion-item h2{
-    margin-bottom: 3px;
-    font-size: 15px;
-  }
-
-  body.inicio-page .inicio-explicacion-item p{
+  body.inicio-page .pill-secondary .pill-text{
     font-size: 12px;
-    line-height: 1.4;
+    line-height: 1.15;
+  }
+
+  body.inicio-page .ambient-toggle{
+    bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+
+  @media (max-width: 389px){
+    body.inicio-page .inicio-accesos-secundarios{
+      grid-template-columns: 1fr;
+    }
   }
 
   /* New memory and timeline */
@@ -364,20 +376,12 @@
     font-size: 12px;
   }
 
-  body.inicio-page .inicio-hero-quote{
-    font-size: 13px;
-  }
-
   body.inicio-page .home-vinilo-spin{
     width: min(52vw, 190px);
   }
 
   body.inicio-page .pill{
     min-height: 46px;
-  }
-
-  body.inicio-page .inicio-explicacion-item p{
-    display: none;
   }
 
   body.biblioteca-page .biblioteca-secciones.vista-tarjetas .vinilo-lomo{

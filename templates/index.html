@@ -1029,238 +1029,219 @@
   /* ===== HOME narrativa ===== */
   .inicio-mock{
     max-width: 940px;
-    padding-bottom: 44px;
+    padding:
+      calc(max(18px, env(safe-area-inset-top)) + 8px)
+      18px
+      calc(88px + env(safe-area-inset-bottom));
+    gap: 18px;
+  }
+
+  .inicio-hero-shell{
+    width: min(760px, 100%);
+    margin: 0 auto;
+    display: grid;
+    gap: 16px;
+  }
+
+  .inicio-hero{
+    width: 100%;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .inicio-auth{
+    position: sticky;
+    top: max(10px, env(safe-area-inset-top));
+    justify-content: flex-end;
+    margin: 0 0 14px;
+    padding-inline: 2px;
   }
 
   .inicio-hero-copy{
-    width: min(760px, 100%);
-    margin: 2px auto 10px;
+    width: min(640px, 100%);
+    margin: 0 auto;
     text-align: center;
   }
 
   .inicio-hero-kicker{
-    margin: 0 0 14px;
+    margin: 0 0 10px;
     color: rgba(244,241,234,.62);
     font-size: 11px;
-    letter-spacing: .42em;
+    letter-spacing: .36em;
     text-transform: uppercase;
   }
 
   .inicio-hero-title{
     margin: 0 auto;
-    max-width: 18ch;
+    max-width: 14ch;
     font-size: clamp(38px, 6.2vw, 68px);
-    line-height: .98;
+    line-height: 1.01;
     font-weight: 500;
     text-wrap: balance;
     text-shadow: 0 12px 34px rgba(0,0,0,.34);
   }
 
   .inicio-hero-subtitle{
-    margin: 22px auto 0;
-    max-width: 60ch;
+    margin: 14px auto 0;
+    max-width: 40ch;
     color: rgba(244,241,234,.75);
     font-size: clamp(15px, 2vw, 18px);
-    line-height: 1.55;
+    line-height: 1.44;
     text-wrap: balance;
   }
 
-  .inicio-hero-quote{
-    position: relative;
-    margin: 24px auto 0;
-    max-width: 46ch;
-    padding: 22px 28px 20px;
-    overflow: hidden;
-    border: 1px solid rgba(224,185,137,.28);
-    border-radius: 24px;
-    background:
-      radial-gradient(circle at 50% 0%, rgba(229,187,132,.13), transparent 62%),
-      linear-gradient(145deg, rgba(244,241,234,.075), rgba(119,76,53,.08));
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.06),
-      0 16px 42px rgba(0,0,0,.2),
-      0 0 34px rgba(202,151,100,.045);
-    backdrop-filter: blur(12px);
-    color: rgba(253,229,200,.93);
-    font-size: clamp(18px, 2.4vw, 23px);
-    line-height: 1.38;
-    text-wrap: balance;
+  .inicio-hero-stage{
+    width: min(620px, 100%);
+    margin: 0 auto;
+    padding: 10px 0 0;
   }
-
-  .inicio-hero-quote::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.035) 48%, transparent 72%);
-  }
-
-  .inicio-hero-quote-label{
-    position: relative;
-    display: block;
-    margin-bottom: 10px;
-    color: rgba(225,184,135,.7);
-    font-size: 9px;
-    font-style: normal;
-    letter-spacing: .28em;
-    text-transform: uppercase;
-  }
-
-  .inicio-hero-quote-text{
-    position: relative;
-    display: block;
-    font-style: italic;
-  }
-
-  .inicio-hero-quote-text::before,
-  .inicio-hero-quote-text::after{
-    color: rgba(225,184,135,.48);
-    font-size: .78em;
-  }
-
-  .inicio-hero-quote-text::before{ content: "“"; }
-  .inicio-hero-quote-text::after{ content: "”"; }
 
   .home-vinilo-wrap{
-    margin-top: 12px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
   .home-vinilo-spin{
-    width: min(70vw, 350px);
-    filter: brightness(.82) contrast(1.04) drop-shadow(0 24px 42px rgba(0,0,0,.36));
+    width: min(46vw, 310px);
+    filter: brightness(.82) contrast(1.04) drop-shadow(0 20px 34px rgba(0,0,0,.34));
   }
 
   .inicio-accesos{
-    width: min(620px, 100%);
+    width: 100%;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .pill{
-    min-height: 68px;
-  }
-
-  .inicio-explicacion{
-    width: min(860px, 100%);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    min-height: 62px;
+    justify-content: flex-start;
+    padding: 0 18px;
     gap: 12px;
-    margin-top: 22px;
+    border-color: rgba(244,241,234,.12);
+    background: rgba(244,241,234,.045);
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.03),
+      0 10px 24px rgba(0,0,0,.12);
   }
 
-  .inicio-explicacion-item{
-    min-height: 150px;
-    padding: 22px 20px;
-    border: 1px solid rgba(244,241,234,.13);
-    border-radius: 22px;
-    background: linear-gradient(160deg, rgba(19,27,48,.56), rgba(8,12,25,.42));
-    backdrop-filter: blur(12px);
-    text-align: left;
+  .pill-primary{
+    min-height: 64px;
+    background: linear-gradient(135deg, rgba(106,24,47,.92), rgba(137,38,60,.86));
+    border-color: rgba(201,122,122,.24);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 14px 28px rgba(65,10,26,.22),
+      0 0 18px rgba(155,44,44,.08);
   }
 
-  .inicio-explicacion-num{
-    display: block;
-    margin-bottom: 18px;
-    color: rgba(221,174,121,.7);
-    font-size: 11px;
-    letter-spacing: .2em;
+  .pill-primary .pill-ico{
+    background: rgba(255,244,236,.12);
+    border-color: rgba(255,238,222,.18);
   }
 
-  .inicio-explicacion-item h2{
-    margin: 0 0 8px;
-    font-size: 18px;
-    font-weight: 500;
+  .inicio-accesos-secundarios{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
-  .inicio-explicacion-item p{
-    margin: 0;
-    color: rgba(244,241,234,.66);
-    font-family: Georgia, serif;
+  .pill-secondary{
+    min-height: 44px;
+    border-radius: 16px;
+    padding: 10px 10px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-color: rgba(244,241,234,.08);
+    background: rgba(244,241,234,.025);
+    box-shadow: none;
+  }
+
+  .pill-secondary .pill-text{
     font-size: 13px;
-    line-height: 1.55;
+    line-height: 1.15;
   }
 
   @media (max-width: 700px){
     .inicio-mock{
-      padding: 10px 14px 34px;
-      gap: 12px;
+      padding:
+        calc(max(16px, env(safe-area-inset-top)) + 6px)
+        14px
+        calc(86px + env(safe-area-inset-bottom));
+      gap: 14px;
+    }
+
+    .inicio-hero-shell{
+      gap: 14px;
     }
 
     .inicio-hero-copy{
-      margin-top: 4px;
+      width: min(100%, 32rem);
     }
 
     .inicio-hero-kicker{
-      margin-bottom: 12px;
+      margin-bottom: 9px;
       font-size: 10px;
     }
 
     .inicio-hero-title{
       max-width: 14ch;
-      font-size: clamp(34px, 11vw, 48px);
+      font-size: clamp(31px, 9.8vw, 42px);
       line-height: 1.02;
     }
 
     .inicio-hero-subtitle{
       max-width: 34ch;
-      margin-top: 16px;
-      font-size: 14px;
-      line-height: 1.5;
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.38;
     }
 
-    .inicio-hero-quote{
-      max-width: 33ch;
-      margin-top: 18px;
-      padding: 15px 14px 14px;
-      border-radius: 18px;
-      font-size: 16px;
-      line-height: 1.34;
-    }
-
-    .inicio-hero-quote-label{
-      margin-bottom: 6px;
-      font-size: 8px;
+    .inicio-hero-stage{
+      width: min(100%, 430px);
+      padding: 6px 0 0;
     }
 
     .home-vinilo-wrap{
-      margin: 6px 0 2px !important;
+      margin: 0 !important;
     }
 
     .home-vinilo-spin{
-      width: min(76vw, 300px);
+      width: min(56vw, 202px);
     }
 
     .inicio-accesos{
-      gap: 10px;
-      margin-top: 4px;
+      margin-top: 8px;
+      gap: 8px;
     }
 
     .pill{
-      min-height: 62px;
-      padding: 0 18px;
+      min-height: 56px;
+      padding: 0 14px;
     }
 
     .pill-text{
-      font-size: 15px;
+      font-size: 14px;
     }
 
-    .inicio-explicacion{
+    .inicio-accesos-secundarios{
+      gap: 8px;
+    }
+
+    .pill-secondary{
+      min-height: 42px;
+      padding: 9px 10px;
+      border-radius: 15px;
+    }
+  }
+
+  @media (max-width: 389px){
+    .inicio-accesos-secundarios{
       grid-template-columns: 1fr;
-      gap: 9px;
-      margin-top: 14px;
-    }
-
-    .inicio-explicacion-item{
-      min-height: auto;
-      padding: 17px 18px;
-      text-align: center;
-    }
-
-    .inicio-explicacion-num{
-      margin-bottom: 8px;
-    }
-
-    .inicio-explicacion-item h2{
-      margin-bottom: 5px;
-      font-size: 16px;
     }
   }
 {% endblock %}
@@ -1277,93 +1258,78 @@
   <main id="homeContent"
         class="inicio-hub inicio-mock"
         {% if show_intro %}style="opacity:0; pointer-events:none"{% endif %}>
-      <section class="inicio-hero">
-        <div class="inicio-auth">
-          {% if current_user.is_authenticated and auth_enabled %}
-          <div class="eco-settings">
-            <button type="button" class="eco-gear" aria-label="Abrir ajustes">⚙</button>
-            <div class="eco-settings-menu">
-              <form method="post" action="{{ url_for('auth.logout') }}">
-                <button type="submit">Cerrar sesión</button>
-              </form>
+      <section class="inicio-hero-shell">
+        <section class="inicio-hero">
+          <div class="inicio-auth">
+            {% if current_user.is_authenticated and auth_enabled %}
+            <div class="eco-settings">
+              <button type="button" class="eco-gear" aria-label="Abrir ajustes">⚙</button>
+              <div class="eco-settings-menu">
+                <form method="post" action="{{ url_for('auth.logout') }}">
+                  <button type="submit">Cerrar sesión</button>
+                </form>
+              </div>
             </div>
+            {% endif %}
           </div>
-          {% endif %}
-        </div>
-        <div class="inicio-hero-copy">
-          <p class="inicio-hero-kicker">Eco · archivo íntimo</p>
-          <h1 class="inicio-hero-title">Para cuando una canción no es solo una canción.</h1>
-          <p class="inicio-hero-subtitle">
-            Eco guarda recuerdos con música, palabras e imágenes. Una biblioteca íntima para lo que no quieres olvidar y cápsulas que solo se abren cuando llegue su momento.
-          </p>
-          <div class="inicio-hero-quote" role="note" aria-label="La promesa de Eco">
-            <span class="inicio-hero-quote-label">La promesa de Eco</span>
-            <span class="inicio-hero-quote-text">Guarda lo que no quieres olvidar. Y lo que aún no estás lista para volver a escuchar.</span>
+          <div class="inicio-hero-copy">
+            <p class="inicio-hero-kicker">ECO · ARCHIVO ÍNTIMO</p>
+            <h1 class="inicio-hero-title">Para cuando una canción no es solo una canción.</h1>
+            <p class="inicio-hero-subtitle">
+              Guarda canciones, palabras e imágenes para volver a ellas cuando llegue el momento.
+            </p>
           </div>
-        </div>
+        </section>
+
+        <section class="inicio-hero-stage" aria-label="Acceso principal a Eco">
+          <div class="home-vinilo-wrap" id="homeVinylWrap" aria-label="Vinilo Eco">
+            <img
+              src="{{ url_for('static', filename='vinilo_eco.png') }}"
+              alt="Vinilo Eco"
+              class="home-vinilo-spin"
+              draggable="false"
+            >
+          </div>
+
+          <section class="inicio-accesos" aria-label="Accesos principales">
+            {% if current_user.is_authenticated %}
+            <a class="pill pill-primary" href="{{ url_for('main.recuerdos', crear=1) }}">
+              <span class="pill-ico">✎</span>
+              <span class="pill-text">Guardar un recuerdo</span>
+            </a>
+
+            <div class="inicio-accesos-secundarios">
+              <a class="pill pill-secondary" href="{{ url_for('main.capsulas_panel') }}">
+                <span class="pill-ico">⏳</span>
+                <span class="pill-text">Crear cápsula</span>
+              </a>
+
+              <a class="pill pill-secondary" href="{{ url_for('main.biblioteca') }}">
+                <span class="pill-ico">⟡</span>
+                <span class="pill-text">Biblioteca</span>
+              </a>
+            </div>
+            {% else %}
+            <button type="button" class="pill pill-primary" data-open-login>
+              <span class="pill-ico">↪</span>
+              <span class="pill-text">Entrar</span>
+            </button>
+
+            <div class="inicio-accesos-secundarios">
+              <a class="pill pill-secondary" href="{{ url_for('auth.register') }}">
+                <span class="pill-ico">✦</span>
+                <span class="pill-text">Registrarse</span>
+              </a>
+
+              <a class="pill pill-secondary" href="{{ url_for('auth.forgot_password') }}">
+                <span class="pill-ico">⌁</span>
+                <span class="pill-text">Recuperar acceso</span>
+              </a>
+            </div>
+            {% endif %}
+          </section>
+        </section>
       </section>
-
-      <section class="home-vinilo-wrap" id="homeVinylWrap" aria-label="Vinilo Eco">
-        <img
-          src="{{ url_for('static', filename='vinilo_eco.png') }}"
-          alt="Vinilo Eco"
-          class="home-vinilo-spin"
-          draggable="false"
-        >
-      </section>
-
-      <section class="inicio-accesos" aria-label="Accesos principales">
-        {% if current_user.is_authenticated %}
-        <a class="pill pill-primary" href="{{ url_for('main.recuerdos', crear=1) }}">
-          <span class="pill-ico">✎</span>
-          <span class="pill-text">Guardar un recuerdo</span>
-        </a>
-
-        <a class="pill" href="{{ url_for('main.capsulas_panel') }}">
-          <span class="pill-ico">⏳</span>
-          <span class="pill-text">Crear una cápsula para el futuro</span>
-        </a>
-
-        <a class="pill" href="{{ url_for('main.biblioteca') }}">
-          <span class="pill-ico">⟡</span>
-          <span class="pill-text">Abrir mi biblioteca</span>
-        </a>
-        {% else %}
-        <button type="button" class="pill pill-primary" data-open-login>
-          <span class="pill-ico">↪</span>
-          <span class="pill-text">Entrar</span>
-        </button>
-
-        <a class="pill" href="{{ url_for('auth.register') }}">
-          <span class="pill-ico">✦</span>
-          <span class="pill-text">Registrarse</span>
-        </a>
-
-        <a class="pill" href="{{ url_for('auth.forgot_password') }}">
-          <span class="pill-ico">⌁</span>
-          <span class="pill-text">Recuperar acceso</span>
-        </a>
-        {% endif %}
-      </section>
-      {% if current_user.is_authenticated %}
-      <section class="inicio-explicacion" aria-label="Qué puedes guardar en Eco">
-        <article class="inicio-explicacion-item">
-          <span class="inicio-explicacion-num">01 · RECUERDOS</span>
-          <h2>Una canción, tus palabras y una imagen</h2>
-          <p>Guarda juntas las pequeñas cosas que hacen que un momento siga vivo.</p>
-        </article>
-        <article class="inicio-explicacion-item">
-          <span class="inicio-explicacion-num">02 · CÁPSULAS</span>
-          <h2>Algo para tu yo del futuro</h2>
-          <p>Crea cápsulas que permanecerán cerradas hasta que llegue su momento.</p>
-        </article>
-        <article class="inicio-explicacion-item">
-          <span class="inicio-explicacion-num">03 · SOLO TUYO</span>
-          <h2>Un lugar íntimo, no una red social</h2>
-          <p>Sin seguidores ni ruido. Eco es un espacio privado para recordar a tu manera.</p>
-        </article>
-      </section>
-      {% endif %}
       {% if not current_user.is_authenticated %}
       <section id="homeLoginBox" class="home-login-box" hidden>
         {% with messages = get_flashed_messages() %}
